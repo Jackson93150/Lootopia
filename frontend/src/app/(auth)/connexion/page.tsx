@@ -3,24 +3,24 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Button} from "@/components/ui/button";
-import {Form, FormField, FormItem, FormControl, FormMessage} from "@/components/ui/form";
 import Link from "next/link";
 
-interface FormValues {
-    email: string;
-    password: string;
-}
+import AppInput from "@/components/ui/AppInput";
+import AppButton from "@/components/ui/AppButton";
 
 const formSchema = z.object({
     email: z.string().email("Veuillez entrer une adresse email valide."),
     password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export default function ConnexionForm() {
-    const form = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: {errors},
+    } = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
@@ -32,54 +32,56 @@ export default function ConnexionForm() {
         console.log(values);
     };
 
-
     return (
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-sm mx-auto space-y-4">
+            <div className="space-y-2">
+                <AppButton type="button" variant="primary">
+                    Continuer avec Google
+                </AppButton>
+                <AppButton type="button" variant="social">
+                    Continuer avec Facebook
+                </AppButton>
+            </div>
+            <div className="flex justify-center">
+                <p className="text-white font-extrabold text-sm">Ou</p>
+            </div>
 
-        <Form {...form}>
-            <div className="log-with-socialnetworks pb-3">
-                <Button type="button" variant="outline" className="w-full mb-2">Continuer avec Google</Button>
-                <Button type="button" variant="outline" className="w-full text-blue-600">Continuer avec Facebook</Button>
-            </div>
-            <div className="flex justify-center p-2">
-                <p className="text-white font-extrabold text-lg stroke-black">Or</p>
-            </div>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({field}) => (
-                        <FormItem>
-                            <Label htmlFor="email">Email</Label>
-                            <FormControl>
-                                <Input id="email" placeholder="Entrez votre adresse email"  className="bg-[#FDFCE3] border-6 border-[#D7B189] h-11 placeholder:text-xs"{...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
+            <div>
+                <label className="block text-sm font-medium text-dark-brown mb-1">Email</label>
+                <AppInput
+                    placeholder="Entrez votre adresse email"
+                    type="email"
+                    {...register("email")}
                 />
+                {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
+            </div>
 
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({field}) => (
-                        <FormItem>
-                            <Label htmlFor="password">Mot de Passe</Label>
-                            <FormControl>
-                                <Input id="password" type="password" placeholder="Entrez votre mot de passe" className="bg-[#FDFCE3] border-6 border-[#D7B189] h-11 placeholder:text-xs" {...field} />
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
+            <div>
+                <label className="block text-sm font-medium text-dark-brown mb-1">Mot de passe</label>
+                <AppInput
+                    placeholder="Entrez votre mot de passe"
+                    type="password"
+                    {...register("password")}
                 />
-                <Link href="mot-de-passe-oublie" className="text-xs block text-right">Mot de passe oublié ?</Link>
-                <Button type="submit" className="block mx-auto bg-[#EFF8FD] border-6  border-[#F6CB9E] text-black rounded-xl h-10 font-semibold flex hover:bg-white ">Continuer</Button>
-            </form>
-            <div className="create-account">
-                <div className="flex justify-center p-2">
-                    <p className="text-white font-extrabold text-lg stroke-black">Pas encore de compte ? </p>
-                </div>
-                <Button type="button" className="block mx-auto bg-[#EFF8FD] border-6  border-[#F6CB9E] text-black rounded-xl font-semibold text-xs flex hover:bg-white">Créer un compte</Button>
+                {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>}
             </div>
-        </Form>
+
+            <div className="text-right mt-1 mb-2">
+                <Link href="/mot-de-passe-oublie" className="text-xs underline text-blue-600">
+                    Mot de passe oublié ?
+                </Link>
+            </div>
+
+            <AppButton type="submit" variant="primary" className="!w-50 mx-auto block">
+                Continuer
+            </AppButton>
+
+            <div className="mt-2 text-center">
+                <p className="text-white font-extrabold text-sm pb-2">Pas encore de compte ?</p>
+                <AppButton type="button" variant="primary" className="!w-50 mx-auto block">
+                    Créer un compte
+                </AppButton>
+            </div>
+        </form>
     );
 }
