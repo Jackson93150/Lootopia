@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -9,11 +10,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode;
+	children: ReactNode;
 }>) {
 	return (
 		<html lang="fr">
-			<body className={"antialiased"}>{children}</body>
+			<body className=" antialiased overflow-hidden">{children}</body>
 		</html>
 	);
 }
