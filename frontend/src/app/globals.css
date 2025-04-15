@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-    --color-sand: #FDFCE3;
-    --color-sand-light: #EFF8FD;
-    --color-caramel: #130909;
-    --color-beige: #F6CB9E;
-    --color-dark-brown: #2B100D;
-    --color-yellow-orange: #FFB635;
+	--color-sand: #fdfce3;
+	--color-sand-light: #eff8fd;
+	--color-caramel: #130909;
+	--color-beige: #f6cb9e;
+	--color-dark-brown: #2b100d;
+	--color-yellow-orange: #ffb635;
 }
 
 body {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
