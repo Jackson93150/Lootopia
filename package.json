@@ -6,6 +6,9 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "npm run lint:frontend && npm run lint:mobile && npm run lint:backend",
+    "build": "",
+    "build:frontend": "npm --workspace frontend run build",
+    "build:backend": "npm --workspace backend run build",
     "lint:frontend": "npm --workspace frontend run lint",
     "lint:mobile": "npm --workspace mobile run lint",
     "lint:backend": "npm --workspace backend run lint",
