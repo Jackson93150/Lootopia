@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
   } from "react-native";
 
-import { styleInput, styleScreen, styleButton } from "../styles";
+import { styleInput, styleScreen, styleButton } from "../../styles/login";
 
 export default function LoginForm() {
     return (
@@ -22,10 +22,10 @@ export default function LoginForm() {
             <View style={styleInput.inputGroup}>
                 <Text style={styleInput.label}>Password</Text>
                 <TextInput
-                placeholder="Password"
-                placeholderTextColor="#888"
-                secureTextEntry
-                style={styleInput.input}
+                    placeholder="Password"
+                    placeholderTextColor="#888"
+                    secureTextEntry
+                    style={styleInput.input}
                 />
                 <Text style={styleScreen.forgot}>Forgot your Password?</Text>
             </View>
