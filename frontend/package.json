@@ -6,9 +6,11 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"format": "npx @biomejs/biome format --write .",
-		"lint": "npx @biomejs/biome lint --write .",
-		"check": "npx @biomejs/biome check --write ."
+		"format": "biome format --write .",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --apply .",
+		"check": "biome check .",
+		"check:fix": "biome check --apply ."
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",

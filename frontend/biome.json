@@ -1,30 +1,64 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
-	"files": {
-		"ignoreUnknown": false,
-		"ignore": [".next/**", "node_modules/**"]
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab"
-	},
-	"organizeImports": {
-		"enabled": true
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double"
-		}
-	}
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignore": ["node_modules/**", ".next/**", "dist/**", "coverage/**", "public/**"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120,
+    "lineEnding": "lf",
+    "bracketSpacing": true,
+    "indentWidth": 2
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "noAutofocus": "off",
+        "useButtonType": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn"
+      },
+      "style": {
+        "noNegationElse": "warn",
+        "useFragmentSyntax": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noConsoleLog": "warn",
+        "noEmptyBlockStatements": "error",
+        "useAwait": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "semicolons": "asNeeded",
+      "quoteStyle": "double",
+      "indentStyle": "space",
+      "lineWidth": 120,
+      "lineEnding": "lf",
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "arrowParentheses": "asNeeded",
+      "indentWidth": 2
+    }
+  }
 }
