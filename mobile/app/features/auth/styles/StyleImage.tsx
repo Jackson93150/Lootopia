@@ -12,10 +12,8 @@ export const styleImage = StyleSheet.create({
     },
     banner: {
       position: "absolute",
-      height: 250,
       width: '113%',
-      top: -105,
-      zIndex: 5,
+      zIndex: 0,
     },
     chest: {
       position: "absolute",

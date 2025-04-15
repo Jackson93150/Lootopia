@@ -21,13 +21,13 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={styleScreen.scrollContainer}>
         <View style={styleScreen.card}>
           <Image
-            source={require("../../../../assets/images/lootopiaLogo.png")}
+            source={require("../../../../assets/images/Logo_lootopia.png")}
             style={styleImage.logo}
             resizeMode="contain"
           />
 
           <Image
-            source={require("../../../../assets/images/Shop-Card-Gems-Title.png")}
+            source={require("../../../../assets/images/Shop-Card-Gems-Complete_2.png")}
             style={styleImage.banner}
             resizeMode="contain"
           />

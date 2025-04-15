@@ -11,8 +11,6 @@ export const styleScreen = StyleSheet.create({
     alignItems: 'center'
   },
   card: {
-    backgroundColor: "#FFB635",
-    borderRadius: 20,
     width: '90%',
     height: '70%',
     display: 'flex',
