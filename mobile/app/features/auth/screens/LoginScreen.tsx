@@ -2,7 +2,6 @@ import {
   Text,
   View,
   ImageBackground,
-  StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,

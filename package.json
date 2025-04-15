@@ -1,0 +1,22 @@
+{
+  "name": "lootopia",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["frontend", "mobile", "backend"],
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "npm run lint:frontend && npm run lint:mobile && npm run lint:backend",
+    "build": "",
+    "build:frontend": "npm --workspace frontend run build",
+    "build:backend": "npm --workspace backend run build",
+    "lint:frontend": "npm --workspace frontend run lint",
+    "lint:mobile": "npm --workspace mobile run lint",
+    "lint:backend": "npm --workspace backend run lint",
+    "lint:check": "npm run lint:frontend && npm run lint:check:frontend && npm run lint:mobile && npm run lint:backend",
+    "lint:check:frontend": "npm --workspace frontend run check",
+    "lint:check:mobile": "npm --workspace mobile run lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
