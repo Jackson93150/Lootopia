@@ -1,0 +1,22 @@
+services:
+  backend:
+    platform: linux/amd64
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    platform: linux/amd64
+    build:
+      context: ./frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - TAILWIND_DISABLE_OXIDE=true
+      - NEXT_DISABLE_LIGHTNINGCSS=true
