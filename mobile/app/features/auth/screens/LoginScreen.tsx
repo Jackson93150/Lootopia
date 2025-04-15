@@ -7,9 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 
-import { styleScreen, styleImage, styleButton } from "../styles";
+import { styleScreen, styleImage, styleButton } from "../styles/login";
 
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/forms/LoginForm";
 
 export default function LoginScreen() {
   return (
