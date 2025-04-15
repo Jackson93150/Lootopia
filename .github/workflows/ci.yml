@@ -1,0 +1,40 @@
+name: Lootopia CI
+
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  docker-ci:
+    name: 🐳 Docker Lint/Build & Vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐳 Docker Compose Build
+        run: docker compose build
+
+      - name: 🔍 Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lootopia_backend
+
+      - name: 🔍 Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lootopia_frontend
+
+  
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

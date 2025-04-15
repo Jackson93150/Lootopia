@@ -3,6 +3,7 @@ services:
     platform: linux/amd64
     build:
       context: ./backend
+    image: lootopia_backend
     ports:
       - "3000:3000"
     volumes:
@@ -14,6 +15,7 @@ services:
     platform: linux/amd64
     build:
       context: ./frontend
+    image: lootopia_frontend
     ports:
       - "3001:3000"
     environment:
