@@ -1,11 +1,11 @@
-import { Type } from 'class-transformer';
-import { IsBoolean } from 'class-validator';
+import { Type } from "class-transformer"
+import { IsBoolean } from "class-validator"
 
 export class AuthenticatedUser {
   @Type(() => String)
-  id!: string;
+  id!: string
 
   @Type(() => Boolean)
   @IsBoolean()
-  isAdmin!: boolean;
+  isAdmin!: boolean
 }
