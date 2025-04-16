@@ -8,12 +8,6 @@ import {
 } from "react-native";
 
 import { useState } from "react";
-import {
-	styleButton,
-	styleInput,
-	styleScreen,
-	styleSwitch,
-} from "../../styles/register";
 
 export default function RegisterForm() {
 	const [stepView, setStepView] = useState<"form" | "cgu">("form");
@@ -50,37 +44,37 @@ export default function RegisterForm() {
 		<>
 			{stepView === "form" && (
 				<>
-					<Text style={styleScreen.titleRegister}>Inscription</Text>
+					<Text className="text-white font-bold text-[25px] shadow-xl">Inscription</Text>
 
-					<View style={styleInput.inputGroup}>
-						<Text style={styleInput.label}>Pseudo</Text>
+					<View className="w-full mb-[15px]">
+						<Text className="mb-[5px] font-semibold text-[#222]">Pseudo</Text>
 						<TextInput
 							placeholder="Pseudo"
 							placeholderTextColor="#888"
-							style={styleInput.input}
+							className="bg-[#F6F6F6] rounded-[10px] py-[10px] px-[15px] border-[5px] border-[#F6CB9E] shadow-xl"
 							value={pseudo}
 							onChangeText={setPseudo}
 						/>
 					</View>
 
-					<View style={styleInput.inputGroup}>
-						<Text style={styleInput.label}>Email</Text>
+					<View className="w-full mb-[15px]">
+						<Text className="mb-[5px] font-semibold text-[#222]">Email</Text>
 						<TextInput
 							placeholder="Email"
 							placeholderTextColor="#888"
-							style={styleInput.input}
+							className="bg-[#F6F6F6] rounded-[10px] py-[10px] px-[15px] border-[5px] border-[#F6CB9E] shadow-xl"
 							value={email}
 							onChangeText={setEmail}
 						/>
 					</View>
 
-					<View style={styleInput.inputGroup}>
-						<Text style={styleInput.label}>Password</Text>
+					<View className="w-full mb-[15px]">
+						<Text className="mb-[5px] font-semibold text-[#222]">Password</Text>
 						<TextInput
-							placeholder="Password"
+							placeholder="Passwezaezaord"
 							placeholderTextColor="#888"
 							secureTextEntry
-							style={styleInput.input}
+							className="bg-[#F6F6F6] rounded-[10px] py-[10px] px-[15px] border-[5px] border-[#F6CB9E] shadow-xl"
 							value={password}
 							onChangeText={setPassword}
 						/>
@@ -88,13 +82,13 @@ export default function RegisterForm() {
 							placeholder="Confirm you'r password"
 							placeholderTextColor="#888"
 							secureTextEntry
-							style={styleInput.input}
+							className="bg-[#F6F6F6] rounded-[10px] py-[10px] px-[15px] border-[5px] border-[#F6CB9E] shadow-xl"
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
 						/>
 					</View>
 
-					<View style={styleSwitch.switch}>
+					<View className="flex-row items-center w-[110%] justify-start gap-[5px]" style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}>
 						<Switch
 							trackColor={{ false: "#767577", true: "#f77c17" }}
 							thumbColor={consentCookie ? "#fff" : "#fff"}
@@ -102,18 +96,17 @@ export default function RegisterForm() {
 							onValueChange={toggleSwitchCGU}
 							value={acceptCGU}
 						/>
+						{/* dsqdqs */}
 						<Text
 							onPress={() => setStepView("cgu")}
-							style={[
-								styleSwitch.switchLabel,
-								{ textDecorationLine: "underline" },
-							]}
+							style={[{ textDecorationLine: "underline" }]}
+							className="text-[14px] text-[#222] font-semibold"
 						>
 							Voir les conditions d'utilisation
 						</Text>
 					</View>
 
-					<View style={styleSwitch.switch}>
+					<View className="flex-row items-center w-[110%] justify-start gap-[5px]" style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}>
 						<Switch
 							trackColor={{ false: "#767577", true: "#f77c17" }}
 							thumbColor={consentCookie ? "#fff" : "#fff"}
@@ -121,25 +114,25 @@ export default function RegisterForm() {
 							onValueChange={toggleSwitchCookie}
 							value={consentCookie}
 						/>
-						<Text style={styleSwitch.switchLabel}>Accepter les cookies</Text>
+						<Text className="text-[14px] text-[#222] font-semibold">Accepter les cookies</Text>
 					</View>
 
 					{/* A changer le onPress */}
 					<TouchableOpacity
-						style={styleButton.stepButton}
+						className="bg-white py-[8px] px-[14px] rounded-full mt-[10px] w-[60%] border-[5px] border-[#F6CB9E] shadow-lg"
 						onPress={handleSubmit}
 					>
-						<Text style={styleButton.stepButtonText}>Continue</Text>
+						<Text className="font-bold text-center">Continue</Text>
 					</TouchableOpacity>
 				</>
 			)}
 
 			{stepView === "cgu" && (
 				<>
-					<Text style={styleScreen.titleRegister}>
+					<Text className="text-white font-bold text-[25px] shadow-xl">
 						Conditions d'utilisations
 					</Text>
-					<Text style={styleScreen.textConditions}>
+					<Text className="py-[30px]">
 						The king, seeing how much happier his subjects were, realized the
 						error of his ways and repealed the joke tax.The king, seeing how
 						much happier his subjects were, realized the error of his ways and
@@ -152,21 +145,23 @@ export default function RegisterForm() {
 					</Text>
 
 					<TouchableOpacity
-						style={styleButton.stepButton}
+							className="bg-white py-[8px] px-[14px] rounded-full mt-[10px] w-[60%] border-[5px] border-[#F6CB9E] shadow-lg"
+
 						onPress={() => {
 							setStepView("form");
 							setAcceptCGU(true);
 						}}
 					>
-						<Text style={styleButton.stepButtonText}>Accepter</Text>
+						<Text className="font-bold text-center">Accepter</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						style={styleButton.stepButton}
+							className="bg-white py-[8px] px-[14px] rounded-full mt-[10px] w-[60%] border-[5px] border-[#F6CB9E] shadow-lg"
+
 						onPress={() => {
 							setStepView("form");
 						}}
 					>
-						<Text style={styleButton.stepButtonText}>
+						<Text className="font-bold text-center">
 							Retour à l'inscription
 						</Text>
 					</TouchableOpacity>
