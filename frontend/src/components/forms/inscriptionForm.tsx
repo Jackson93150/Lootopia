@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import ToggleSwitch from "@/components/ui/ToggleSwitch";
-import TermsModal from "@/components/forms/TermsModal";
+import TermsModal from "@/components/ui/TermsModal";
 
 
 const formSchema = z
@@ -120,6 +120,8 @@ export default function InscriptionForm() {
             />
             {showTerms && (
                 <TermsModal
+                    title="Conditions d'utilisation"
+                    description="En acceptant, vous confirmez avoir lu et accepté les conditions d’utilisation."
                     onAccept={() => {
                         setValue("consentTerms", true);
                         setShowTerms(false);
