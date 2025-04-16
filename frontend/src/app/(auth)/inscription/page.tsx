@@ -1,5 +1,5 @@
-import InscriptionForm from "@/components/forms/inscriptionForm";
+import InscriptionForm from "@/components/forms/inscriptionForm"
 
 export default function InscriptionPage() {
-    return <InscriptionForm />;
+  return <InscriptionForm />
 }
