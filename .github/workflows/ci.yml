@@ -20,8 +20,15 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🐳 Docker Compose Build
-        run: docker compose build
+      - name: 🐳 Docker Compose Build (with Firebase secrets)
+        run: |
+          docker compose build \
+            --build-arg NEXT_PUBLIC_FIREBASE_API_KEY="${NEXT_PUBLIC_FIREBASE_API_KEY}" \
+            --build-arg NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}" \
+            --build-arg NEXT_PUBLIC_FIREBASE_PROJECT_ID="${NEXT_PUBLIC_FIREBASE_PROJECT_ID}" \
+            --build-arg NEXT_PUBLIC_FIREBASE_MESSAGE="${NEXT_PUBLIC_FIREBASE_MESSAGE}" \
+            --build-arg NEXT_PUBLIC_FIREBASE_APP_ID="${NEXT_PUBLIC_FIREBASE_APP_ID}"
+
 
       - name: 🔍 Scan backend image with Trivy
         uses: aquasecurity/trivy-action@master
@@ -33,14 +40,13 @@ jobs:
         with:
           image-ref: lootopia_frontend
 
-  
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
