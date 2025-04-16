@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import type { DocumentReference, Transaction } from "firebase-admin/firestore"
 
-import type { AuthService } from "../auth/auth.service"
+import { AuthService } from "../auth/auth.service"
 import type { AuthenticatedUser } from "../auth/dto/auth.dto"
-import type { FirebaseService } from "../firebase/firebase.service"
+import { FirebaseService } from "../firebase/firebase.service"
 import type { UserDto } from "./dto/user"
 import type { UserDocument } from "./types/user"
 
@@ -41,6 +41,16 @@ export class UserService {
     return {
       user: existingUserDocument,
     }
+  }
+
+  public async getById(id: string) {
+    const user = await this.findById(id)
+
+    if (!user) {
+      throw new NotFoundException(`Utilisateur avec l'id ${id} non trouvé`)
+    }
+
+    return user
   }
 
   public getRef(id: string) {
