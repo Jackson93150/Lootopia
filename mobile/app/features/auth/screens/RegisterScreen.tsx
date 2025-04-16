@@ -1,7 +1,5 @@
 import { Image, ImageBackground, ScrollView, Text, View } from "react-native";
 
-import { styleImage, styleScreen } from "../styles/register";
-
 import RegisterForm from "../components/forms/RegisterForm";
 
 export default function RegisterScreen() {

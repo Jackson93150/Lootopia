@@ -30,16 +30,13 @@ export default function LoginScreen() {
 					/>
 
 					{/* Google */}
-					<TouchableOpacity className="bg-white py-[10px] px-[20px] rounded-full w-[80%] mb-[10px] border-[5px] border-[#F6CB9E] shadow-lg" >
+					<TouchableOpacity className="bg-white py-[10px] px-[20px] rounded-full w-[80%] mb-[10px] border-[5px] border-[#F6CB9E] shadow-lg">
 						<Text className="font-bold text-center">Sign in with Google</Text>
 					</TouchableOpacity>
 
-					{/* Apple */}
-					<TouchableOpacity className="bg-white py-[10px] px-[20px] rounded-full w-[80%] mb-[10px] border-[5px] border-[#F6CB9E] shadow-lg" >
-						<Text className="font-bold text-center">Sign in with Apple</Text>
-					</TouchableOpacity>
-
-					<Text className="my-[10px] text-white font-bold text-[20px] shadow-lg">Or</Text>
+					<Text className="my-[10px] text-white font-bold text-[20px] shadow-lg">
+						Or
+					</Text>
 
 					<LoginForm />
 				</View>
