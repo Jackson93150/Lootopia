@@ -4,16 +4,17 @@
   "private": true,
   "workspaces": ["frontend", "mobile", "backend"],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "test $CI != true && husky install || exit 0",
     "lint": "npm run lint:frontend && npm run lint:mobile && npm run lint:backend",
-    "build": "",
+    "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "npm --workspace frontend run build",
     "build:backend": "npm --workspace backend run build",
     "lint:frontend": "npm --workspace frontend run lint",
     "lint:mobile": "npm --workspace mobile run lint",
     "lint:backend": "npm --workspace backend run lint",
-    "lint:check": "npm run lint:frontend && npm run lint:check:frontend && npm run lint:mobile && npm run lint:backend",
+    "lint:check": "npm run lint:frontend && npm run lint:check:frontend && npm run lint:mobile && npm run lint:backend && npm run lint:check:backend",
     "lint:check:frontend": "npm --workspace frontend run check",
+    "lint:check:backend": "npm --workspace backend run check",
     "lint:check:mobile": "npm --workspace mobile run lint"
   },
   "devDependencies": {
