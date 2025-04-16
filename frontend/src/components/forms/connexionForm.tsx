@@ -1,5 +1,6 @@
 "use client"
 
+import { login, me } from "@/service/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
@@ -28,8 +29,14 @@ export default function ConnexionForm() {
     },
   })
 
-  const onSubmit = (_values: FormValues) => {
-    return
+  const onSubmit = async (values: FormValues) => {
+    try {
+      await login(values.email, values.password)
+      const m = await me()
+      console.info(m)
+    } catch (error) {
+      console.error("Erreur de connexion Firebase:", error)
+    }
   }
 
   return (
