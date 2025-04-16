@@ -6,6 +6,8 @@ type ToggleSwitchProps = {
     error?: string;
     checked: boolean;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    labelClassName?: string;
+    onLabelClick?: () => void;
 };
 
 export default function ToggleSwitch({
@@ -14,6 +16,8 @@ export default function ToggleSwitch({
                                          checked,
                                          onChange,
                                          error,
+                                         labelClassName,
+                                         onLabelClick,
                                      }: ToggleSwitchProps) {
     return (
         <div className="flex flex-col gap-1">
@@ -38,7 +42,7 @@ export default function ToggleSwitch({
                         />
                     </div>
                 </label>
-                <span className="text-sm text-dark-brown">{label}</span>
+                <span className={`text-sm text-dark-brown ${labelClassName ?? ""} `} onClick={onLabelClick}>{label}</span>
             </div>
             {error && <p className="text-xs text-red-600">{error}</p>}
         </div>

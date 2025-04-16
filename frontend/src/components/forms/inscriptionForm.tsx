@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import AppInput from "@/components/ui/AppInput";
 import AppButton from "@/components/ui/AppButton";
 import ToggleSwitch from "@/components/ui/ToggleSwitch";
+import TermsModal from "@/components/forms/TermsModal";
 
 
 const formSchema = z
@@ -53,9 +55,10 @@ export default function InscriptionForm() {
         console.log("Inscription :", values);
     };
 
+    const [showTerms, setShowTerms] = useState(false);
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-sm mx-auto space-y-4">
-            {/* Email */}
             <div>
                 <label htmlFor="email" className="block text-sm font-medium text-dark-brown mb-1">
                     Email
@@ -69,7 +72,6 @@ export default function InscriptionForm() {
                 {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
             </div>
 
-            {/* Pseudo */}
             <div>
                 <label htmlFor="username" className="block text-sm font-medium text-dark-brown mb-1">
                     Pseudo
@@ -83,7 +85,6 @@ export default function InscriptionForm() {
                 {errors.username && <p className="text-xs text-red-600 mt-1">{errors.username.message}</p>}
             </div>
 
-            {/* Mot de passe */}
             <div>
                 <label htmlFor="password" className="block text-sm font-medium text-dark-brown mb-1">
                     Mot de passe
@@ -114,7 +115,21 @@ export default function InscriptionForm() {
                 checked={watch("consentTerms")}
                 onChange={(e) => setValue("consentTerms", e.target.checked)}
                 error={errors.consentTerms?.message}
+                labelClassName="underline cursor-pointer"
+                onLabelClick={() => setShowTerms(true)}
             />
+            {showTerms && (
+                <TermsModal
+                    onAccept={() => {
+                        setValue("consentTerms", true);
+                        setShowTerms(false);
+                    }}
+                    onDecline={() => {
+                        setValue("consentTerms", false);
+                        setShowTerms(false);
+                    }}
+                />
+            )}
 
             <ToggleSwitch
                 id="consentCookies"
@@ -122,6 +137,7 @@ export default function InscriptionForm() {
                 checked={watch("consentCookies")}
                 onChange={(e) => setValue("consentCookies", e.target.checked)}
                 error={errors.consentCookies?.message}
+                onLabelClick={() => setShowTerms(true)}
             />
 
             <AppButton type="submit" variant="primary" className="!w-40 mx-auto block">
