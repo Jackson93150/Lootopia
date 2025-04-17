@@ -1,15 +1,8 @@
-import {
-	Image,
-	ImageBackground,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { Image, ImageBackground, ScrollView, Text, View } from "react-native";
 
-import LoginForm from "../components/forms/LoginForm";
+import RegisterForm from "../components/forms/RegisterForm";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
 	return (
 		<ImageBackground
 			source={require("../../../../assets/images/backgroundAuth.png")}
@@ -19,7 +12,7 @@ export default function LoginScreen() {
 				<View className="w-[90%] h-[70%] flex justify-center items-center p-5">
 					<Image
 						source={require("../../../../assets/images/Logo_lootopia.png")}
-						className="absolute w-[160px] h-[160px] top-[-110px] z-10"
+						className="absolute size-[160px] top-[-110px] z-10"
 						resizeMode="contain"
 					/>
 
@@ -29,21 +22,12 @@ export default function LoginScreen() {
 						resizeMode="contain"
 					/>
 
-					{/* Google */}
-					<TouchableOpacity className="bg-white py-[10px] px-[20px] rounded-full w-[80%] mb-[10px] border-[5px] border-[#F6CB9E] shadow-lg">
-						<Text className="font-bold text-center">Sign in with Google</Text>
-					</TouchableOpacity>
-
-					<Text className="my-[10px] text-white font-bold text-[20px] shadow-lg">
-						Or
-					</Text>
-
-					<LoginForm />
+					<RegisterForm />
 				</View>
 
 				<Image
 					source={require("../../../../assets/images/coffre3.png")}
-					className="absolute w-[200px] h-[200px] bottom-[10px] right-[10px] z-[5]"
+					className="absolute size-[190px] bottom-[10px] right-[5px] z-5"
 					resizeMode="contain"
 				/>
 			</ScrollView>
