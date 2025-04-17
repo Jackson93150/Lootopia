@@ -1,6 +1,6 @@
 "use client"
 
-import { login, me } from "@/service/auth"
+import { login, loginGoogle, me } from "@/service/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
@@ -8,6 +8,7 @@ import { z } from "zod"
 
 import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
+import Image from "next/image"
 
 const formSchema = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide."),
@@ -41,12 +42,22 @@ export default function ConnexionForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-sm mx-auto space-y-4">
-      <div className="space-y-2">
-        <AppButton type="button" variant="primary">
+      <div className="flex w-full justify-center">
+        <AppButton
+          type="button"
+          variant="primary"
+          className="!w-50 mx-auto block"
+          onClick={loginGoogle}
+          icon={
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+              alt="google"
+              width={15}
+              height={15}
+            />
+          }
+        >
           Continuer avec Google
-        </AppButton>
-        <AppButton type="button" variant="social">
-          Continuer avec Facebook
         </AppButton>
       </div>
       <div className="flex justify-center">
@@ -75,12 +86,12 @@ export default function ConnexionForm() {
         </Link>
       </div>
 
-      <AppButton type="submit" variant="primary" className="!w-50 mx-auto block">
-        Continuer
-      </AppButton>
+      <div className="flex flex-col w-full gap-2 items-center">
+        <AppButton type="submit" variant="primary" className="!w-50 mx-auto block">
+          Continuer
+        </AppButton>
 
-      <div className="mt-2 text-center">
-        <AppButton type="button" variant="primary" className="!w-50 mx-auto block opacity-85 hover:opacity-100">
+        <AppButton type="button" variant="primary" className="!w-50 mx-auto block">
           Créer un compte
         </AppButton>
       </div>

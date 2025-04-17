@@ -11,10 +11,6 @@ export class FirebaseService implements OnModuleInit {
   public auth: Auth
 
   public usersCollectionRef
-  public workflowsCollectionRef
-  public entitiesCollectionRef
-  public tagsCollectionRef
-  public toolsCollectionRef
 
   onModuleInit() {
     const serviceAccount: string | ServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)

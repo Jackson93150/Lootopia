@@ -37,7 +37,8 @@
       },
       "style": {
         "noNegationElse": "warn",
-        "useFragmentSyntax": "off"
+        "useFragmentSyntax": "off",
+        "useImportType": "off"
       },
       "suspicious": {
         "noArrayIndexKey": "off",

@@ -2,7 +2,7 @@ import { type CanActivate, type ExecutionContext, Injectable } from "@nestjs/com
 import { plainToInstance } from "class-transformer"
 import type { Request } from "express"
 
-import type { AuthService } from "../auth.service"
+import { AuthService } from "../auth.service"
 import { AuthenticatedUser } from "../dto/auth.dto"
 
 @Injectable()
@@ -16,12 +16,10 @@ export class AuthGuard implements CanActivate {
     const authHeader = request.headers.authorization
 
     const jwt = cookieToken ?? (authHeader ? this.authService.getJwtToken(authHeader) : null)
-
     if (!jwt) return false
 
     try {
       const decodedJwt = await this.authService.verifyIdToken(jwt)
-
       request.user = plainToInstance(AuthenticatedUser, {
         id: decodedJwt.sub,
       })
