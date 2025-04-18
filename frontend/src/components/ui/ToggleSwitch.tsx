@@ -36,6 +36,7 @@ export default function ToggleSwitch({
             />
           </div>
         </label>
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <span className={`text-sm text-dark-brown ${labelClassName ?? ""} `} onClick={onLabelClick}>
           {label}
         </span>

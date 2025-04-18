@@ -1,14 +1,16 @@
 "use client"
 
-import { login, loginGoogle, me } from "@/service/auth"
+import { login, me } from "@/service/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
 import Image from "next/image"
+import { ToastContainer, toast } from "react-toastify"
 
 const formSchema = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide."),
@@ -18,6 +20,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 export default function ConnexionForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -35,8 +38,18 @@ export default function ConnexionForm() {
       await login(values.email, values.password)
       const m = await me()
       console.info(m)
-    } catch (error) {
-      console.error("Erreur de connexion Firebase:", error)
+      router.push("/")
+    } catch (_error) {
+      toast.error("Email ou mot de passe invalide", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
     }
   }
 
@@ -47,7 +60,6 @@ export default function ConnexionForm() {
           type="button"
           variant="primary"
           className="!w-50 mx-auto block"
-          onClick={loginGoogle}
           icon={
             <Image
               src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
@@ -91,10 +103,16 @@ export default function ConnexionForm() {
           Continuer
         </AppButton>
 
-        <AppButton type="button" variant="primary" className="!w-50 mx-auto block">
+        <AppButton
+          type="button"
+          variant="primary"
+          className="!w-50 mx-auto block"
+          onClick={() => router.push("/inscription")}
+        >
           Créer un compte
         </AppButton>
       </div>
+      <ToastContainer position="bottom-right" theme="colored" limit={5} stacked />
     </form>
   )
 }
