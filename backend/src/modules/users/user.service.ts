@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common"
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common"
 import type { DocumentReference, Transaction } from "firebase-admin/firestore"
 
 import { AuthService } from "../auth/auth.service"
@@ -15,17 +15,42 @@ export class UserService {
   ) {}
 
   async register(user: UserDto) {
-    const userRecord = await this.firebaseService.auth.createUser({
-      email: user.email,
-      password: user.password,
-    })
+    try {
+      if (user.uid) {
+        await this.firebaseService.firestore.collection("users").doc(user.uid).set({
+          email: user.email,
+          username: user.username,
+        })
 
-    await this.firebaseService.firestore.collection("users").doc(userRecord.uid).set({
-      email: user.email,
-      username: user.username,
-    })
+        return user
+      }
+    } catch (error) {
+      if (error.code === "auth/email-already-exists") {
+        throw new ConflictException("Un compte avec cette adresse email existe déjà.")
+      }
+      throw error
+    }
+  }
 
-    return userRecord
+  async precheck(user: UserDto) {
+    const existingUsernameQuery = await this.firebaseService.firestore
+      .collection("users")
+      .where("username", "==", user.username)
+      .limit(1)
+      .get()
+
+    if (!existingUsernameQuery.empty) {
+      throw new ConflictException("Ce nom d'utilisateur est déjà pris.")
+    }
+
+    try {
+      await this.firebaseService.auth.getUserByEmail(user.email)
+      throw new ConflictException("Un compte avec cette adresse email existe déjà.")
+    } catch (err) {
+      if (err.code !== "auth/user-not-found") {
+        throw err
+      }
+    }
   }
 
   public async me(authUser: AuthenticatedUser) {

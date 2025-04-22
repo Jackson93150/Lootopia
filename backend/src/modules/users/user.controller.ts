@@ -26,6 +26,11 @@ export class UserController {
     private readonly authService: AuthService,
   ) {}
 
+  @Post("precheck")
+  async precheck(@Body() userDto: UserDto) {
+    return await this.userService.precheck(userDto)
+  }
+
   @Post("register")
   async register(@Body() userDto: UserDto) {
     return await this.userService.register(userDto)

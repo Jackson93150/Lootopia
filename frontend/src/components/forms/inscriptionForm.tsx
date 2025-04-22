@@ -1,14 +1,16 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
 import TermsModal from "@/components/ui/TermsModal"
 import ToggleSwitch from "@/components/ui/ToggleSwitch"
+import { registerUser } from "@/service/auth"
+import { zodResolver } from "@hookform/resolvers/zod"
+import Image from "next/image"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { ToastContainer, toast } from "react-toastify"
+import { z } from "zod"
 
 const formSchema = z
   .object({
@@ -47,14 +49,58 @@ export default function InscriptionForm() {
     },
   })
 
-  const onSubmit = (values: FormValues) => {
-    console.log("Inscription :", values)
+  const onSubmit = async (values: FormValues) => {
+    try {
+      const { email, password, username } = values
+
+      await registerUser({ email, password, username })
+
+      toast.success("Inscription réussie", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    } catch (error) {
+      const err = error as Error
+      toast.error(err.message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    }
   }
 
   const [showTerms, setShowTerms] = useState(false)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full max-w-sm mx-auto space-y-4">
+      <div className="flex w-full justify-center">
+        <AppButton
+          type="button"
+          variant="primary"
+          className="!w-50 mx-auto block"
+          icon={
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+              alt="google"
+              width={15}
+              height={15}
+            />
+          }
+        >
+          Créer avec Google
+        </AppButton>
+      </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-dark-brown mb-1">
           Email
@@ -120,10 +166,12 @@ export default function InscriptionForm() {
         error={errors.consentCookies?.message}
         onLabelClick={() => setShowTerms(true)}
       />
-
-      <AppButton type="submit" variant="primary" className="!w-40 mx-auto block">
-        S’inscrire
-      </AppButton>
+      <div className="flex w-full justify-center">
+        <AppButton type="submit" variant="primary" className="!w-40 mx-auto block">
+          S’inscrire
+        </AppButton>
+      </div>
+      <ToastContainer position="bottom-right" theme="colored" limit={5} stacked />
     </form>
   )
 }

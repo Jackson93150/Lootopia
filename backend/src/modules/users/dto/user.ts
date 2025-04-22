@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsEmail, IsNotEmpty, IsString } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class UserDto {
   @IsNotEmpty()
@@ -16,4 +16,9 @@ export class UserDto {
   @IsString()
   @Type(() => String)
   username!: string
+
+  @IsOptional()
+  @IsString()
+  @Type(() => String)
+  uid?: string
 }
