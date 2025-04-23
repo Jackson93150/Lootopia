@@ -1,15 +1,27 @@
 services:
-  backend:
+  gateway-service:
     platform: linux/amd64
     build:
-      context: ./backend
-    image: lootopia_backend
+      context: ./services/gateway
+    image: lootopia_gateway_service
     ports:
       - "3000:3000"
     volumes:
-      - ./backend:/app
+      - ./services/gateway:/app
     env_file:
-      - ./backend/.env
+      - ./services/gateway/.env
+
+  user-service:
+    platform: linux/amd64
+    build:
+      context: ./services/user
+    image: lootopia_user_service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/user:/app
+    env_file:
+      - ./services/user/.env
 
   frontend:
     platform: linux/amd64
