@@ -33,7 +33,12 @@ jobs:
       - name: 🔍 Scan backend image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: lootopia_backend
+          image-ref: lootopia_gateway_service
+
+      - name: 🔍 Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lootopia_user_service
 
       - name: 🔍 Scan frontend image with Trivy
         uses: aquasecurity/trivy-action@master
