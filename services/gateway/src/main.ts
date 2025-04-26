@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory } from "@nestjs/core"
 import * as cookieParser from "cookie-parser"
-import { GatewayModule } from './app.module';
+import { GatewayModule } from "./app.module"
 
 async function bootstrap() {
-  const app = await NestFactory.create(GatewayModule);
+  const app = await NestFactory.create(GatewayModule)
   app.use(cookieParser())
   app.enableCors({
     origin: process.env.FRONTEND_URL,
@@ -12,4 +12,4 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT ?? 3000)
 }
-bootstrap();
+bootstrap()

@@ -1,6 +1,7 @@
 "use client"
 
-import { login, me } from "@/service/auth"
+import { login } from "@/service/auth"
+import { me } from "@/service/user"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -11,13 +12,9 @@ import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
 import Image from "next/image"
 import { ToastContainer, toast } from "react-toastify"
+import { schemaConnexion } from "@/lib/zod/schemas"
 
-const formSchema = z.object({
-  email: z.string().email("Veuillez entrer une adresse email valide."),
-  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
-})
-
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof schemaConnexion>
 
 export default function ConnexionForm() {
   const router = useRouter()
@@ -26,7 +23,7 @@ export default function ConnexionForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schemaConnexion),
     defaultValues: {
       email: "",
       password: "",

@@ -1,0 +1,85 @@
+import { ConflictException, Injectable, NotFoundException, Response } from "@nestjs/common"
+import type { DocumentReference, Transaction } from "firebase-admin/firestore"
+
+import { FirebaseService } from "../../firebase/firebase.service"
+import type { AuthenticatedUserDto } from "./dto/auth.dto"
+import type { UserDto } from "./dto/user.dto"
+
+@Injectable()
+export class UserService {
+  constructor(private readonly firebaseService: FirebaseService) {}
+
+  async precheck(user: UserDto) {
+    const existingUsernameQuery = await this.firebaseService.firestore
+      .collection("users")
+      .where("username", "==", user.username)
+      .limit(1)
+      .get()
+
+    if (!existingUsernameQuery.empty) {
+      throw new ConflictException("Ce nom d'utilisateur est déjà pris.")
+    }
+
+    try {
+      await this.firebaseService.auth.getUserByEmail(user.email)
+
+      throw new ConflictException("Un compte avec cette adresse email existe déjà.")
+    } catch (err) {
+      if (err.code == "auth/user-not-found") {
+        return true;
+      }
+    }
+  }
+
+  public async me(authUser: AuthenticatedUserDto) {
+    const { id } = authUser
+    const auth = await this.firebaseService.auth.getUser(id)
+
+    if (auth.email === undefined) {
+      throw new Error("Email is missing from Firebase Auth.")
+    }
+
+    const userRef = await this.getRef(id)
+
+    const existingUserDocument = await this.findByRef(userRef)
+    return {
+      user: existingUserDocument,
+    }
+  }
+
+  public async getById(id: string) {
+    const user = await this.findById(id)
+
+    if (!user) {
+      throw new NotFoundException(`Utilisateur avec l'id ${id} non trouvé`)
+    }
+
+    return user
+  }
+
+  private async findById(id: string, tx?: Transaction) {
+    const docRef = await this.getRef(id)
+
+    const docSnapshot = await (tx ? tx.get(docRef) : docRef.get())
+    if (!docSnapshot.exists) return null
+
+    const userDoc = docSnapshot.data()
+    if (userDoc === undefined) return null
+
+    return userDoc
+  }
+
+  private async findByRef(ref: DocumentReference<UserDto>, tx?: Transaction) {
+    const docSnapshot = await (tx ? tx.get(ref) : ref.get())
+    if (!docSnapshot.exists) return null
+
+    const userDoc = docSnapshot.data()
+    if (userDoc === undefined) return null
+
+    return userDoc
+  }
+
+  private async getRef(id: string) {
+    return await this.firebaseService.usersCollectionRef.doc(id)
+  }
+}

@@ -11,24 +11,9 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify"
 import { z } from "zod"
+import { schemaRegister } from "@/lib/zod/schemas"
 
-const formSchema = z
-  .object({
-    email: z.string().email("Veuillez entrer une adresse email valide."),
-    username: z.string().min(2, "Le pseudo doit contenir au moins 2 caractères."),
-    password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
-    confirmPassword: z.string(),
-    consentCookies: z.boolean(),
-    consentTerms: z.boolean().refine(val => val, {
-      message: "Vous devez accepter les conditions d'utilisation.",
-    }),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Les mots de passe ne correspondent pas.",
-  })
-
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof schemaRegister>
 
 export default function InscriptionForm() {
   const {
@@ -38,7 +23,7 @@ export default function InscriptionForm() {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schemaRegister),
     defaultValues: {
       email: "",
       username: "",
