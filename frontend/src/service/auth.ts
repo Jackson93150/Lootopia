@@ -32,7 +32,7 @@ export async function registerUser(user: RegisterProps) {
     await sendEmailVerification(newUser)
 
     await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/register`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
       {
         email: user.email,
         username: user.username,
@@ -60,7 +60,7 @@ export async function login(email: string, password: string) {
 
   const idToken = await userCredential.user.getIdToken()
 
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`, {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
@@ -88,20 +88,4 @@ export async function loginGoogle() {
       console.error(error)
       console.error(GoogleAuthProvider.credentialFromError(error))
     })
-}
-
-export async function me() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`, {
-    withCredentials: true,
-  })
-
-  return res
-}
-
-export async function getUserById(id: string) {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/user/${id}`, {
-    withCredentials: true,
-  })
-
-  return res.data
 }
