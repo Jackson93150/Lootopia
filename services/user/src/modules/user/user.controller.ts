@@ -32,4 +32,11 @@ export class UserController {
     const result = await this.userService.precheck(userDto)
     return result
   }
+
+  @MessagePattern({ cmd: "add-crown-user-service" })
+  async addCrown(@Body() userIdAndAmountCrown) {
+    const result = await this.userService.addCrown(userIdAndAmountCrown.userId, userIdAndAmountCrown.amountOfCrown)
+
+    return result
+  }
 }

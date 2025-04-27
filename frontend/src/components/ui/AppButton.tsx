@@ -12,7 +12,7 @@ type ButtonProps = {
 }
 
 const baseClasses =
-  "w-full flex items-center justify-center gap-2 font-semibold cursor-pointer rounded-xl h-10 z-10 transition-colors text-sm"
+  "w-full flex items-center justify-center gap-2 font-semibold cursor-pointer rounded-xl h-10 z-10 text-sm"
 
 const variants = {
   primary: "bg-sand-light !text-black border-4 border-beige",

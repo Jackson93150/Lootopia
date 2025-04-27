@@ -1,18 +1,18 @@
 import { Type } from "class-transformer"
-import { IsBoolean, IsInt, IsOptional, IsString, Min } from "class-validator"
+import { IsBoolean, IsInt, IsOptional, Min } from "class-validator"
 
-import { createConverter } from "../../firebase/firestore.convertor"
+import { createConverter } from "../../../firebase/firestore.convertor"
 
 export class CrownPackageDocument {
   @IsInt()
   @Min(1)
   @Type(() => Number)
-  montant_couronnes!: number
+  crown_amount!: number
 
   @IsInt()
   @Min(0)
   @Type(() => Number)
-  prix_euro!: number
+  price_euro!: number
 
   @IsBoolean()
   @Type(() => Boolean)

@@ -47,6 +47,20 @@ export class UserService {
     }
   }
 
+  public async addCrown(userId: string, amountCrown) {
+    console.log(userId, amountCrown)
+    const user = await this.getById(userId)
+
+    const newAmountCrown = user.solde + amountCrown;
+
+    await this.firebaseService.firestore
+      .collection("users")
+      .doc(userId)
+      .update({
+        solde: newAmountCrown,
+      });
+  }
+
   public async getById(id: string) {
     const user = await this.findById(id)
 

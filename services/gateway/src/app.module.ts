@@ -5,6 +5,8 @@ import { AuthController } from "./auth/auth.controller"
 import { AuthService } from "./auth/auth.service"
 import { UserController } from "./user/user.controller"
 import { UserService } from "./user/user.service"
+import { StripeController } from "./stripe/stripe.controller"
+import { StripeService } from "./stripe/stripe.service"
 
 @Module({
   imports: [
@@ -25,8 +27,15 @@ import { UserService } from "./user/user.service"
         options: { port: 3002 },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: "STRIPE_SERVICE",
+        transport: Transport.TCP,
+        options: { port: 3003 },
+      },
+    ]),
   ],
-  controllers: [UserController, AuthController],
-  providers: [UserService, AuthService],
+  controllers: [UserController, AuthController, StripeController],
+  providers: [UserService, AuthService, StripeService],
 })
 export class GatewayModule {}

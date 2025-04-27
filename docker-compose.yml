@@ -23,6 +23,30 @@ services:
     env_file:
       - ./services/user/.env
 
+  auth-service:
+    platform: linux/amd64
+    build:
+      context: ./services/auth
+    image: lootopia_auth_service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/auth:/app
+    env_file:
+      - ./services/auth/.env
+
+  stripe-service:
+    platform: linux/amd64
+    build:
+      context: ./services/stripe
+    image: lootopia_stripe_service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/stripe:/app
+    env_file:
+      - ./services/stripe/.env
+
   frontend:
     platform: linux/amd64
     build:

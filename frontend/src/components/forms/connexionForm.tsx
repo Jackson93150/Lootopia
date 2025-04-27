@@ -6,13 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import type { z } from "zod"
 
 import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
+import { schemaConnexion } from "@/lib/zod/schemas"
 import Image from "next/image"
 import { ToastContainer, toast } from "react-toastify"
-import { schemaConnexion } from "@/lib/zod/schemas"
 
 type FormValues = z.infer<typeof schemaConnexion>
 
