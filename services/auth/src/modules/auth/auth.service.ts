@@ -26,7 +26,7 @@ export class AuthService {
           role: 'commun',
           xp: 0,
           id_partenaire: null,
-          id_rang: null,
+          id_rang: 'XzXzRJXkM5OgsYdpCDF1',
           statut: 'actif'
         })
 

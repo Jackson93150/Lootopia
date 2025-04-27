@@ -25,7 +25,7 @@ export class UserService {
 
       throw new ConflictException("Un compte avec cette adresse email existe déjà.")
     } catch (err) {
-      if (err.code == "auth/user-not-found") {
+      if (err.code === "auth/user-not-found") {
         return true;
       }
     }
