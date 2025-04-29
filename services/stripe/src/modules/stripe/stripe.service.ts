@@ -33,8 +33,7 @@ export class StripeService {
   async successCheckoutSession(checkoutSessionId) {
     const checkoutSession = await this.getCheckoutSessionByThx(checkoutSessionId.checkoutSessionId)
 
-    await this.firebaseService.firestore
-      .collection("stripe_transactions")
+    await this.firebaseService.stripeTransactionsCollectionRef
       .doc(checkoutSession.id)
       .update({
         statut: "Payée",
@@ -73,8 +72,7 @@ export class StripeService {
 
       const session = await this.stripe.checkout.sessions.create(params)
 
-      await this.firebaseService.firestore
-        .collection("stripe_transactions")
+      await this.firebaseService.stripeTransactionsCollectionRef
         .withConverter(StripeTransactionConverter)
         .add({
           id_user: userId,
@@ -95,8 +93,7 @@ export class StripeService {
 
   private async getCheckoutSessionByThx(id: string) {
     try {
-      const snapshot = await this.firebaseService.firestore
-        .collection("stripe_transactions")
+      const snapshot = await this.firebaseService.stripeTransactionsCollectionRef
         .withConverter(StripeTransactionConverter)
         .where("txh", "==", id)
         .where("statut", "==", "En cours")

@@ -15,7 +15,7 @@ import { AuthService } from "./auth.service"
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: 3000 },
+        options: { port: Number(process.env.USER_SERVICE_PORT) },
       },
     ]),
   ],

@@ -46,7 +46,7 @@ export class AuthService {
     const decodedJwt = await this.verifyIdToken(jwt)
 
     const userFirestore = await firstValueFrom(this.clientUserService.send({ cmd: "find-by-id-user-service" }, decodedJwt ))
-    
+
     if (!userFirestore) {
       throw new NotFoundException("Utilisateur non trouvé dans Firestore")
     }

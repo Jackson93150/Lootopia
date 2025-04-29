@@ -17,21 +17,21 @@ import { StripeService } from "./stripe/stripe.service"
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: 3000 },
+        options: { port: Number(process.env.USER_SERVICE_PORT) },
       },
     ]),
     ClientsModule.register([
       {
         name: "AUTH_SERVICE",
         transport: Transport.TCP,
-        options: { port: 3002 },
+        options: { port: Number(process.env.AUTH_SERVICE_PORT) },
       },
     ]),
     ClientsModule.register([
       {
         name: "STRIPE_SERVICE",
         transport: Transport.TCP,
-        options: { port: 3003 },
+        options: { port: Number(process.env.STRIPE_SERVICE_PORT) },
       },
     ]),
   ],

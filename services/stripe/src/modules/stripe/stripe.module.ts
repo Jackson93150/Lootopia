@@ -16,7 +16,7 @@ import { ClientsModule, Transport } from "@nestjs/microservices"
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: 3000 },
+        options: { port: Number(process.env.USER_SERVICE_PORT) },
       },
     ]),
   ],

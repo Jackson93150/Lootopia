@@ -53,8 +53,7 @@ export class UserService {
 
     const newAmountCrown = user.solde + amountCrown;
 
-    await this.firebaseService.firestore
-      .collection("users")
+    await this.firebaseService.usersCollectionRef
       .doc(userId)
       .update({
         solde: newAmountCrown,
