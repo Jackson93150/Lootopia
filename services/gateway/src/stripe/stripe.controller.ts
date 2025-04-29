@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Param, Res } from "@nestjs/common"
+import { Body, Controller, Get, Post, UseGuards, Param, Res, Headers, Req, RawBodyRequest } from "@nestjs/common"
 import { Response } from 'express';
 
 import { AuthDecorator } from "../auth/decorators/auth.decorator"
@@ -16,9 +16,10 @@ export class StripeController {
       return await this.clientStripeService.createCheckoutSession(user.id, crownPackageId)
   }
 
-  @Get("success-checkout-session/:session_id")
-  async successCheckoutSession(@Param('session_id') session_id: string, @Res() res: Response) {
-    return await this.clientStripeService.successCheckoutSession(session_id)
+  @Post('/webhook')
+  async webhook(@Headers('stripe-signature') signature: string, @Req() req: RawBodyRequest<Request>) {
+    const payload = req.rawBody;
+    return await this.clientStripeService.webhook(signature, payload)
   }
 
   @Get("get-products")

@@ -10,8 +10,8 @@ export class StripeService {
     return await this.clientStripeService.send({ cmd: 'create-checkout-session-stripe-service' }, {userId: userId, crownPackageId: crownPackageId})
   } 
 
-  async successCheckoutSession(checkoutSessionId) {
-    return await this.clientStripeService.send({ cmd: 'success-checkout-session-stripe-service' }, { checkoutSessionId })
+  async webhook(signature, payload) {
+    return await this.clientStripeService.send({ cmd: 'webhook-stripe-service' }, { signature: signature, payload: payload })
   } 
 
   async getProducts() {

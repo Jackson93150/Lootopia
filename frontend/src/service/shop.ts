@@ -1,8 +1,6 @@
 import axios from "axios"
 
 export async function createSessionCheckout(crownPackageId: string) {
-  console.log(crownPackageId)
-
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/create-checkout-session`,
     { crownPackageId },
@@ -16,14 +14,11 @@ export async function createSessionCheckout(crownPackageId: string) {
 }
 
 export async function successSessionCheckout(sessionId: string | null) {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/success-checkout-session/${sessionId}`)
-
-  return res
+  return await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/success-checkout-session/${sessionId}`)
 }
 
 export async function getCrownsPackages() {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/get-crown-packages`)
 
-  const sortedCrownPackages = res.data.sort((a: any, b: any) => a.price_euro - b.price_euro)
-  return sortedCrownPackages
+  return res.data.sort((a: any, b: any) => a.price_euro - b.price_euro)
 }

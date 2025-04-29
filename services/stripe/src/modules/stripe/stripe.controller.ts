@@ -14,9 +14,10 @@ export class StripeController {
     )
   }
 
-  @MessagePattern({ cmd: "success-checkout-session-stripe-service" })
-  async successCheckoutSession(@Body() checkoutSessionId) {
-    return await this.stripeService.successCheckoutSession(checkoutSessionId)
+  @MessagePattern({ cmd: "webhook-stripe-service" })
+  async webhook(@Body() signatureAndPayload) {
+    const payload = Buffer.from(signatureAndPayload.payload.data)
+    return await this.stripeService.webhook(signatureAndPayload.signature, payload)
   }
 
   @MessagePattern({ cmd: "get-products-stripe-service" })

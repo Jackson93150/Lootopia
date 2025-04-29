@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException } from "@nestjs/common"
+import { BadRequestException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common"
 import { FirebaseService } from "src/firebase/firebase.service"
 import Stripe from "stripe"
 import { CrownService } from "../crown/crown.service"
@@ -8,6 +8,7 @@ import { ClientProxy } from "@nestjs/microservices"
 @Injectable()
 export class StripeService {
   private stripe: Stripe
+  private event: Stripe.Event
 
   constructor(
     @Inject("STRIPE_API_KEY") private readonly apiKey: string,
@@ -30,20 +31,6 @@ export class StripeService {
     return customers.data
   }
 
-  async successCheckoutSession(checkoutSessionId) {
-    const checkoutSession = await this.getCheckoutSessionByThx(checkoutSessionId.checkoutSessionId)
-
-    await this.firebaseService.stripeTransactionsCollectionRef
-      .doc(checkoutSession.id)
-      .update({
-        statut: "Payée",
-      });
-
-    await this.clientUserService.emit({ cmd: 'add-crown-user-service' }, { userId: checkoutSession.id_user, amountOfCrown: checkoutSession.montant_couronnes })
-
-    return { statut: 'success' }
-  }
-
   async createCheckoutSession(userId, crownPackageId) {
     try {
       const crownPackage = await this.crownPackageService.getCrownPackageById(crownPackageId)
@@ -62,11 +49,12 @@ export class StripeService {
           },
         ],
         mode: "payment",
-        success_url: `${process.env.FRONTEND_URL}/boutique/success?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${process.env.FRONTEND_URL}/boutique`,
         cancel_url: `${process.env.FRONTEND_URL}/boutique`,
         metadata: {
           productId: `${crownPackage.id_firebase}`,
           userId: `${userId}`,
+          amountCrown: `${crownPackage.amountCrown}`
         },
       }
 
@@ -94,7 +82,6 @@ export class StripeService {
   private async getCheckoutSessionByThx(id: string) {
     try {
       const snapshot = await this.firebaseService.stripeTransactionsCollectionRef
-        .withConverter(StripeTransactionConverter)
         .where("txh", "==", id)
         .where("statut", "==", "En cours")
         .limit(1)
@@ -110,5 +97,38 @@ export class StripeService {
       console.error("Erreur lors de la récupération de la transaction :", err)
       throw new InternalServerErrorException("Impossible de récupérer la transaction Stripe.")
     }
+  }
+
+  async webhook(signature, payload) {
+    try {
+      this.event = this.stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        String(process.env.STRIPE_WEBHOOK_KEY),
+      )
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err.message);
+      throw new BadRequestException(`Webhook Error: ${err.message}`);
+    }
+
+    if (this.event.type === 'checkout.session.completed') {
+      const sessionId = this.event.data.object.id
+
+      await this.successCheckoutSession(sessionId)
+    }
+  }
+
+  private async successCheckoutSession(checkoutSessionId) {
+    const checkoutSession = await this.getCheckoutSessionByThx(checkoutSessionId)
+
+    await this.firebaseService.stripeTransactionsCollectionRef
+      .doc(checkoutSession.id)
+      .update({
+        statut: "Payée",
+      });
+
+    await this.clientUserService.emit({ cmd: 'add-crown-user-service' }, { userId: checkoutSession.id_user, amountOfCrown: checkoutSession.montant_couronnes })
+
+    return { statut: 'success' }
   }
 }

@@ -48,7 +48,6 @@ export class UserService {
   }
 
   public async addCrown(userId: string, amountCrown) {
-    console.log(userId, amountCrown)
     const user = await this.getById(userId)
 
     const newAmountCrown = user.solde + amountCrown;

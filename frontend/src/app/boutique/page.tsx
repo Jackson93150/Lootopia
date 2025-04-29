@@ -1,7 +1,7 @@
 "use client"
 import { getCrownsPackages } from "@/service/shop"
 import { useEffect, useState } from "react"
-import BoutiquePage from "./components/boutique-page"
+import Shop from "./components/boutique-page"
 
 export default function ShopPage() {
   const [crownPackages, setCrownPackages] = useState([])
@@ -20,5 +20,5 @@ export default function ShopPage() {
     fetchPackages()
   }, [])
 
-  return <BoutiquePage crownPackages={crownPackages} />
+  return <Shop crownPackages={crownPackages} />
 }
