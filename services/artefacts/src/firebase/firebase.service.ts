@@ -4,7 +4,7 @@ import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
 
 import { ArtefactConverter } from "src/modules/artefacts/types/artefact"
-import { UserArtefactConverter } from "src/modules/artefacts/types/user"
+import { UserArtefactConverter } from "src/modules/artefacts/types/user-artefact"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {

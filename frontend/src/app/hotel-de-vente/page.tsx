@@ -120,7 +120,7 @@ function OwnArtefacts() {
     return (
         <div className="grid grid-cols-4 gap-1 pointer">
             {
-                ownArtefacts ?? ownArtefacts.artefacts.map((artefact, index) => (
+                ownArtefacts.map((artefact, index) => (
                     <button key={index} type="button" className="cursor-pointer">
                         <div key={index} className="border-1 border-[#F2E30B] rounded bg-gradient-to-r from-[#F38424] to-[#F7C929]">
                             <Image src={`${artefact.image}`} width={75} height={75} alt="artefact"/>

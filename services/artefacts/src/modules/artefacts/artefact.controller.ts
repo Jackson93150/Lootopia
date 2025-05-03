@@ -14,7 +14,6 @@ export class ArtefactController {
 
   @MessagePattern({ cmd: 'get-user-artefacts-artefacts-service' })
   async getUserArtefacts(@Body() user: { userId: string }) {
-    console.log(user.userId)
     return await this.artefactService.getUserArtefact(user.userId);
   }
 }

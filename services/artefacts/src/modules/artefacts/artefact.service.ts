@@ -11,7 +11,6 @@ export class ArtefactService {
   async getAllArtefacts() {
     const snapshotArtefacts = await this.firebaseService.artefactsCollectionRef.get()
 
-    console.log(snapshotArtefacts.docs)
     const artefacts: ArtefactDocument[] = snapshotArtefacts.docs.map(doc => ({
       id_firebase: doc.id,
       ...doc.data(),
@@ -25,9 +24,8 @@ export class ArtefactService {
     .where("id_user", "==", userId)
     .get()
 
-    console.log(snapshotUserArtefacts)
 
-    const artefactIds = snapshotUserArtefacts.docs.map(doc => doc.data().artefact_id)
+    const artefactIds = snapshotUserArtefacts.docs.map(doc => doc.data().id_artefact)
 
     const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
     .where(FieldPath.documentId(), "in", artefactIds)

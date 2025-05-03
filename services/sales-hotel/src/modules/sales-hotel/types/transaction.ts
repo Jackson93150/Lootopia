@@ -1,9 +1,9 @@
 import { Type } from "class-transformer"
 import { IsInt, IsNotEmpty, IsString, Min } from "class-validator"
 
-import { createConverter } from "../../firebase/firestore.convertor"
+import { createConverter } from "src/firebase/firestore.convertor"
 
-export class TransactionInterneDocument {
+export class InternalTransactionDocument {
   @IsNotEmpty()
   @IsString()
   @Type(() => String)
@@ -25,4 +25,4 @@ export class TransactionInterneDocument {
   id_vendeur!: string
 }
 
-export const TransactionInterneConverter = createConverter(TransactionInterneDocument)
+export const InternalTransactionConverter = createConverter(InternalTransactionDocument)

@@ -30,7 +30,7 @@ export class ArtefactDocument {
   @IsNotEmpty()
   @IsString()
   @Type(() => String)
-  nom!: string
+  name!: string
 
   @IsNotEmpty()
   @IsString()
@@ -44,12 +44,12 @@ export class ArtefactDocument {
 
   @IsBoolean()
   @Type(() => Boolean)
-  enchere: boolean
+  auction: boolean
 
   @IsNotEmpty()
   @IsEnum(Rarete)
   @Type(() => String)
-  rarete!: Rarete
+  rarity!: Rarete
 
   @IsOptional()
   @IsEnum(ArtefactEvent)
@@ -60,7 +60,7 @@ export class ArtefactDocument {
   @IsInt()
   @Min(0)
   @Type(() => Number)
-  valeur_enchere?: number
+  auction_value?: number
 
   @IsOptional()
   @IsInt()

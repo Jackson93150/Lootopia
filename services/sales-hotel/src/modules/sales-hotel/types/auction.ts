@@ -1,16 +1,16 @@
 import { Type } from "class-transformer"
 import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from "class-validator"
 
-import { createConverter } from "../../firebase/firestore.convertor"
+import { createConverter } from "src/firebase/firestore.convertor"
 
-enum EnchereStatut {
+enum AuctionStatut {
   VALIDEE = "validée",
   SURENCHERI = "sur-enchéri",
   EN_COURS = "en cours",
   ANNULEE = "annulée",
 }
 
-export class EnchereDocument {
+export class AuctionDocument {
   @IsNotEmpty()
   @IsString()
   @Type(() => String)
@@ -26,9 +26,9 @@ export class EnchereDocument {
   @Type(() => Number)
   valeur!: number
 
-  @IsEnum(EnchereStatut)
+  @IsEnum(AuctionStatut)
   @Type(() => String)
-  statut: EnchereStatut = EnchereStatut.EN_COURS
+  statut: AuctionStatut = AuctionStatut.EN_COURS
 }
 
-export const EnchereConverter = createConverter(EnchereDocument)
+export const AuctionConverter = createConverter(AuctionDocument)

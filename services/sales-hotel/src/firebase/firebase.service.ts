@@ -2,8 +2,9 @@ import { Injectable, type OnModuleInit } from "@nestjs/common"
 import { type App, type ServiceAccount, cert, getApps, initializeApp } from "firebase-admin/app"
 import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
+import { AuctionConverter } from "src/modules/sales-hotel/types/auction"
+import { InternalTransactionConverter } from "src/modules/sales-hotel/types/transaction"
 
-import { UserConverter } from "../modules/sales-hotel/types/user/user.type"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -11,7 +12,8 @@ export class FirebaseService implements OnModuleInit {
   public firestore: Firestore
   public auth: Auth
 
-  public usersCollectionRef
+  public auctionsCollectionRef
+  public internalTransactionsCollectionRef
 
   onModuleInit() {
     const serviceAccount: string | ServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -26,6 +28,7 @@ export class FirebaseService implements OnModuleInit {
     this.firestore = getFirestore(this.app)
     this.auth = getAuth(this.app)
 
-    this.usersCollectionRef = this.firestore.collection("users").withConverter(UserConverter)
+    this.auctionsCollectionRef = this.firestore.collection("auctions").withConverter(AuctionConverter)
+    this.internalTransactionsCollectionRef = this.firestore.collection("internal_transactions").withConverter(InternalTransactionConverter)
   }
 }
