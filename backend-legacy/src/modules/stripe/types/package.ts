@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsBoolean, IsInt, IsOptional, Min } from "class-validator"
+import { IsBoolean, IsInt, IsOptional, IsString, Min } from "class-validator"
 
 import { createConverter } from "../../firebase/firestore.convertor"
 

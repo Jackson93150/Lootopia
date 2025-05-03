@@ -3,7 +3,9 @@ import * as cookieParser from "cookie-parser"
 import { GatewayModule } from "./app.module"
 
 async function bootstrap() {
-  const app = await NestFactory.create(GatewayModule)
+  const app = await NestFactory.create(GatewayModule, {
+    rawBody: true,
+  })
   app.use(cookieParser())
   app.enableCors({
     origin: process.env.FRONTEND_URL,

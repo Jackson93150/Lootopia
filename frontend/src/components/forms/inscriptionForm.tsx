@@ -4,14 +4,14 @@ import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
 import TermsModal from "@/components/ui/TermsModal"
 import ToggleSwitch from "@/components/ui/ToggleSwitch"
+import { schemaRegister } from "@/lib/zod/schemas"
 import { registerUser } from "@/service/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify"
-import { z } from "zod"
-import { schemaRegister } from "@/lib/zod/schemas"
+import type { z } from "zod"
 
 type FormValues = z.infer<typeof schemaRegister>
 
