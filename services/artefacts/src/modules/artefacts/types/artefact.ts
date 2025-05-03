@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator"
 
-import { createConverter } from "../../firebase/firestore.convertor"
+import { createConverter } from "src/firebase/firestore.convertor"
 
 enum Rarete {
   COMMUN = "Commun",

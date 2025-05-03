@@ -7,6 +7,10 @@ import { UserController } from "./user/user.controller"
 import { UserService } from "./user/user.service"
 import { StripeController } from "./stripe/stripe.controller"
 import { StripeService } from "./stripe/stripe.service"
+import { ArtefactController } from "./artefact/artefact.controller"
+import { ArtefactService } from "./artefact/artefact.service"
+import { SalesHotelController } from "./sales-hotel/sales-hotel.controller"
+import { SalesHotelService } from "./sales-hotel/sales-hotel.service"
 
 @Module({
   imports: [
@@ -34,8 +38,22 @@ import { StripeService } from "./stripe/stripe.service"
         options: { port: Number(process.env.STRIPE_SERVICE_PORT) },
       },
     ]),
+    ClientsModule.register([
+    {
+        name: "SALES_HOTEL_SERVICE",
+        transport: Transport.TCP,
+        options: { port: Number(process.env.SALES_HOTEL_SERVICE_PORT) },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: "ARTEFACT_SERVICE",
+        transport: Transport.TCP,
+        options: { port: Number(process.env.ARTEFACT_SERVICE_PORT) },
+      },
+    ]),
   ],
-  controllers: [UserController, AuthController, StripeController],
-  providers: [UserService, AuthService, StripeService],
+  controllers: [UserController, AuthController, ArtefactController, SalesHotelController, StripeController],
+  providers: [UserService, AuthService, ArtefactService, SalesHotelService, StripeService],
 })
 export class GatewayModule {}
