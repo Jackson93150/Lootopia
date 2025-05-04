@@ -52,20 +52,10 @@ export class ArtefactDocument {
   @Type(() => String)
   event?: ArtefactEvent
 
-  // @IsOptional()
-  // @IsInt()
-  // @Min(0)
-  // @Type(() => Number)
-  // crown_price?: number
-
   @IsOptional()
   @IsBoolean()
   @Type(() => Boolean)
   fusionnable?: boolean
-
-  @IsBoolean()
-  @Type(() => Boolean)
-  is_exported_nft: boolean
 
   @IsNotEmpty()
   @IsString()

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsInt, IsNotEmpty, IsString, Min } from "class-validator"
+import { IsBoolean, IsNotEmpty, IsString } from "class-validator"
 
 import { createConverter } from "src/firebase/firestore.convertor"
 
@@ -13,6 +13,18 @@ export class UserArtefactDocument {
   @IsString()
   @Type(() => String)
   id_artefact!: string
+
+  @IsNotEmpty()
+  @Type(() => Boolean)
+  auction: boolean = false;
+
+  @IsNotEmpty()
+  @Type(() => Boolean)
+  is_saled: boolean = false;
+
+  @IsBoolean()
+  @Type(() => Boolean)
+  is_exported_nft: boolean = false;
 }
 
 export const UserArtefactConverter = createConverter(UserArtefactDocument)
