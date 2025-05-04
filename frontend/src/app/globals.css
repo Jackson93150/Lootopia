@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lilita+One&display=swap");
 @import "tailwindcss";
 @font-face {
   font-family: Lilita One;
@@ -5,13 +7,21 @@
 }
 
 @theme {
+  --font-fredoka: "Fredoka", sans-serif;
+  --font-luckiest: "Luckiest Guy", sans-serif;
   --color-sand: #fdfce3;
   --color-sand-light: #eff8fd;
   --color-caramel: #130909;
   --color-beige: #f6cb9e;
   --color-dark-brown: #2b100d;
   --color-yellow-orange: #ffb635;
+  --color-yellow-landing: #ffcb45;
   --color-orange: #f77c17;
+  --color-sand-landing: #ffe499;
+  --color-sand-landing-white: #ffedac;
+  --color-orange-landing: #e4a950;
+  --color-orange-button: #f09514;
+  --color-orange-dark: #7c2d00;
   --font-lilita: "Lilita One", sans-serif;
 }
 
@@ -19,4 +29,10 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+.text-outline-white {
+  text-shadow: -0.5px -0.5px 0 white, 0.5px -0.5px 0 white, -0.5px 0.5px 0 white, 0.5px 0.5px 0 white;
+}
+.text-outline-orange {
+  text-shadow: -0.5px -0.5px 0 orange, 0.5px -0.5px 0 orange, -0.5px 0.5px 0 orange, 0.5px 0.5px 0 orange;
 }
