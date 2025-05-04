@@ -42,10 +42,6 @@ export class ArtefactDocument {
   @Type(() => String)
   type!: string
 
-  @IsBoolean()
-  @Type(() => Boolean)
-  auction: boolean
-
   @IsNotEmpty()
   @IsEnum(Rarete)
   @Type(() => String)
@@ -56,17 +52,11 @@ export class ArtefactDocument {
   @Type(() => String)
   event?: ArtefactEvent
 
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Type(() => Number)
-  auction_value?: number
-
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Type(() => Number)
-  crown_price?: number
+  // @IsOptional()
+  // @IsInt()
+  // @Min(0)
+  // @Type(() => Number)
+  // crown_price?: number
 
   @IsOptional()
   @IsBoolean()

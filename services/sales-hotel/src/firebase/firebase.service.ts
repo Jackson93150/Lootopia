@@ -2,7 +2,7 @@ import { Injectable, type OnModuleInit } from "@nestjs/common"
 import { type App, type ServiceAccount, cert, getApps, initializeApp } from "firebase-admin/app"
 import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
-import { AuctionConverter } from "src/modules/sales-hotel/types/auction"
+import { SaleConverter } from "src/modules/sales-hotel/types/sale"
 import { InternalTransactionConverter } from "src/modules/sales-hotel/types/transaction"
 
 
@@ -12,7 +12,7 @@ export class FirebaseService implements OnModuleInit {
   public firestore: Firestore
   public auth: Auth
 
-  public auctionsCollectionRef
+  public saleCollectionRef
   public internalTransactionsCollectionRef
 
   onModuleInit() {
@@ -28,7 +28,7 @@ export class FirebaseService implements OnModuleInit {
     this.firestore = getFirestore(this.app)
     this.auth = getAuth(this.app)
 
-    this.auctionsCollectionRef = this.firestore.collection("auctions").withConverter(AuctionConverter)
+    this.saleCollectionRef = this.firestore.collection("sales").withConverter(SaleConverter)
     this.internalTransactionsCollectionRef = this.firestore.collection("internal_transactions").withConverter(InternalTransactionConverter)
   }
 }

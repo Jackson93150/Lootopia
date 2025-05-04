@@ -16,4 +16,14 @@ export class ArtefactController {
   async getUserArtefacts(@Body() user: { userId: string }) {
     return await this.artefactService.getUserArtefact(user.userId);
   }
+
+  @MessagePattern({ cmd: 'get-by-ids-artefacts-service' })
+  async getArtefactsByIds(@Body('artefactIds') artefactsIds) {
+    return await this.artefactService.getArtefactsByIds(artefactsIds);
+  }
+
+  @MessagePattern({ cmd: 'remove-owner-artefacts-service' })
+  async removeOwnerArtefact(@Body() userIdAndArtefactId: { userId: string, artefactId: string }) {
+    return await this.artefactService.removeOwnerArtefact(userIdAndArtefactId.userId, userIdAndArtefactId.artefactId);
+  }
 }

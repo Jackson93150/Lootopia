@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+// ------ AUTH ------
 export const schemaRegister = z
   .object({
     email: z.string().email("Veuillez entrer une adresse email valide."),
@@ -19,4 +20,14 @@ export const schemaRegister = z
 export const schemaConnexion = z.object({
   email: z.string().email("Veuillez entrer une adresse email valide."),
   password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères."),
+})
+
+// ------ SALE ------
+
+export const schemaSale = z.object({
+  crown_price: z.number().int().min(1),
+})
+
+export const schemaBuySale = z.object({
+  crown_price: z.number().int().min(1),
 })

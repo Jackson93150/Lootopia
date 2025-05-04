@@ -27,9 +27,39 @@ export class ArtefactService {
 
     const artefactIds = snapshotUserArtefacts.docs.map(doc => doc.data().id_artefact)
 
+    if (artefactIds.length === 0) return artefactIds;
+
     const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
     .where(FieldPath.documentId(), "in", artefactIds)
     .get()
+
+    return artefactsSnapshots.docs.map(doc => ({
+      id_firebase: doc.id,
+      ...doc.data(),
+    }))
+  }
+
+  async removeOwnerArtefact(userId: string, artefactId: string) {
+    try {
+      const snapshot = await this.firebaseService.userArtefactsCollectionRef
+      .where("id_user", "==", userId)
+      .where("id_artefact", "==", artefactId)
+      .get();
+  
+      const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
+  
+      await Promise.all(deletePromises);
+      
+      return true
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async getArtefactsByIds(artefactIds) {
+    const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
+      .where(FieldPath.documentId(), "in", artefactIds)
+      .get()
 
     return artefactsSnapshots.docs.map(doc => ({
       id_firebase: doc.id,

@@ -12,7 +12,7 @@ export class InternalTransactionDocument {
   @IsInt()
   @Min(0)
   @Type(() => Number)
-  prix!: number
+  crown_price!: number
 
   @IsNotEmpty()
   @IsString()
