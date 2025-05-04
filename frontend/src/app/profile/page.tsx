@@ -2,10 +2,24 @@
 
 import Image from "next/image"
 import "../globals.css"
+import { getUserArtefact } from "@/service/rewards"
+import { useEffect, useState } from "react"
 import { useMe } from "../hook/useMe"
+import type { UserArtefact } from "../types/artefact"
 
 export default function ProfilePage() {
+  const [artefacts, setArtefacts] = useState<UserArtefact[] | null>(null)
   const { user, loading } = useMe()
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getUserArtefact()
+      setArtefacts(res)
+    }
+
+    void fetchData()
+  }, [])
+
   return (
     <div className="w-screen h-screen items-center justify-center flex">
       {!loading && (
@@ -18,7 +32,7 @@ export default function ProfilePage() {
           />
           <div className="w-full flex h-full p-14 gap-8 z-10">
             <div className="h-full w-[250px] bg-[#A96A3D] outline-[#5B3E29] outline-[8px] rounded-[8px] p-4 flex flex-col gap-2">
-              <div className="w-full h-[40%] bg-[#FAC27D] rounded-[8px] border p-2">
+              <div className="w-full h-[30%] bg-[#FAC27D] rounded-[8px] border p-2">
                 <div className="w-full h-full rounded-[8px] border overflow-hidden">
                   <Image
                     src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
@@ -54,7 +68,31 @@ export default function ProfilePage() {
                   </span>
                 </div>
               </div>
-              <div className="z-10 h-[85%] grow bg-[#A96A3D] outline-[#5B3E29] outline-[8px] rounded-[8px]" />
+              <div className="z-10 h-[85%] grow bg-[#A96A3D] outline-[#5B3E29] outline-[8px] rounded-[8px] overflow-y-auto min-h-0">
+                {artefacts && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6">
+                    {artefacts.map(artefact => (
+                      <div
+                        key={artefact.id_artefact}
+                        className="bg-[#FAC27D] rounded-[16px] shadow-md overflow-hidden flex flex-col items-center justify-start p-2 h-[260px]"
+                      >
+                        <div className="w-full text-center text-md font-bold truncate font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                          {artefact.artefact.name}
+                        </div>
+                        <div className="flex items-center justify-center flex-grow">
+                          <Image
+                            src={artefact.artefact.image}
+                            alt={artefact.artefact.name}
+                            width={180}
+                            height={180}
+                            className="object-cover rounded"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

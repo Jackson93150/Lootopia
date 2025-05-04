@@ -7,6 +7,8 @@ import { UserController } from "./user/user.controller"
 import { UserService } from "./user/user.service"
 import { StripeController } from "./stripe/stripe.controller"
 import { StripeService } from "./stripe/stripe.service"
+import { RewardController } from "./reward/reward.controller"
+import { RewardService } from "./reward/reward.service"
 
 @Module({
   imports: [
@@ -34,8 +36,15 @@ import { StripeService } from "./stripe/stripe.service"
         options: { port: Number(process.env.STRIPE_SERVICE_PORT) },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: "REWARDS_SERVICE",
+        transport: Transport.TCP,
+        options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
+      },
+    ]),
   ],
-  controllers: [UserController, AuthController, StripeController],
-  providers: [UserService, AuthService, StripeService],
+  controllers: [UserController, AuthController, StripeController, RewardController],
+  providers: [UserService, AuthService, StripeService, RewardService],
 })
 export class GatewayModule {}
