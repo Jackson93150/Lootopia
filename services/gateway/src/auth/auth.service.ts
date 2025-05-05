@@ -2,7 +2,6 @@ import { Inject, Injectable } from "@nestjs/common"
 
 import { ClientProxy } from "@nestjs/microservices"
 import { UserDto } from "./dto/user.dto"
-import { firstValueFrom } from "rxjs"
 
 @Injectable()
 export class AuthService {
@@ -10,10 +9,6 @@ export class AuthService {
 
   public async register(user: UserDto) {
     return await this.clientAuthService.send({ cmd: "register-user-auth-service" }, user)
-  }
-
-  public async login(authHeader: string) {
-    return await firstValueFrom(this.clientAuthService.send({ cmd: "login-user-auth-service" }, authHeader))
   }
 
   public getJwtToken(authorization: string) {

@@ -1,9 +1,15 @@
-import axios from "axios"
+import { fetchBack } from "@/utils/fetch"
 
 export async function getUserArtefact() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reward/user-artefact`, {
-    withCredentials: true,
+  const res = await fetchBack({
+    endpoint: "/reward/user-artefact",
+    method: "GET",
   })
 
-  return res.data
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  const data = await res.json()
+  return data
 }

@@ -1,15 +1,27 @@
-import axios from "axios"
+import { fetchBack } from "@/utils/fetch"
 
 export async function me() {
-  return await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`, {
-    withCredentials: true,
+  const res = await fetchBack({
+    endpoint: "/users/me",
+    method: "GET",
   })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return await res.json()
 }
 
 export async function getUserById(id: string) {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/user/${id}`, {
-    withCredentials: true,
+  const res = await fetchBack({
+    endpoint: `/users/user/${id}`,
+    method: "GET",
   })
 
-  return res.data
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return await res.json()
 }

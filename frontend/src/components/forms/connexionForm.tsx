@@ -33,8 +33,7 @@ export default function ConnexionForm() {
   const onSubmit = async (values: FormValues) => {
     try {
       await login(values.email, values.password)
-      const m = await me()
-      console.info(m)
+      await me()
       router.push("/")
     } catch (_error) {
       toast.error("Email ou mot de passe invalide", {

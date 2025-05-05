@@ -1,6 +1,6 @@
 "use client"
 
-import axios from "axios"
+import { fetchBack } from "@/utils/fetch"
 import { useEffect, useState } from "react"
 
 export function useMe() {
@@ -13,12 +13,19 @@ export function useMe() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`, {
-          withCredentials: true,
+        const res = await fetchBack({
+          endpoint: "/users/me",
+          method: "GET",
         })
-        setUser(res.data.user)
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`)
+        }
+
+        const data = await res.json()
+        setUser(data.user)
       } catch (err) {
-        setError(err)
+        setError(err as Error)
       } finally {
         setLoading(false)
       }
