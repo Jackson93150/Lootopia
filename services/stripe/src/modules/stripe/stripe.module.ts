@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common"
 
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { ClientsModule, Transport } from "@nestjs/microservices"
 import { FirebaseService } from "../../firebase/firebase.service"
 import { CrownService } from "../crown/crown.service"
 import { StripeController } from "./stripe.controller"
 import { StripeService } from "./stripe.service"
-import { ClientsModule, Transport } from "@nestjs/microservices"
 
 @Module({
   imports: [

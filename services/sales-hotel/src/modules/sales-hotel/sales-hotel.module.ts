@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common"
 
 import { ConfigModule } from "@nestjs/config"
+import { ClientsModule, Transport } from "@nestjs/microservices"
 import { FirebaseService } from "../../firebase/firebase.service"
+import { TypesenseService } from "../typesense/typesense.service"
 import { SalesHotelController } from "./sales-hotel.controller"
 import { SalesHotelService } from "./sales-hotel.service"
-import { ClientsModule, Transport } from "@nestjs/microservices"
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ClientsModule, Transport } from "@nestjs/microservices"
     ]),
   ],
   controllers: [SalesHotelController],
-  providers: [SalesHotelService, FirebaseService],
+  providers: [SalesHotelService, FirebaseService, TypesenseService],
   exports: [SalesHotelService, FirebaseService],
 })
 export class SalesHotelModule {}

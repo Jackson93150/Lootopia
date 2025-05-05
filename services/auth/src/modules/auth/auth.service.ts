@@ -1,7 +1,6 @@
-import { ConflictException, Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { ConflictException, Inject, Injectable } from "@nestjs/common"
 
 import { ClientProxy } from "@nestjs/microservices"
-import { firstValueFrom } from "rxjs"
 import { FirebaseService } from "src/firebase/firebase.service"
 
 @Injectable()
@@ -23,11 +22,11 @@ export class AuthService {
           solde: 0,
           double_authentification: false,
           last_login: null,
-          role: 'commun',
+          role: "commun",
           xp: 0,
           id_partenaire: null,
-          id_rang: null,
-          statut: 'actif'
+          id_rang: "XzXzRJXkM5OgsYdpCDF1",
+          statut: "actif",
         })
 
         return user
@@ -38,20 +37,6 @@ export class AuthService {
       }
       throw error
     }
-  }
-
-  async login(authHeader) {
-    const jwt = this.getJwtToken(authHeader)
-
-    const decodedJwt = await this.verifyIdToken(jwt)
-
-    const userFirestore = await firstValueFrom(this.clientUserService.send({ cmd: "find-by-id-user-service" }, decodedJwt ))
-
-    if (!userFirestore) {
-      throw new NotFoundException("Utilisateur non trouvé dans Firestore")
-    }
-
-    return jwt;
   }
 
   public async verifyIdToken(idToken: string) {

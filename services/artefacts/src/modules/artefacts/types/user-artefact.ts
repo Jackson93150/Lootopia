@@ -16,15 +16,15 @@ export class UserArtefactDocument {
 
   @IsNotEmpty()
   @Type(() => Boolean)
-  auction: boolean = false;
+  auction = false
 
   @IsNotEmpty()
   @Type(() => Boolean)
-  is_saled: boolean = false;
+  is_saled = false
 
   @IsBoolean()
   @Type(() => Boolean)
-  is_exported_nft: boolean = false;
+  is_exported_nft = false
 }
 
 export const UserArtefactConverter = createConverter(UserArtefactDocument)

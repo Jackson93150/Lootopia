@@ -1,4 +1,3 @@
-import axios from "axios"
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -9,6 +8,7 @@ import {
 } from "firebase/auth"
 
 import { app } from "@/lib/firebase"
+import { fetchBack } from "@/utils/fetch"
 
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
@@ -21,71 +21,71 @@ interface RegisterProps {
 
 export async function registerUser(user: RegisterProps) {
   try {
-    await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/precheck`, {
-      email: user.email,
-      username: user.username,
+    const precheck = await fetchBack({
+      endpoint: "/users/precheck",
+      method: "POST",
+      body: {
+        email: user.email,
+        username: user.username,
+      },
+      isPublic: true,
     })
+
+    if (!precheck.ok) {
+      const errorData = await precheck.json()
+      if (precheck.status === 409) {
+        throw new Error(errorData.message)
+      }
+      throw new Error("Erreur lors de la pré-vérification.")
+    }
 
     const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
     const newUser = userCredential.user
 
     await sendEmailVerification(newUser)
 
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
-      {
+    const register = await fetchBack({
+      endpoint: "/auth/register",
+      method: "POST",
+      body: {
         email: user.email,
         username: user.username,
         uid: newUser.uid,
       },
-      {
-        withCredentials: true,
-      },
-    )
+    })
+
+    if (!register.ok) {
+      throw new Error("Erreur lors de l'enregistrement sur le backend.")
+    }
 
     return newUser
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === 409) {
-        throw new Error(error.response.data.message)
-      }
-    }
-
+    console.error(error)
     throw new Error("Erreur lors de l'inscription.")
   }
 }
 
 export async function login(email: string, password: string) {
   const userCredential = await signInWithEmailAndPassword(auth, email, password)
-
-  const idToken = await userCredential.user.getIdToken()
-
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-    withCredentials: true,
-  })
-
-  return res
+  return await userCredential.user.getIdToken()
 }
 
 export async function loginGoogle() {
-  signInWithPopup(auth, provider)
-    .then(async result => {
-      GoogleAuthProvider.credentialFromResult(result)
-      const idToken = await result.user.getIdToken()
+  try {
+    await signInWithPopup(auth, provider)
 
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`, {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-        withCredentials: true,
-      })
-      return res
+    const res = await fetchBack({
+      endpoint: "/users/login",
+      method: "GET",
     })
-    .catch(error => {
-      console.error(error)
-      console.error(GoogleAuthProvider.credentialFromError(error))
-    })
+
+    if (!res.ok) {
+      throw new Error("Erreur lors du login Google backend.")
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+    throw new Error("Erreur lors de l'authentification avec Google.")
+  }
 }

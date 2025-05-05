@@ -5,11 +5,29 @@ import { ClientProxy } from "@nestjs/microservices"
 export class SalesHotelService {
   constructor(@Inject("SALES_HOTEL_SERVICE") private readonly clientSalesHotelService: ClientProxy) {}
 
-  async createSale(userId: string, saleInfo: { artefact_id: string, crown_price: number }) {
-    return await this.clientSalesHotelService.send({ cmd: 'create-sale-sales-hotel-service' }, { userId: userId, saleInfo: saleInfo })
+  async createAuction(
+    userId: string,
+    auctionInfo: {
+      user_artefact_id: string
+      fix_price: number | null
+      auction_price: number
+      direct_sale: boolean
+      timer: string,
+      artefact_name: string
+      artefact_rarity: string
+      image: string
+    },
+  ) {
+    return await this.clientSalesHotelService.send(
+      { cmd: "create-auction-sales-hotel-service" },
+      { userId: userId, auctionInfo: auctionInfo },
+    )
   }
 
-  async getAllSales() {
-    return await this.clientSalesHotelService.send({ cmd: 'get-all-sales-hotel-service' }, {})
+  async addAuction(userId: string, auctionInfo: {  user_artefact_id: string, auction_price: number, auction_id: string }) {
+    return await this.clientSalesHotelService.send(
+      { cmd: "add-auction-sales-hotel-service" },
+      { userId: userId, auctionInfo: auctionInfo },
+    )
   }
 }

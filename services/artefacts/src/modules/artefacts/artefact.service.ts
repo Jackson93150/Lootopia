@@ -1,8 +1,8 @@
-import { ConflictException, Injectable, NotFoundException, Response } from "@nestjs/common"
+import { Injectable } from "@nestjs/common"
 
+import { FieldPath } from "firebase-admin/firestore"
 import { FirebaseService } from "../../firebase/firebase.service"
 import { ArtefactDocument } from "./types/artefact"
-import { FieldPath } from "firebase-admin/firestore"
 
 @Injectable()
 export class ArtefactService {
@@ -19,44 +19,80 @@ export class ArtefactService {
     return artefacts
   }
 
-  async getUserArtefact(userId: string) {
+  async getUserArtefacts(userId: string) {
     const snapshotUserArtefacts = await this.firebaseService.userArtefactsCollectionRef
-    .where("id_user", "==", userId)
-    .get()
+      .where("id_user", "==", userId)
+      .where("auction", "==", false)
+      .where("is_saled", "==", false)
+      .where("is_exported_nft", "==", false)
+      .get()
 
-
-    const artefactIds = snapshotUserArtefacts.docs.map(doc => doc.data().id_artefact)
-
-    if (artefactIds.length === 0) return artefactIds;
-
-    const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
-    .where(FieldPath.documentId(), "in", artefactIds)
-    .get()
-
-    return artefactsSnapshots.docs.map(doc => ({
+    const userArtefacts = snapshotUserArtefacts.docs.map(doc => ({
       id_firebase: doc.id,
       ...doc.data(),
     }))
+
+    if (userArtefacts.length === 0) return userArtefacts
+
+    const artefactIds = userArtefacts.map(ua => ua.id_artefact)
+
+    const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
+      .where(FieldPath.documentId(), "in", artefactIds)
+      .get()
+
+    const artefactsMap = new Map(artefactsSnapshots.docs.map(doc => [doc.id, { id_firebase: doc.id, ...doc.data() }]))
+
+    return userArtefacts.map(userArtefact => ({
+      ...userArtefact,
+      artefact: artefactsMap.get(userArtefact.id_artefact) || null,
+    }))
   }
 
-  async removeOwnerArtefact(userId: string, artefactId: string) {
-    try {
-      const snapshot = await this.firebaseService.userArtefactsCollectionRef
-      .where("id_user", "==", userId)
-      .where("id_artefact", "==", artefactId)
-      .get();
-  
-      const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
-  
-      await Promise.all(deletePromises);
-      
-      return true
-    } catch (error) {
-      console.error(error)
+  async getArtefactsByUserArtefactIdsForAuction(userArtefactIds) {
+    const userArtefactSnapshots = await this.firebaseService.userArtefactsCollectionRef
+      .where(FieldPath.documentId(), "in", userArtefactIds)
+      .get()
+
+    const userArtefacts = userArtefactSnapshots.docs.map(doc => ({
+      id_firebase: doc.id,
+      ...doc.data(),
+    }))
+
+    const artefactIds = userArtefacts.map(ua => ua.id_artefact)
+
+    const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
+      .where(FieldPath.documentId(), "in", artefactIds)
+      .get()
+
+    const artefacts = artefactsSnapshots.docs.map(doc => ({
+      id_firebase: doc.id,
+      ...doc.data(),
+    }))
+
+    const artefactMap = Object.fromEntries(artefacts.map(a => [a.id_firebase, a]))
+
+    const merged = userArtefacts.map(ua => ({
+      ...ua,
+      artefact: artefactMap[ua.id_artefact] || null,
+    }))
+
+    return merged
+  }
+
+  async modifyAuctionStateUserArtefact(artefactId, auctionState) {
+    const docRef = this.firebaseService.userArtefactsCollectionRef.doc(artefactId)
+    const snapshot = await docRef.get()
+
+    if (!snapshot.exists) {
+      throw new Error(`Aucun artefact trouvé avec l'ID : ${artefactId}`)
     }
+
+    await docRef.update({ auction: auctionState })
+
+    return true
   }
 
-  async getArtefactsByIds(artefactIds) {
+  private async getArtefactsByIds(artefactIds) {
     const artefactsSnapshots = await this.firebaseService.artefactsCollectionRef
       .where(FieldPath.documentId(), "in", artefactIds)
       .get()

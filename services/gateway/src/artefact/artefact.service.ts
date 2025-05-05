@@ -10,6 +10,6 @@ export class ArtefactService {
   }
 
   async getUserArtefact(userId: string) {
-    return await this.clientArtefactService.send({ cmd: 'get-user-artefacts-artefacts-service' }, { userId: userId })
+    return await this.clientArtefactService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: userId })
   }
 }
