@@ -18,4 +18,18 @@ export class UserService {
   async me(user: AuthenticatedUser) {
     return await this.clientUserService.send({ cmd: "me-user-service" }, user)
   }
+
+  async uploadProfilePicture(uid: string, file: Express.Multer.File) {
+    return await this.clientUserService.send(
+      { cmd: "upload-profile-picture-user-service" },
+      {
+        uid,
+        file: {
+          buffer: file.buffer,
+          mimetype: file.mimetype,
+          originalname: file.originalname,
+        },
+      },
+    )
+  }
 }

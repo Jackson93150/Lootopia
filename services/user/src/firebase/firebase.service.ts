@@ -3,6 +3,7 @@ import { type App, type ServiceAccount, cert, getApps, initializeApp } from "fir
 import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
 
+import { type Storage, getStorage } from "firebase-admin/storage"
 import { UserConverter } from "../modules/user/types/user/user.type"
 
 @Injectable()
@@ -10,6 +11,7 @@ export class FirebaseService implements OnModuleInit {
   public app: App
   public firestore: Firestore
   public auth: Auth
+  public storage: Storage
 
   public usersCollectionRef
 
@@ -21,10 +23,12 @@ export class FirebaseService implements OnModuleInit {
       getApps()[0] ??
       initializeApp({
         credential,
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       })
 
     this.firestore = getFirestore(this.app)
     this.auth = getAuth(this.app)
+    this.storage = getStorage(this.app)
 
     this.usersCollectionRef = this.firestore.collection("users").withConverter(UserConverter)
   }

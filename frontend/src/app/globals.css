@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@font-face {
+  font-family: Lilita One;
+  src: url("../../public/font/LilitaOne-Regular.ttf");
+}
 
 @theme {
   --color-sand: #fdfce3;
@@ -8,6 +12,7 @@
   --color-dark-brown: #2b100d;
   --color-yellow-orange: #ffb635;
   --color-orange: #f77c17;
+  --font-lilita: "Lilita One", sans-serif;
 }
 
 body {
