@@ -1,25 +1,46 @@
-import axios from "axios"
+import { fetchBack } from "@/utils/fetch"
 
 export async function createSessionCheckout(crownPackageId: string) {
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/create-checkout-session`,
-    { crownPackageId },
-    {
-      withCredentials: true,
-    },
-  )
+  const res = await fetchBack({
+    endpoint: "/stripe/create-checkout-session",
+    method: "POST",
+    body: { crownPackageId },
+  })
 
-  const { url } = response.data
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  const { url } = await res.json()
   return url
 }
 
 export async function successSessionCheckout(sessionId: string | null) {
-  return await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/success-checkout-session/${sessionId}`)
+  if (!sessionId) throw new Error("Session ID manquant")
+
+  const res = await fetchBack({
+    endpoint: `/stripe/success-checkout-session/${sessionId}`,
+    method: "GET",
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return await res.json()
 }
 
 export async function getCrownsPackages() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/get-crown-packages`)
+  const res = await fetchBack({
+    endpoint: "/stripe/get-crown-packages",
+    method: "GET",
+  })
 
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  const data = await res.json()
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  return res.data.sort((a: any, b: any) => a.price_euro - b.price_euro)
+  return data.sort((a: any, b: any) => a.price_euro - b.price_euro)
 }
