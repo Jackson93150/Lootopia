@@ -2,8 +2,10 @@
 
 import Image from "next/image"
 import "../globals.css"
+import { RankDisplay } from "@/components/ui/RankDisplay"
 import { getUserArtefact } from "@/service/rewards"
-import { useEffect, useState } from "react"
+import { uploadProfilePicture } from "@/service/user"
+import { useEffect, useRef, useState } from "react"
 import { useMe } from "../hook/useMe"
 import type { UserArtefact } from "../types/artefact"
 
@@ -12,15 +14,35 @@ export default function ProfilePage() {
   const { user, loading } = useMe()
   const rarityOrder = ["Légendaire", "Épique", "Rare", "Commun"]
   const [selectedTab, setSelectedTab] = useState<"artefacts" | "trophies" | "success">("artefacts")
+  const [profileImage, setProfileImage] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    try {
+      const res = await uploadProfilePicture(file)
+      setProfileImage(typeof res === "string" ? res : res.logo_url)
+    } catch (error) {
+      console.error("Erreur upload image:", error)
+    }
+  }
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click()
+  }
 
   useEffect(() => {
     async function fetchData() {
       const res = await getUserArtefact()
       setArtefacts(res)
+      if (user?.logo_url) {
+        setProfileImage(user.logo_url)
+      }
     }
 
     void fetchData()
-  }, [])
+  }, [user])
 
   const groupedArtefacts = artefacts
     ? rarityOrder.map(rarity => ({
@@ -36,27 +58,39 @@ export default function ProfilePage() {
           <Image src="/profile-container.png" alt="container" fill className="absolute pt-30 px-15 pb-10" />
           <div className="w-full flex h-full p-14 gap-8 z-10">
             <div className="h-full w-[250px] bg-[#A96A3D] outline-[#5B3E29] outline-[8px] rounded-[8px] p-4 flex flex-col gap-2">
-              <div className="w-full h-[30%] bg-[#FAC27D] rounded-[8px] border p-2">
-                <div className="w-full h-full rounded-[8px] border overflow-hidden">
+              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+              <div
+                className="w-full h-[30%] bg-[#FAC27D] rounded-[8px] border p-2 relative group cursor-pointer"
+                onClick={handleImageClick}
+              >
+                <div className="w-full h-full rounded-[8px] border overflow-hidden relative">
                   <Image
                     src={
-                      user.logo_url ??
+                      profileImage ??
                       "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
                     }
                     alt="profile"
                     width={500}
                     height={500}
-                    className="size-full object-cover"
+                    className="size-full object-cover transition duration-300 group-hover:brightness-75"
                   />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white text-sm font-bold">
+                    Changer l'image
+                  </div>
                 </div>
+                <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
               </div>
+
               <div className="w-full grow bg-[#FAC27D] rounded-[8px] border p-2">{user.biographie ?? "No Bio"}</div>
             </div>
             <div className="h-full grow flex flex-col">
               <div className="relative h-[15%] ml-4 items-end gap-1 flex w-fit">
-                <span className="absolute top-0 text-white font-lilita text-[24px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                  {user.username}
-                </span>
+                <div className="absolute top-0 flex flex-col">
+                  <span className="text-white font-lilita text-[24px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    {user.username}
+                  </span>
+                  <RankDisplay xp={user.xp} />
+                </div>
 
                 {[
                   { label: "Artefacts", key: "artefacts" },

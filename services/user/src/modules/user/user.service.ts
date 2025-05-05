@@ -1,9 +1,10 @@
 import { ConflictException, Injectable, NotFoundException, Response } from "@nestjs/common"
 import type { DocumentReference, Transaction } from "firebase-admin/firestore"
-
 import { FirebaseService } from "../../firebase/firebase.service"
 import type { AuthenticatedUserDto } from "./dto/auth.dto"
 import type { UserDto } from "./dto/user.dto"
+import { v4 as uuidv4 } from "uuid"
+import * as path from "node:path"
 
 @Injectable()
 export class UserService {
@@ -57,6 +58,33 @@ export class UserService {
       .update({
         solde: newAmountCrown,
       });
+  }
+
+  async uploadProfilePictureAndUpdate(id: string, file: Express.Multer.File): Promise<{ logo_url: string; }> {
+    const bucket = this.firebaseService.storage.bucket(); 
+  
+    const extension = path.extname(file.originalname);
+    const filename = `user/profile-picture/${id}/${id}${extension}`;
+    const fileRef = bucket.file(filename);
+  
+    await fileRef.save(file.buffer, {
+      metadata: {
+        contentType: file.mimetype,
+        metadata: {
+          firebaseStorageDownloadTokens: uuidv4(),
+        },
+      },
+      public: true,
+      gzip: true,
+    });
+  
+    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+    const userRef = this.firebaseService.firestore.collection("users").doc(id.toString());
+    await userRef.update({
+      logo_url: publicUrl,
+    });
+  
+    return { logo_url: publicUrl };
   }
 
   public async getById(id: string) {

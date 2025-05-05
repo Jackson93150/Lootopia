@@ -39,4 +39,19 @@ export class UserController {
 
     return result
   }
+
+  @MessagePattern({ cmd: "upload-profile-picture-user-service" })
+  async uploadProfilePicture(@Body() data: { uid: string; file: any }) {
+    try {
+      const buffer = Buffer.from(data.file.buffer, "base64")
+      return await this.userService.uploadProfilePictureAndUpdate(data.uid, {
+        ...data.file,
+        buffer,
+      })
+    } catch (error) {
+      console.error("🔥 Microservice upload error:", error)
+      throw error
+    }
+  }
+  
 }

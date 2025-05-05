@@ -25,3 +25,21 @@ export async function getUserById(id: string) {
 
   return await res.json()
 }
+
+export const uploadProfilePicture = async (file: File) => {
+  const formData = new FormData()
+  const encodedFilename = encodeURIComponent(file.name)
+  formData.append("file", file, encodedFilename)
+
+  const res = await fetchBack({
+    endpoint: "/users/upload-profile-picture",
+    method: "POST",
+    body: formData,
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return await res.json()
+}

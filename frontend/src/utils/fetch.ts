@@ -30,14 +30,31 @@ export async function getJwt(): Promise<string> {
   })
 }
 
-export async function fetchBack({ endpoint, method = "GET", body, signal, isPublic = false }: FetchBackendArgs) {
-  return await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`, {
+export async function fetchBack({
+  endpoint,
+  method = "GET",
+  body,
+  signal,
+  isPublic = false,
+}: FetchBackendArgs): Promise<Response> {
+  const headers: HeadersInit = {}
+
+  if (!isPublic) {
+    const token = await getJwt()
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  const isFormData = body instanceof FormData
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json"
+  }
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`, {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      ...(isPublic ? {} : { Authorization: await getJwt() }),
-    },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    headers,
+    body: body ? (isFormData ? body : JSON.stringify(body)) : undefined,
     signal,
   })
+
+  return response
 }

@@ -66,7 +66,8 @@ export async function registerUser(user: RegisterProps) {
 }
 
 export async function login(email: string, password: string) {
-  await signInWithEmailAndPassword(auth, email, password)
+  const userCredential = await signInWithEmailAndPassword(auth, email, password)
+  return await userCredential.user.getIdToken()
 }
 
 export async function loginGoogle() {
