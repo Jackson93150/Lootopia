@@ -1,3 +1,5 @@
+import LandingPageComponent from "@/components/landing/landingPage"
+
 export default function Home() {
-  return <h1>Lootopia</h1>
+  return <LandingPageComponent />
 }
