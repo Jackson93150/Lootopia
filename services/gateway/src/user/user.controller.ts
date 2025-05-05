@@ -1,11 +1,21 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from "@nestjs/common"
 
+import { FileInterceptor } from "@nestjs/platform-express"
 import { AuthDecorator } from "../auth/decorators/auth.decorator"
 import { AuthenticatedUser } from "../auth/dto/auth.dto"
 import { AuthGuard } from "../auth/guards/auth.guard"
 import { UserDto } from "./dto/user"
 import { UserService } from "./user.service"
-import { FileInterceptor } from "@nestjs/platform-express"
 
 @Controller("/users")
 export class UserController {
@@ -19,7 +29,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Get("user/:id")
   async getUserById(@Param("id") id: string) {
-      return await this.clientUserService.findById(id)
+    return await this.clientUserService.findById(id)
   }
 
   @UseGuards(AuthGuard)
@@ -31,10 +41,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @Post("upload-profile-picture")
   @UseInterceptors(FileInterceptor("file"))
-  async uploadProfilePicture(
-    @AuthDecorator() user: AuthenticatedUser,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  async uploadProfilePicture(@AuthDecorator() user: AuthenticatedUser, @UploadedFile() file: Express.Multer.File) {
     try {
       if (!file) throw new NotFoundException("Fichier manquant.")
       return await this.clientUserService.uploadProfilePicture(user.id, file)
@@ -43,5 +50,4 @@ export class UserController {
       throw error
     }
   }
-  
 }

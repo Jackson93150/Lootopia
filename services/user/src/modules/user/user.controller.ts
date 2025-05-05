@@ -1,6 +1,6 @@
-import { Body, Controller, NotFoundException, Param } from "@nestjs/common"
+import { Body, Controller, NotFoundException } from "@nestjs/common"
 
-import { MessagePattern, Payload } from "@nestjs/microservices"
+import { MessagePattern } from "@nestjs/microservices"
 import type { AuthenticatedUserDto } from "./dto/auth.dto"
 import type { UserDto } from "./dto/user.dto"
 import { UserService } from "./user.service"
@@ -10,6 +10,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @MessagePattern({ cmd: "find-by-id-user-service" })
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async getUserById(@Body() user_id: any) {
     try {
       const user = await this.userService.getById(user_id.uid)
@@ -41,6 +42,7 @@ export class UserController {
   }
 
   @MessagePattern({ cmd: "upload-profile-picture-user-service" })
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async uploadProfilePicture(@Body() data: { uid: string; file: any }) {
     try {
       const buffer = Buffer.from(data.file.buffer, "base64")
@@ -53,5 +55,4 @@ export class UserController {
       throw error
     }
   }
-  
 }

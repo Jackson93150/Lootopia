@@ -3,12 +3,12 @@ import { ConfigModule } from "@nestjs/config"
 import { ClientsModule, Transport } from "@nestjs/microservices"
 import { AuthController } from "./auth/auth.controller"
 import { AuthService } from "./auth/auth.service"
-import { UserController } from "./user/user.controller"
-import { UserService } from "./user/user.service"
-import { StripeController } from "./stripe/stripe.controller"
-import { StripeService } from "./stripe/stripe.service"
 import { RewardController } from "./reward/reward.controller"
 import { RewardService } from "./reward/reward.service"
+import { StripeController } from "./stripe/stripe.controller"
+import { StripeService } from "./stripe/stripe.service"
+import { UserController } from "./user/user.controller"
+import { UserService } from "./user/user.service"
 
 @Module({
   imports: [

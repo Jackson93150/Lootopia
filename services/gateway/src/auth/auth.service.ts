@@ -13,7 +13,7 @@ export class AuthService {
 
   public getJwtToken(authorization: string) {
     if (authorization.startsWith("Bearer ")) return authorization.substring(7)
-  
+
     return authorization
   }
 }

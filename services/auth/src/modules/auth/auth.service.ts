@@ -22,11 +22,11 @@ export class AuthService {
           solde: 0,
           double_authentification: false,
           last_login: null,
-          role: 'commun',
+          role: "commun",
           xp: 0,
           id_partenaire: null,
-          id_rang: 'XzXzRJXkM5OgsYdpCDF1',
-          statut: 'actif'
+          id_rang: "XzXzRJXkM5OgsYdpCDF1",
+          statut: "actif",
         })
 
         return user

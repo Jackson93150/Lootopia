@@ -1,9 +1,9 @@
 import { BadRequestException, Inject, Injectable, InternalServerErrorException } from "@nestjs/common"
+import { ClientProxy } from "@nestjs/microservices"
 import { FirebaseService } from "src/firebase/firebase.service"
 import Stripe from "stripe"
 import { CrownService } from "../crown/crown.service"
 import { StripeTransactionConverter } from "./types/stripe-transaction"
-import { ClientProxy } from "@nestjs/microservices"
 
 @Injectable()
 export class StripeService {
@@ -54,28 +54,24 @@ export class StripeService {
         metadata: {
           productId: `${crownPackage.id_firebase}`,
           userId: `${userId}`,
-          amountCrown: `${crownPackage.amountCrown}`
+          amountCrown: `${crownPackage.amountCrown}`,
         },
       }
 
       const session = await this.stripe.checkout.sessions.create(params)
 
-      await this.firebaseService.stripeTransactionsCollectionRef
-        .withConverter(StripeTransactionConverter)
-        .add({
-          id_user: userId,
-          txh: session.id,
-          id_crown_package: crownPackage.id_firebase,
-          statut: "En cours",
-          montant_couronnes: crownPackage.crown_amount,
-        })
+      await this.firebaseService.stripeTransactionsCollectionRef.withConverter(StripeTransactionConverter).add({
+        id_user: userId,
+        txh: session.id,
+        id_crown_package: crownPackage.id_firebase,
+        statut: "En cours",
+        montant_couronnes: crownPackage.crown_amount,
+      })
 
       return session
     } catch (error) {
       console.error("Error creating session:", error)
-      throw new InternalServerErrorException(
-        "Failed to create checkout session", 
-      )
+      throw new InternalServerErrorException("Failed to create checkout session")
     }
   }
 
@@ -101,17 +97,13 @@ export class StripeService {
 
   async webhook(signature, payload) {
     try {
-      this.event = this.stripe.webhooks.constructEvent(
-        payload,
-        signature,
-        String(process.env.STRIPE_WEBHOOK_KEY),
-      )
+      this.event = this.stripe.webhooks.constructEvent(payload, signature, String(process.env.STRIPE_WEBHOOK_KEY))
     } catch (err) {
-      console.error('Webhook signature verification failed:', err.message);
-      throw new BadRequestException(`Webhook Error: ${err.message}`);
+      console.error("Webhook signature verification failed:", err.message)
+      throw new BadRequestException(`Webhook Error: ${err.message}`)
     }
 
-    if (this.event.type === 'checkout.session.completed') {
+    if (this.event.type === "checkout.session.completed") {
       const sessionId = this.event.data.object.id
 
       await this.successCheckoutSession(sessionId)
@@ -121,14 +113,15 @@ export class StripeService {
   private async successCheckoutSession(checkoutSessionId) {
     const checkoutSession = await this.getCheckoutSessionByThx(checkoutSessionId)
 
-    await this.firebaseService.stripeTransactionsCollectionRef
-      .doc(checkoutSession.id)
-      .update({
-        statut: "Payée",
-      });
+    await this.firebaseService.stripeTransactionsCollectionRef.doc(checkoutSession.id).update({
+      statut: "Payée",
+    })
 
-    await this.clientUserService.emit({ cmd: 'add-crown-user-service' }, { userId: checkoutSession.id_user, amountOfCrown: checkoutSession.montant_couronnes })
+    await this.clientUserService.emit(
+      { cmd: "add-crown-user-service" },
+      { userId: checkoutSession.id_user, amountOfCrown: checkoutSession.montant_couronnes },
+    )
 
-    return { statut: 'success' }
+    return { statut: "success" }
   }
 }

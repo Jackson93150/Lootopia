@@ -10,7 +10,6 @@ export default function ShopPage() {
     async function fetchPackages() {
       try {
         const data = await getCrownsPackages()
-        console.log(data)
         setCrownPackages(data)
       } catch (error) {
         console.error("Erreur lors de la récupération des crown packages :", error)

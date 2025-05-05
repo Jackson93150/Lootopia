@@ -3,8 +3,8 @@ import { type App, type ServiceAccount, cert, getApps, initializeApp } from "fir
 import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
 
+import { type Storage, getStorage } from "firebase-admin/storage"
 import { UserConverter } from "../modules/user/types/user/user.type"
-import { getStorage, type Storage } from "firebase-admin/storage"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {

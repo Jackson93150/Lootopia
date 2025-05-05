@@ -20,5 +20,6 @@ export async function successSessionCheckout(sessionId: string | null) {
 export async function getCrownsPackages() {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stripe/get-crown-packages`)
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   return res.data.sort((a: any, b: any) => a.price_euro - b.price_euro)
 }
