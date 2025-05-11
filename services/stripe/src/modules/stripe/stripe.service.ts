@@ -17,7 +17,7 @@ export class StripeService {
     private readonly firebaseService: FirebaseService,
   ) {
     this.stripe = new Stripe(this.apiKey, {
-      apiVersion: "2025-03-31.basil",
+      apiVersion: "2025-04-30.basil",
     })
   }
 

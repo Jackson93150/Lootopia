@@ -13,4 +13,10 @@ export class RewardController {
   async getUserArtefact(@AuthDecorator() user: AuthenticatedUser) {
     return await this.clientRewardService.getUserArtefact(user.id)
   }
+
+  @Get("user-trophy")
+  @UseGuards(AuthGuard)
+  async getUserTrophy(@AuthDecorator() user: AuthenticatedUser) {
+    return await this.clientRewardService.getUserTrophys(user.id)
+  }
 }
