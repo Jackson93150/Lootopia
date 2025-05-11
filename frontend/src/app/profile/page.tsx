@@ -3,16 +3,19 @@
 import Image from "next/image"
 import "../globals.css"
 import { RankDisplay } from "@/components/ui/RankDisplay"
-import { getUserArtefact, getUserTrophy } from "@/service/rewards"
+import { getUserArtefact, getUserLockedSuccess, getUserSuccess, getUserTrophy } from "@/service/rewards"
 import { uploadProfilePicture } from "@/service/user"
 import { useEffect, useRef, useState } from "react"
 import { useMe } from "../hook/useMe"
 import type { UserArtefact } from "../types/artefact"
+import type { Success, UserSuccess } from "../types/success"
 import type { UserTrophy } from "../types/trophy"
 
 export default function ProfilePage() {
   const [artefacts, setArtefacts] = useState<UserArtefact[] | null>(null)
   const [trophys, setTrophys] = useState<UserTrophy[] | null>(null)
+  const [lockedSuccess, setLockedSuccess] = useState<Success[] | null>(null)
+  const [userSuccess, setUserSuccess] = useState<UserSuccess[] | null>(null)
   const { user, loading } = useMe()
   const rarityOrder = ["Légendaire", "Épique", "Rare", "Commun"]
   const [selectedTab, setSelectedTab] = useState<"artefacts" | "trophies" | "success">("artefacts")
@@ -53,12 +56,36 @@ export default function ProfilePage() {
     fileInputRef.current?.click()
   }
 
+  const groupedArtefacts = artefacts
+    ? rarityOrder.map(rarity => ({
+        rarity,
+        artefacts: artefacts.filter(a => a.artefact.rarity === rarity),
+      }))
+    : []
+
+  const getRarityImage = (rarity: string): string => {
+    switch (rarity.toLowerCase()) {
+      case "bronze":
+        return "/images/one-star.png"
+      case "silver":
+        return "/images/two-star.png"
+      case "gold":
+        return "/images/three-star.png"
+      default:
+        return "/images/one-star.png"
+    }
+  }
+
   useEffect(() => {
     async function fetchData() {
       const res = await getUserArtefact()
       setArtefacts(res)
       const trophy = await getUserTrophy()
       setTrophys(trophy)
+      const success = await getUserSuccess()
+      setUserSuccess(success)
+      const locked = await getUserLockedSuccess()
+      setLockedSuccess(locked)
       if (user?.logo_url) {
         setProfileImage(user.logo_url)
       }
@@ -66,13 +93,6 @@ export default function ProfilePage() {
 
     void fetchData()
   }, [user])
-
-  const groupedArtefacts = artefacts
-    ? rarityOrder.map(rarity => ({
-        rarity,
-        artefacts: artefacts.filter(a => a.artefact.rarity === rarity),
-      }))
-    : []
 
   return (
     <div className="w-screen h-screen items-center justify-center flex">
@@ -214,7 +234,52 @@ export default function ProfilePage() {
                 )}
 
                 {selectedTab === "success" && (
-                  <div className="p-6 text-white font-lilita text-xl">Succès à débloquer 🌟</div>
+                  <div className="flex flex-col gap-10 p-6">
+                    <div className="flex flex-col gap-4">
+                      <h2 className="text-white font-lilita text-2xl">Mes Succès</h2>
+                      <div className="w-full h-[2px] bg-white rounded-full" />
+                      {userSuccess && userSuccess.length > 0 ? (
+                        <div className="flex flex-col gap-3">
+                          {userSuccess.map(success => (
+                            <div
+                              key={success.success_id}
+                              className="bg-[#eef4fa] rounded-[16px] border-[2px] border-[#333333] px-6 py-4 text-black flex items-center justify-between"
+                            >
+                              <span className="font-semibold text-lg">{success.success.name}</span>
+                              <Image
+                                src={getRarityImage(success.success.rarity)}
+                                alt={success.success.rarity}
+                                width={80}
+                                height={16}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-white">Aucun succès débloqué.</p>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                      <h2 className="text-white font-lilita text-2xl">À Débloquer</h2>
+                      <div className="w-full h-[2px] bg-white rounded-full" />
+                      {lockedSuccess && lockedSuccess.length > 0 ? (
+                        <div className="flex flex-col gap-3">
+                          {lockedSuccess.map(success => (
+                            <div
+                              key={success.id_firebase}
+                              className="bg-[#eef4fa] rounded-[16px] border-[2px] border-[#333333] px-6 py-4 text-black flex items-center justify-between opacity-60"
+                            >
+                              <span className="font-semibold text-lg">{success.name}</span>
+                              <Image src={getRarityImage(success.rarity)} alt={success.rarity} width={80} height={16} />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-white">Tous les succès ont été débloqués</p>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>

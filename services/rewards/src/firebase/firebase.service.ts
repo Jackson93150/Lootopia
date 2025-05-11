@@ -7,6 +7,8 @@ import { FusionConverter, FusionDocument } from "../modules/artefact/types/fusio
 import { UserArtefactConverter, UserArtefactDocument } from "../modules/artefact/types/user-artefact"
 import { TrophyConverter, TrophyDocument } from "../modules/trophy/types/trophy"
 import { UserTrophyConverter, UserTrophyDocument } from "../modules/trophy/types/user-trophy"
+import { SuccessConverter, SuccessDocument } from "../modules/success/types/success"
+import { UserSuccessConverter, UserSuccessDocument } from "../modules/success/types/user-success"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -19,6 +21,8 @@ export class FirebaseService implements OnModuleInit {
   public userArtefactsCollectionRef: CollectionReference<UserArtefactDocument>
   public trophyCollectionRef: CollectionReference<TrophyDocument>
   public userTrophyCollectionRef: CollectionReference<UserTrophyDocument>
+  public successCollectionRef: CollectionReference<SuccessDocument>
+  public userSuccessCollectionRef: CollectionReference<UserSuccessDocument>
 
   onModuleInit() {
     const serviceAccount: string | ServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -38,5 +42,7 @@ export class FirebaseService implements OnModuleInit {
     this.userArtefactsCollectionRef = this.firestore.collection("user_artefact").withConverter(UserArtefactConverter)
     this.trophyCollectionRef = this.firestore.collection("trophy").withConverter(TrophyConverter)
     this.userTrophyCollectionRef = this.firestore.collection("user_trophy").withConverter(UserTrophyConverter)
+    this.successCollectionRef = this.firestore.collection("success").withConverter(SuccessConverter)
+    this.userSuccessCollectionRef = this.firestore.collection("user_success").withConverter(UserSuccessConverter)
   }
 }

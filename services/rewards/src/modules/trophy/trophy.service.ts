@@ -20,8 +20,6 @@ export class TrophyService {
       .where("user_id", "==", userId)
       .get()
 
-    console.log(snapshotUserTrophys)
-
     const userTrophys = snapshotUserTrophys.docs.map(doc => ({
       id_firebase: doc.id,
       ...doc.data(),
