@@ -1,6 +1,8 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsEmail, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator"
 
+import { createConverter } from "src/firebase/firestore.convertor"
+
 enum Role {
   COMMUN = "commun",
   PARTENAIRE = "partenaire",
@@ -13,12 +15,7 @@ enum Statut {
   SUPPRIME = "supprimé",
 }
 
-export class UserDto {
-  @IsNotEmpty()
-  @IsString()
-  @Type(() => String)
-  id!: string
-
+export class UserDocument {
   @IsNotEmpty()
   @IsString()
   @Type(() => String)
@@ -68,8 +65,9 @@ export class UserDto {
   xp: number
 
   @IsString()
+  @IsOptional()
   @Type(() => String)
-  id_rang: string
+  id_rang?: string
 
   @IsOptional()
   @IsString()
@@ -80,3 +78,5 @@ export class UserDto {
   @Type(() => String)
   statut: Statut = Statut.ACTIF
 }
+
+export const UserConverter = createConverter(UserDocument)

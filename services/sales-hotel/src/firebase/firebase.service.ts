@@ -33,6 +33,6 @@ export class FirebaseService implements OnModuleInit {
     this.internalTransactionsCollectionRef = this.firestore
       .collection("internal_transactions")
       .withConverter(InternalTransactionConverter)
-  this.usersCollectionRef = this.firestore.collection("users").withConverter(UserConverter)
+    this.usersCollectionRef = this.firestore.collection("users").withConverter(UserConverter)
   }
 }

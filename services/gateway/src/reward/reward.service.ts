@@ -8,4 +8,8 @@ export class RewardService {
   async getUserArtefact(userId: string) {
     return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: userId })
   }
+
+  async getArtefacts() {
+    return await this.clientRewardService.send({ cmd: "get-artefacts-artefacts-service" }, {})
+  }
 }

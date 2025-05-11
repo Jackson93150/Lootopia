@@ -13,4 +13,9 @@ export class RewardController {
   async getUserArtefact(@AuthDecorator() user: AuthenticatedUser) {
     return await this.clientRewardService.getUserArtefact(user.id)
   }
+
+  @Get("artefacts")
+  async getArtefacts() {
+    return await this.clientRewardService.getArtefacts()
+  }
 }

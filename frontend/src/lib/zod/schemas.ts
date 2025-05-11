@@ -45,8 +45,3 @@ export const schemaAuction = z
       message: "Un prix doit être renseigné pour une vente directe.",
     },
   )
-
-  export const schemaAddAuction = 
-    z.object({
-      auction_price: z.number().int().min(2),
-    })

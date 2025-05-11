@@ -1,9 +1,9 @@
-import typesenseClient from "@/lib/typesense"
-import axios from "axios"
-import type { SearchResponseHit } from "typesense/lib/Typesense/Documents"
+import { fetchBack } from "@/utils/fetch"
 
 export async function createAuction(
   user_artefact_id: string,
+  artefact_id: string,
+  user_email: string,
   fix_price: number | null,
   auction_price: number,
   direct_sale: boolean,
@@ -12,10 +12,13 @@ export async function createAuction(
   artefact_rarity: string,
   image: string,
 ) {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/sales-hotel/create-auction`,
-    {
+  const res = await fetchBack({
+    endpoint: "/sales-hotel/create-auction",
+    method: "POST",
+    body: {
+      creator_email: user_email,
       user_artefact_id: user_artefact_id,
+      artefact_id: artefact_id,
       fix_price: fix_price,
       auction_price: auction_price,
       direct_sale: direct_sale,
@@ -24,76 +27,91 @@ export async function createAuction(
       artefact_rarity: artefact_rarity,
       image: image,
     },
-    {
-      withCredentials: true,
-    },
-  )
+  })
 
-  return res.data
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return res.json()
 }
 
-export async function searchAuctions(
-  query: string,
-  tags: string[] = [],
-  tools: string[] = [],
-  page = 1,
-): Promise<{ auctions: any; total: number }> {
-  const searchParameters: Record<string, unknown> = {
-    q: query,
-    query_by: "artefact_rarity",
-    per_page: 9,
-    page,
+export async function cancelAuction(creator_email: string, auction_id: string, user_artefact_id: string) {
+  const res = await fetchBack({
+    endpoint: "/sales-hotel/cancel-auction",
+    method: "POST",
+    body: {
+      creator_email: creator_email,
+      auction_id: auction_id,
+      user_artefact_id: user_artefact_id,
+    },
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
   }
 
-  const filters: string[] = []
-
-  if (tags.length) {
-    filters.push(tags.map(tag => `tags:=${tag}`).join(" && "))
-  }
-
-  if (tools.length) {
-    filters.push(tools.map(tool => `tools:=[${tool}]`).join(" && "))
-  }
-
-  if (filters.length) {
-    searchParameters.filter_by = filters.join(" && ")
-  }
-
-  const results = await typesenseClient.collections<any>("auctions").documents().search(searchParameters)
-
-  const hits = results.hits as SearchResponseHit<any>[]
-
-  const auctions =
-    hits?.map(hit => ({
-      auction_id: hit.document.auction_id,
-      creator_id: hit.document.creator_id,
-      auction_price: hit.document.auction_price,
-      fix_price: hit.document.fix_price,
-      artefact_name: hit.document.artefact_name,
-      artefact_rarity: hit.document.artefact_rarity,
-      image: hit.document.image_url,
-      timer: hit.document.timer,
-      createdAt: hit.document.createdAt,
-    })) ?? []
-
-  return {
-    auctions,
-    total: results.found ?? 0,
-  }
+  return res.json()
 }
 
-
-export async function addAuction(auction_price: string, auction_id: string) {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/sales-hotel/add-auction`,
-    {
-      auction_price: auction_price,
-      auction_id: auction_id
+export async function directlyBuy(
+  fix_price: number,
+  auction_id: string,
+  id_user_artefact: string,
+  id_artefact: string,
+  creator_email: string,
+) {
+  const res = await fetchBack({
+    endpoint: "/sales-hotel/directly-buy",
+    method: "POST",
+    body: {
+      fix_price: fix_price,
+      id_user_artefact: id_user_artefact,
+      id_artefact: id_artefact,
+      auction_id: auction_id,
+      creator_email: creator_email,
     },
-    {
-      withCredentials: true,
-    },
-  )
+  })
 
-  return res.data
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return res.json()
+}
+
+export async function addBid(bid_price: number, auction_id: string, userMail: string) {
+  const res = await fetchBack({
+    endpoint: "/sales-hotel/add-bid",
+    method: "POST",
+    body: {
+      bid_price: bid_price,
+      auction_id: auction_id,
+      user_email: userMail,
+    },
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return res.json()
+}
+
+export async function removeBid(bid_price: number, auction_id: string, userMail: string) {
+  const res = await fetchBack({
+    endpoint: "/sales-hotel/remove-bid",
+    method: "POST",
+    body: {
+      bid_price: bid_price,
+      auction_id: auction_id,
+      user_email: userMail,
+    },
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return res.json()
 }

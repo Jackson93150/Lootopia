@@ -14,24 +14,26 @@ export function formatValidationErrors(errors: ValidationError[]): string {
 export function createConverter<T extends object>(cls: new () => T) {
   return {
     toFirestore(document: T) {
-      const errors = validateSync(document)
+      const instance = plainToInstance(cls, document)
+      const errors = validateSync(instance)
 
       if (errors.length > 0) {
         throw new Error(`Validation failed: ${JSON.stringify(errors)}`)
       }
 
-      return instanceToPlain(document)
+      return instanceToPlain(instance)
     },
 
     fromFirestore(snapshot: QueryDocumentSnapshot) {
-      const document = plainToInstance(cls, snapshot.data())
-      const errors = validateSync(document)
+      const data = snapshot.data()
+      const instance = plainToInstance(cls, data)
+      const errors = validateSync(instance)
 
       if (errors.length > 0) {
         throw new Error(`Validation failed on retrieved data: ${formatValidationErrors(errors)}`)
       }
 
-      return document
+      return instance
     },
   }
 }

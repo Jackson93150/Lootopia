@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common"
 import { ConfigModule } from "@nestjs/config"
 import { ClientsModule, Transport } from "@nestjs/microservices"
-import { RewardController } from "./reward/reward.controller"
-import { RewardService } from "./reward/reward.service"
 import { AuthController } from "./auth/auth.controller"
 import { AuthService } from "./auth/auth.service"
+import { RewardController } from "./reward/reward.controller"
+import { RewardService } from "./reward/reward.service"
 import { SalesHotelController } from "./sales-hotel/sales-hotel.controller"
 import { SalesHotelService } from "./sales-hotel/sales-hotel.service"
 import { StripeController } from "./stripe/stripe.controller"
@@ -47,18 +47,11 @@ import { UserService } from "./user/user.service"
     ]),
     ClientsModule.register([
       {
-        name: "ARTEFACT_SERVICE",
+        name: "REWARDS_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.ARTEFACT_SERVICE_PORT) },
+        options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
       },
     ]),
-    ClientsModule.register([
-    {
-      name: "REWARDS_SERVICE",
-      transport: Transport.TCP,
-      options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
-    },
-  ]),
   ],
   controllers: [UserController, AuthController, StripeController, RewardController, SalesHotelController],
   providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService],

@@ -11,9 +11,10 @@ export class SalesHotelController {
   @UseGuards(AuthGuard)
   @Post("/create-auction")
   async createAuction(
-    @AuthDecorator() user: AuthenticatedUser,
     @Body() auctionInfo: {
       user_artefact_id: string
+      artefact_id: string
+      user_email: string
       fix_price: number | null
       auction_price: number
       direct_sale: boolean
@@ -23,21 +24,62 @@ export class SalesHotelController {
       image: string
     },
   ) {
-    const userId = user.id
-    return await this.clientSalesHotelService.createAuction(userId, auctionInfo)
+    return await this.clientSalesHotelService.createAuction(auctionInfo)
   }
 
   @UseGuards(AuthGuard)
-  @Post("/add-auction")
-  async addAuction(
-    @AuthDecorator() user: AuthenticatedUser,
+  @Post("/cancel-auction")
+  async cancelAuction(
     @Body() auctionInfo: {
-      user_artefact_id: string
-      auction_price: number
+      creator_email: string
       auction_id: string
+      user_artefact_id: string
     },
   ) {
-    const userId = user.id
-    return await this.clientSalesHotelService.addAuction(userId, auctionInfo)
+    return await this.clientSalesHotelService.cancelAuction(auctionInfo)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post("/directly-buy")
+  async directlyBuy(
+    @AuthDecorator() user: AuthenticatedUser,
+    @Body() buyInfo: {
+      fix_price: number
+      auction_id: string
+      id_user_artefact: string
+      id_artefact: string
+      creator_email: string
+    },
+  ) {
+    const user_id = user.id
+    return await this.clientSalesHotelService.directlyBuy(user_id, buyInfo)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post("/add-bid")
+  async addBid(
+    @AuthDecorator() user: AuthenticatedUser,
+    @Body() bidInfo: {
+      bid_price: number
+      auction_id: string
+      user_email: string
+    },
+  ) {
+    const user_id = user.id
+    return await this.clientSalesHotelService.addBid(user_id, bidInfo)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post("/remove-bid")
+  async removeBid(
+    @AuthDecorator() user: AuthenticatedUser,
+    @Body() bidInfo: {
+      bid_price: number
+      auction_id: string
+      user_email: string
+    },
+  ) {
+    const user_id = user.id
+    return await this.clientSalesHotelService.removeBid(user_id, bidInfo)
   }
 }
