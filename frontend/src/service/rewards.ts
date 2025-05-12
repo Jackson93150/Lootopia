@@ -1,4 +1,5 @@
 import { fetchBack } from "@/utils/fetch"
+import { safeJson } from "@/utils/safeJson"
 
 export async function getUserArtefact() {
   const res = await fetchBack({
@@ -38,8 +39,7 @@ export async function getUserTrophy() {
     throw new Error(`Erreur HTTP : ${res.status}`)
   }
 
-  const data = await res.json()
-  return data
+  return await safeJson(res)
 }
 
 export async function getUserSuccess() {
@@ -52,8 +52,7 @@ export async function getUserSuccess() {
     throw new Error(`Erreur HTTP : ${res.status}`)
   }
 
-  const data = await res.json()
-  return data
+  return await safeJson(res)
 }
 
 export async function getUserLockedSuccess() {
@@ -66,6 +65,5 @@ export async function getUserLockedSuccess() {
     throw new Error(`Erreur HTTP : ${res.status}`)
   }
 
-  const data = await res.json()
-  return data
+  return await safeJson(res)
 }
