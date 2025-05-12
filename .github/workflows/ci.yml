@@ -39,20 +39,23 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: lootopia_user_service
-
-      - name: 🔍 Scan frontend image with Trivy
+      
+      - name: 🔍 Scan auth_service image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: lootopia_frontend
+          image-ref: lootopia_auth_service
 
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: 🔍 Scan rewards_service image with Trivy
+        uses: aquasecurity/trivy-action@master
         with:
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          image-ref: lootopia_rewards_service
+
+      - name: 🔍 Scan stripe_service image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lootopia_stripe_service
+
+      - name: 🔍 Scan sales-hotel_service image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: lootopia_sales-hotel_service
