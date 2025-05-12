@@ -16,9 +16,7 @@ export class TrophyService {
   constructor(private readonly firebaseService: FirebaseService) {}
 
   async getUserTrophys(userId: string): Promise<UserTrophyWithDetails[] | null> {
-    const snapshotUserTrophys = await this.firebaseService.userTrophyCollectionRef
-      .where("user_id", "==", userId)
-      .get()
+    const snapshotUserTrophys = await this.firebaseService.userTrophyCollectionRef.where("user_id", "==", userId).get()
 
     const userTrophys = snapshotUserTrophys.docs.map(doc => ({
       id_firebase: doc.id,

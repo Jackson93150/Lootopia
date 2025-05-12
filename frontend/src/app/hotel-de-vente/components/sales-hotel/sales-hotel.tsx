@@ -5,6 +5,7 @@ import HdvTab from "./tabs/hdv/hdv-tab"
 import BuyTab from "./tabs/user-bids/user-bids-tab"
 import UserSalesTab from "./tabs/user-sales/user-sales-tab"
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function SalesHotel({ user }: any) {
   const { auctionsWithUserBids } = useUserBidsFromMergedAuctions(user?.email)
   const [query, setQuery] = useState("")
@@ -23,25 +24,23 @@ export default function SalesHotel({ user }: any) {
               onChange={e => setQuery(e.target.value)}
             />
             <div className="flex gap-2">
-
-            
-            {[
-              { label: "HDV", key: "hdv" },
-              { label: "Enchères", key: "enchères" },
-              { label: "Ventes", key: "ventes" },
-            ].map(({ label, key }) => (
-              <button
-                key={key}
-                onClick={() => setSelectedTab(key as typeof selectedTab)}
-                className={`h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-[#F65F26]/70 bg-gradient-to-b from-[#E9721E] to-[#F29D25] ${
-                  selectedTab === key ? "brightness-100" : "brightness-75"
-                }`}
-              >
-                <span className="stroke-1 font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                  {label}
-                </span>
-              </button>
-            ))}
+              {[
+                { label: "HDV", key: "hdv" },
+                { label: "Enchères", key: "enchères" },
+                { label: "Ventes", key: "ventes" },
+              ].map(({ label, key }) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedTab(key as typeof selectedTab)}
+                  className={`h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-[#F65F26]/70 bg-gradient-to-b from-[#E9721E] to-[#F29D25] ${
+                    selectedTab === key ? "brightness-100" : "brightness-75"
+                  }`}
+                >
+                  <span className="stroke-1 font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    {label}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
 

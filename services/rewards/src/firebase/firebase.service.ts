@@ -5,10 +5,10 @@ import { type CollectionReference, type Firestore, getFirestore } from "firebase
 import { ArtefactConverter, ArtefactDocument } from "../modules/artefact/types/artefact"
 import { FusionConverter, FusionDocument } from "../modules/artefact/types/fusion"
 import { UserArtefactConverter, UserArtefactDocument } from "../modules/artefact/types/user-artefact"
-import { TrophyConverter, TrophyDocument } from "../modules/trophy/types/trophy"
-import { UserTrophyConverter, UserTrophyDocument } from "../modules/trophy/types/user-trophy"
 import { SuccessConverter, SuccessDocument } from "../modules/success/types/success"
 import { UserSuccessConverter, UserSuccessDocument } from "../modules/success/types/user-success"
+import { TrophyConverter, TrophyDocument } from "../modules/trophy/types/trophy"
+import { UserTrophyConverter, UserTrophyDocument } from "../modules/trophy/types/user-trophy"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {

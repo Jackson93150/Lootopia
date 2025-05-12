@@ -12,6 +12,7 @@ import OwnArtefactModal from "./own-artefact-modal"
 
 type FormValues = z.infer<typeof schemaAuction>
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export default function OwnArtefacts({ user }: any) {
   const [ownArtefacts, setOwnArtefacts] = useState<UserArtefact[]>([])
   const [selectedOwnArtefact, setSelectedOwnArtefact] = useState<UserArtefact | null>(null)
@@ -60,7 +61,9 @@ export default function OwnArtefacts({ user }: any) {
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const onInvalid = (errors: Record<string, any>) => {
+    // biome-ignore lint/complexity/noForEach: <explanation>
     Object.values(errors).forEach(error => {
       if (error?.message) {
         toastError(error?.message)
@@ -85,7 +88,9 @@ export default function OwnArtefacts({ user }: any) {
     <>
       <div className="grid grid-cols-4 gap-1 pointer">
         {ownArtefacts.map((ownArtefact, index) => (
+          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
           <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
             className="cursor-pointer rounded bg-gradient-to-br from-[#FAC27D] to-[#f5c249] py-1 border-[2px] border-[#5B3E29]"
             onClick={() => {

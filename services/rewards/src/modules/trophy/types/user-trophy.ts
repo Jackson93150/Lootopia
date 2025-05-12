@@ -16,7 +16,7 @@ export class UserTrophyDocument {
 
   @IsNotEmpty()
   @Type(() => String)
-  date!: string  
+  date!: string
 }
 
 export const UserTrophyConverter = createConverter(UserTrophyDocument)

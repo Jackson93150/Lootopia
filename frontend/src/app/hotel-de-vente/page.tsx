@@ -22,6 +22,7 @@ export default function SaleHotelPage() {
   )
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function Inventory({ user }: any) {
   return (
     <div className="items-center flex-col flex bg-[#A96A3D] h-[100%] w-[100%] lg:w-[40%] rounded-lg border-4 border-[#5B3E29]">

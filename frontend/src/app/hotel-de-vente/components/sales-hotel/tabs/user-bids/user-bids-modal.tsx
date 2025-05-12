@@ -27,7 +27,7 @@ export default function UserBidsModal({
 
         toastSuccess("Enchère annulée")
       }
-    } catch (error) {
+    } catch (_error) {
       toastError("Une erreur est survenue")
     }
   }

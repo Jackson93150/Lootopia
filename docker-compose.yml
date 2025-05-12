@@ -1,58 +1,101 @@
 services:
+  # Gateway (point d'entrée unique)
   gateway-service:
     platform: linux/amd64
     build:
       context: ./services/gateway
     image: lootopia_gateway_service
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Seul service exposé à l'extérieur
+    environment:
+      - PORT=3000
+      - USER_SERVICE_HOST=user-service
+      - USER_SERVICE_PORT=3000
+      - AUTH_SERVICE_HOST=auth-service
+      - AUTH_SERVICE_PORT=3000
+      - STRIPE_SERVICE_HOST=stripe-service
+      - STRIPE_SERVICE_PORT=3000
+      - SALES_HOTEL_SERVICE_HOST=sales-hotel-service
+      - SALES_HOTEL_SERVICE_PORT=3000
+      - REWARDS_SERVICE_HOST=rewards-service
+      - REWARDS_SERVICE_PORT=3000
     volumes:
       - ./services/gateway:/app
-    env_file:
-      - ./services/gateway/.env
+    networks:
+      - lootopia-net
+    depends_on:
+      - user-service
+      - auth-service
+      - stripe-service
+      - sales-hotel-service
+      - rewards-service
 
+  # Microservices (communication interne uniquement)
   user-service:
     platform: linux/amd64
     build:
       context: ./services/user
     image: lootopia_user_service
-    ports:
-      - "3000:3000"
+    environment:
+      - PORT=3000  # Écoute sur le port 3000 en interne
     volumes:
       - ./services/user:/app
-    env_file:
-      - ./services/user/.env
+    networks:
+      - lootopia-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   auth-service:
     platform: linux/amd64
     build:
       context: ./services/auth
     image: lootopia_auth_service
-    ports:
-      - "3000:3000"
+    environment:
+      - PORT=3000
     volumes:
       - ./services/auth:/app
-    env_file:
-      - ./services/auth/.env
+    networks:
+      - lootopia-net
 
   stripe-service:
     platform: linux/amd64
     build:
       context: ./services/stripe
     image: lootopia_stripe_service
-    ports:
-      - "3000:3000"
+    environment:
+      - PORT=3000
     volumes:
       - ./services/stripe:/app
-    env_file:
-      - ./services/stripe/.env
+    networks:
+      - lootopia-net
 
-  frontend:
+  sales-hotel-service:
     platform: linux/amd64
     build:
-      context: ./frontend
-    image: lootopia_frontend
-    ports:
-      - "3001:3000"
-    env_file:
-      - ./frontend/.env
+      context: ./services/sales-hotel
+    image: lootopia_sales-hotel_service
+    environment:
+      - PORT=3000
+    volumes:
+      - ./services/sales-hotel:/app
+    networks:
+      - lootopia-net
+
+  rewards-service:
+    platform: linux/amd64
+    build:
+      context: ./services/rewards
+    image: lootopia_rewards_service
+    environment:
+      - PORT=3000
+    volumes:
+      - ./services/rewards:/app
+    networks:
+      - lootopia-net
+
+networks:
+  lootopia-net:
+    driver: bridge

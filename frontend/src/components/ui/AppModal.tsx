@@ -30,10 +30,12 @@ export default function AppModal({ modalIsOpen, closeModal, styles = {}, childre
   const mergedStyles = {
     content: {
       ...defaultStyle.content,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       ...(styles as any)?.content,
     },
     overlay: {
       ...defaultStyle.overlay,
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       ...(styles as any)?.overlay,
     },
   }

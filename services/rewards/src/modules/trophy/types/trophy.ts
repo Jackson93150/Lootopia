@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import {IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsString } from "class-validator"
 
 import { createConverter } from "src/firebase/firestore.convertor"
 

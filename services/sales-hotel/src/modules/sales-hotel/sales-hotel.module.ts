@@ -16,9 +16,9 @@ import { SalesHotelService } from "./sales-hotel.service"
     ScheduleModule.forRoot(),
     ClientsModule.register([
       {
-        name: "ARTEFACT_SERVICE",
+        name: "REWARDS_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.ARTEFACT_SERVICE_PORT) },
+        options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
       },
     ]),
     ClientsModule.register([

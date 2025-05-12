@@ -39,7 +39,9 @@ export type OwnArtefactModalProps = {
   selectedOwnArtefact: UserArtefact | null
   registerForm: UseFormRegister<OwnArtefactFormData>
   handleSubmit: UseFormHandleSubmit<OwnArtefactFormData>
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   onSubmit: (values: any) => void
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   onInvalid: (errors: any) => void
   watch: UseFormWatch<OwnArtefactFormData>
   setValue: UseFormSetValue<OwnArtefactFormData>
