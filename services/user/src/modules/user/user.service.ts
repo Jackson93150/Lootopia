@@ -58,6 +58,27 @@ export class UserService {
     })
   }
 
+  public async transactionCrown(senderUserId: string, receivedUserEmail: string, amountCrown: number) {
+    const senderUser = await this.getById(senderUserId)
+
+    const newAmountCrownSender = senderUser.solde - amountCrown
+
+    await this.firebaseService.usersCollectionRef.doc(senderUserId).update({
+      solde: newAmountCrownSender,
+    })
+
+    const receiverUser = await this.getByEmail(receivedUserEmail)
+    const newAmountCrownReceiver = receiverUser.solde + amountCrown
+
+    const userId = receiverUser.id
+
+    await this.firebaseService.usersCollectionRef.doc(userId).update({
+      solde: newAmountCrownReceiver,
+    })
+
+    return true
+  }
+
   async uploadProfilePictureAndUpdate(id: string, file: Express.Multer.File): Promise<{ logo_url: string }> {
     const bucket = this.firebaseService.storage.bucket()
 
@@ -119,5 +140,19 @@ export class UserService {
 
   private async getRef(id: string) {
     return await this.firebaseService.usersCollectionRef.doc(id)
+  }
+
+  private async getByEmail(email: string) {
+    const snapshot = await this.firebaseService.usersCollectionRef.where("email", "==", email).limit(1).get()
+
+    if (snapshot.empty) {
+      throw new NotFoundException(`Aucun utilisateur trouvé avec l'email ${email}`)
+    }
+
+    const doc = snapshot.docs[0]
+    return {
+      id: doc.id,
+      ...doc.data(),
+    }
   }
 }

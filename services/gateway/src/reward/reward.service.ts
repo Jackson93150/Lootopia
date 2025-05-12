@@ -9,6 +9,10 @@ export class RewardService {
     return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: userId })
   }
 
+  async getArtefacts() {
+    return await this.clientRewardService.send({ cmd: "get-artefacts-artefacts-service" }, {})
+  }
+  
   async getUserTrophys(userId: string) {
     return await this.clientRewardService.send({ cmd: "get-user-trophys-trophys-service" }, { userId: userId })
   }

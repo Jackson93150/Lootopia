@@ -17,6 +17,11 @@ export class UserDto {
   @IsNotEmpty()
   @IsString()
   @Type(() => String)
+  id!: string
+
+  @IsNotEmpty()
+  @IsString()
+  @Type(() => String)
   username!: string
 
   @IsNotEmpty()

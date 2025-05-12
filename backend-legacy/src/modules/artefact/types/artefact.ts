@@ -4,16 +4,26 @@ import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 
 import { createConverter } from "../../firebase/firestore.convertor"
 
 enum Rarete {
-  COMMUN = "commun",
-  RARE = "rare",
-  EPIQUE = "epique",
-  LEGENDAIRE = "légendaire",
+  COMMUN = "Commun",
+  RARE = "Rare",
+  EPIQUE = "Épique",
+  LEGENDAIRE = "Légendaire",
 }
 
 enum ArtefactEvent {
   HALLOWEEN = "Halloween",
   NOEL = "Noel",
   ETE = "Été",
+}
+
+enum ArtefactType {
+  // ------ Seulement l'artefact de TYPE CARD a un niveau de rareté ------ //
+
+  CARD = "Carte", // Utilisations potentielles dans le gameplay (ex. : révélation d’indices, modification des règles d’une chasse).
+  MAGIC_KEY = "Clé magique", // Pour ouvrir des coffres rares.
+  NAVIGATION_CARD = "Carte de navigation", // Dévoile des caches cachées sur une carte.
+  GOLDEN_CUP = 'Coupe dorée', // Permet de doubler les récompenses pendant une période donnée.
+  LEGENDARY_COMPASS = 'Boussole légendaire' // Améliore la précision du monde réel
 }
 
 export class ArtefactDocument {
@@ -28,7 +38,7 @@ export class ArtefactDocument {
   description!: string
 
   @IsNotEmpty()
-  @IsString()
+  @IsEnum(ArtefactType)
   @Type(() => String)
   type!: string
 
@@ -56,7 +66,7 @@ export class ArtefactDocument {
   @IsInt()
   @Min(0)
   @Type(() => Number)
-  valeur_achat?: number
+  crown_price?: number
 
   @IsOptional()
   @IsBoolean()
@@ -65,7 +75,7 @@ export class ArtefactDocument {
 
   @IsBoolean()
   @Type(() => Boolean)
-  is_exported: boolean
+  is_exported_nft: boolean
 
   @IsNotEmpty()
   @IsString()

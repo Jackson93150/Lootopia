@@ -1,5 +1,7 @@
+import type { UseFormHandleSubmit, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form"
+
 export type ArtefactData = {
-  id_firebase: string
+  id: string
   image: string
   name: string
   description: string
@@ -15,5 +17,30 @@ export type UserArtefact = {
   is_exported_nft: boolean
   is_saled: boolean
   auction: boolean
-  artefact: ArtefactData
+  artefact: {
+    id_firebase: string
+    name: string
+    rarity: string
+    image: string
+    type: string
+  }
+}
+
+export type OwnArtefactFormData = {
+  direct_sale: boolean
+  auction_price: number
+  timer: "1h" | "1d" | "1w"
+  fix_price: number | null
+}
+
+export type OwnArtefactModalProps = {
+  modalIsOpen: boolean
+  closeModal: () => void
+  selectedOwnArtefact: UserArtefact | null
+  registerForm: UseFormRegister<OwnArtefactFormData>
+  handleSubmit: UseFormHandleSubmit<OwnArtefactFormData>
+  onSubmit: (values: any) => void
+  onInvalid: (errors: any) => void
+  watch: UseFormWatch<OwnArtefactFormData>
+  setValue: UseFormSetValue<OwnArtefactFormData>
 }

@@ -41,6 +41,13 @@ export class UserController {
     return result
   }
 
+  @MessagePattern({ cmd: "transaction-crown-user-service" })
+  async transactionCrown(@Body() body) {
+    const result = await this.userService.transactionCrown(body.senderUserId, body.receivedUserEmail, body.amountCrown)
+
+    return result
+  }
+
   @MessagePattern({ cmd: "upload-profile-picture-user-service" })
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async uploadProfilePicture(@Body() data: { uid: string; file: any }) {
