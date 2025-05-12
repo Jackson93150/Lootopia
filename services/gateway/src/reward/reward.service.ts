@@ -12,4 +12,16 @@ export class RewardService {
   async getArtefacts() {
     return await this.clientRewardService.send({ cmd: "get-artefacts-artefacts-service" }, {})
   }
+  
+  async getUserTrophys(userId: string) {
+    return await this.clientRewardService.send({ cmd: "get-user-trophys-trophys-service" }, { userId: userId })
+  }
+
+  async getUserSuccess(userId: string) {
+    return await this.clientRewardService.send({ cmd: "get-user-success-success-service" }, { userId: userId })
+  }
+
+  async getUserLockedSuccess(userId: string) {
+    return await this.clientRewardService.send({ cmd: "get-locked-success-success-service" }, { userId: userId })
+  }
 }
