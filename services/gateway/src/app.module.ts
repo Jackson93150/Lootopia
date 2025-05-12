@@ -23,7 +23,7 @@ import { UserService } from "./user/user.service"
         transport: Transport.TCP,
         options: {
           host: process.env.USER_SERVICE_HOST,
-          port: Number(process.env.PORT),
+          port: Number(process.env.USER_SERVICE_PORT),
         },
       },
       {
@@ -31,7 +31,7 @@ import { UserService } from "./user/user.service"
         transport: Transport.TCP,
         options: {
           host: process.env.AUTH_SERVICE_HOST,
-          port: Number(process.env.PORT),
+          port: Number(process.env.AUTH_SERVICE_PORT),
         },
       },
       {
@@ -39,7 +39,7 @@ import { UserService } from "./user/user.service"
         transport: Transport.TCP,
         options: {
           host: process.env.STRIPE_SERVICE_HOST,
-          port: Number(process.env.PORT),
+          port: Number(process.env.STRIPE_SERVICE_PORT),
         },
       },
       {
@@ -47,7 +47,7 @@ import { UserService } from "./user/user.service"
         transport: Transport.TCP,
         options: {
           host: process.env.SALES_HOTEL_SERVICE_HOST,
-          port: Number(process.env.PORT),
+          port: Number(process.env.SALES_HOTEL_SERVICE_PORT),
         },
       },
       {
@@ -55,7 +55,7 @@ import { UserService } from "./user/user.service"
         transport: Transport.TCP,
         options: {
           host: process.env.REWARDS_SERVICE_HOST,
-          port: Number(process.env.PORT),
+          port: Number(process.env.REWARDS_SERVICE_PORT),
         },
       },
     ]),

@@ -7,18 +7,8 @@ services:
     image: lootopia_gateway_service
     ports:
       - "3000:3000"  # Seul service exposé à l'extérieur
-    environment:
-      - PORT=3000
-      - USER_SERVICE_HOST=user-service
-      - USER_SERVICE_PORT=3000
-      - AUTH_SERVICE_HOST=auth-service
-      - AUTH_SERVICE_PORT=3000
-      - STRIPE_SERVICE_HOST=stripe-service
-      - STRIPE_SERVICE_PORT=3000
-      - SALES_HOTEL_SERVICE_HOST=sales-hotel-service
-      - SALES_HOTEL_SERVICE_PORT=3000
-      - REWARDS_SERVICE_HOST=rewards-service
-      - REWARDS_SERVICE_PORT=3000
+    env_file:
+      - .env
     volumes:
       - ./services/gateway:/app
       - /app/node_modules
@@ -38,7 +28,9 @@ services:
       context: ./services/user
     image: lootopia_user_service
     environment:
-      - PORT=3000  # Écoute sur le port 3000 en interne
+      - PORT=3100  # Écoute sur le port 3000 en interne
+    env_file:
+      - .env
     volumes:
       - ./services/user:/app
       - /app/node_modules
@@ -56,7 +48,9 @@ services:
       context: ./services/auth
     image: lootopia_auth_service
     environment:
-      - PORT=3000
+      - PORT=3300
+    env_file:
+      - .env
     volumes:
       - ./services/auth:/app
       - /app/node_modules
@@ -69,7 +63,9 @@ services:
       context: ./services/stripe
     image: lootopia_stripe_service
     environment:
-      - PORT=3000
+      - PORT=3200
+    env_file:
+      - .env
     volumes:
       - ./services/stripe:/app
       - /app/node_modules
@@ -82,10 +78,15 @@ services:
       context: ./services/sales-hotel
     image: lootopia_sales-hotel_service
     environment:
-      - PORT=3000
+      - PORT=3400
+    env_file:
+      - .env
     volumes:
       - ./services/sales-hotel:/app
       - /app/node_modules
+    # links: 
+    #   - 'rewards-service'
+    #   - 'user-service'
     networks:
       - lootopia-net
 
@@ -94,8 +95,10 @@ services:
     build:
       context: ./services/rewards
     image: lootopia_rewards_service
+    env_file:
+      - .env
     environment:
-      - PORT=3000
+      - PORT=3500
     volumes:
       - ./services/rewards:/app
       - /app/node_modules

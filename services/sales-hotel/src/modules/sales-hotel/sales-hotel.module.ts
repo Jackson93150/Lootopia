@@ -18,14 +18,14 @@ import { SalesHotelService } from "./sales-hotel.service"
       {
         name: "REWARDS_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
+        options: { host: process.env.REWARDS_SERVICE_HOST, port: Number(process.env.REWARDS_SERVICE_PORT) },
       },
     ]),
     ClientsModule.register([
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.USER_SERVICE_PORT) },
+        options: { host: process.env.USER_SERVICE_HOST, port: Number(process.env.USER_SERVICE_PORT) },
       },
     ]),
   ],
