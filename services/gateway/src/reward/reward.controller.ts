@@ -13,4 +13,22 @@ export class RewardController {
   async getUserArtefact(@AuthDecorator() user: AuthenticatedUser) {
     return await this.clientRewardService.getUserArtefact(user.id)
   }
+
+  @Get("user-trophy")
+  @UseGuards(AuthGuard)
+  async getUserTrophy(@AuthDecorator() user: AuthenticatedUser) {
+    return await this.clientRewardService.getUserTrophys(user.id)
+  }
+
+  @Get("user-success")
+  @UseGuards(AuthGuard)
+  async getUserSuccess(@AuthDecorator() user: AuthenticatedUser) {
+    return await this.clientRewardService.getUserSuccess(user.id)
+  }
+
+  @Get("user-locked-success")
+  @UseGuards(AuthGuard)
+  async getUserLockedSuccess(@AuthDecorator() user: AuthenticatedUser) {
+    return await this.clientRewardService.getUserLockedSuccess(user.id)
+  }
 }
