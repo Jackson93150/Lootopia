@@ -15,11 +15,7 @@ export class SuccessService {
   constructor(private readonly firebaseService: FirebaseService) {}
 
   async getUserSuccess(userId: string): Promise<UserSuccessWithDetails[] | null> {
-    const snapshotUserSuccess = await this.firebaseService.userSuccessCollectionRef
-      .where("user_id", "==", userId)
-      .get()
-
-    console.log(snapshotUserSuccess)
+    const snapshotUserSuccess = await this.firebaseService.userSuccessCollectionRef.where("user_id", "==", userId).get()
 
     const userSuccess = snapshotUserSuccess.docs.map(doc => ({
       id_firebase: doc.id,
@@ -43,22 +39,19 @@ export class SuccessService {
   }
 
   async getAllSuccessLocked(userId: string): Promise<{ id_firebase: string; name: string; rarity: string }[]> {
-    const snapshotUserSuccess = await this.firebaseService.userSuccessCollectionRef
-      .where("user_id", "==", userId)
-      .get();
-  
-    const unlockedSuccessIds = snapshotUserSuccess.docs.map(doc => doc.data().success_id);
-  
-    const successSnapshots = await this.firebaseService.successCollectionRef.get();
-  
+    const snapshotUserSuccess = await this.firebaseService.userSuccessCollectionRef.where("user_id", "==", userId).get()
+
+    const unlockedSuccessIds = snapshotUserSuccess.docs.map(doc => doc.data().success_id)
+
+    const successSnapshots = await this.firebaseService.successCollectionRef.get()
+
     const lockedSuccess = successSnapshots.docs
       .filter(doc => !unlockedSuccessIds.includes(doc.id))
       .map(doc => ({
         id_firebase: doc.id,
-        ...doc.data()
-      })) as { id_firebase: string; name: string; rarity: string }[];
-  
-    return lockedSuccess;
+        ...doc.data(),
+      })) as { id_firebase: string; name: string; rarity: string }[]
+
+    return lockedSuccess
   }
-  
 }

@@ -41,8 +41,9 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
           toastSuccess("Enchère validée")
           closeModal()
         }
-      } catch (error) {
+      } catch (_error) {
         toastError("Une erreur est survenue")
+        console.error(_error)
       }
     }
   }
@@ -64,8 +65,9 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
 
       toastSuccess("Achat validée")
       closeModal()
-    } catch (error) {
+    } catch (_error) {
       toastError("Une erreur est survenue")
+      console.error(_error)
     }
   }
 

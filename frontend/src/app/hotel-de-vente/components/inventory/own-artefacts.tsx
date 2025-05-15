@@ -1,4 +1,5 @@
 import type { UserArtefact } from "@/app/types/artefact"
+import type { User } from "@/app/types/user"
 import { toastError, toastSuccess } from "@/components/ui/Toast"
 import { schemaAuction } from "@/lib/zod/schemas"
 import { getUserArtefact } from "@/service/rewards"
@@ -6,13 +7,17 @@ import { createAuction } from "@/service/sales-hotel"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { type FieldErrors, useForm } from "react-hook-form"
 import type { z } from "zod"
 import OwnArtefactModal from "./own-artefact-modal"
 
 type FormValues = z.infer<typeof schemaAuction>
 
-export default function OwnArtefacts({ user }: any) {
+type OwnArtefactProps = {
+  user: User | null
+}
+
+export default function OwnArtefacts({ user }: OwnArtefactProps) {
   const [ownArtefacts, setOwnArtefacts] = useState<UserArtefact[]>([])
   const [selectedOwnArtefact, setSelectedOwnArtefact] = useState<UserArtefact | null>(null)
   const [modalIsOpen, setIsOpen] = useState(false)
@@ -36,18 +41,20 @@ export default function OwnArtefacts({ user }: any) {
       if (selectedOwnArtefact) {
         const userArtefactId = selectedOwnArtefact.id_firebase
 
-        await createAuction(
-          userArtefactId,
-          selectedOwnArtefact.artefact.id_firebase,
-          user.email,
-          fix_price,
-          auction_price,
-          direct_sale,
-          timer,
-          selectedOwnArtefact.artefact.name,
-          selectedOwnArtefact.artefact.rarity,
-          selectedOwnArtefact.artefact.image,
-        )
+        if (user) {
+          await createAuction(
+            userArtefactId,
+            selectedOwnArtefact.artefact.id_firebase,
+            user.email,
+            fix_price,
+            auction_price,
+            direct_sale,
+            timer,
+            selectedOwnArtefact.artefact.name,
+            selectedOwnArtefact.artefact.rarity,
+            selectedOwnArtefact.artefact.image,
+          )
+        }
 
         setOwnArtefacts(prev => prev.filter(a => a.id_firebase !== selectedOwnArtefact.id_firebase))
         closeModal()
@@ -60,7 +67,7 @@ export default function OwnArtefacts({ user }: any) {
     }
   }
 
-  const onInvalid = (errors: Record<string, any>) => {
+  const onInvalid = (errors: FieldErrors<FormValues>) => {
     Object.values(errors).forEach(error => {
       if (error?.message) {
         toastError(error?.message)
@@ -91,6 +98,12 @@ export default function OwnArtefacts({ user }: any) {
             onClick={() => {
               setIsOpen(true)
               setSelectedOwnArtefact(ownArtefact)
+            }}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                setIsOpen(true)
+                setSelectedOwnArtefact(ownArtefact)
+              }
             }}
           >
             <Image src={ownArtefact.artefact.image} width={75} height={75} alt="artefact" />

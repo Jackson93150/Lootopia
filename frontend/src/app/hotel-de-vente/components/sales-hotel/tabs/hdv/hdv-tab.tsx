@@ -29,35 +29,37 @@ export default function HdvTab({ user, auctions }: HdvTabProps) {
   return (
     <>
       <div className="w-full flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto">
-        {auctions.filter(auction => auction.creator_email !== user.email).length === 0 && <p className="text-white text-center">Aucun résultat</p>}
+        {auctions.filter(auction => auction.creator_email !== user.email).length === 0 && (
+          <p className="text-white text-center">Aucun résultat</p>
+        )}
 
         {auctions
-        .filter(auction => auction.creator_email !== user.email)
-        .map((auction, index) => (
-          <div
-            key={index}
-            className="w-full flex items-center justify-between p-1 bg-gradient-to-br from-[#FAC27D] to-[#f5c249] rounded border-[2px] border-[#5B3E29]"
-          >
-            <Image src={auction.artefact.image} width={60} height={60} alt={"Artefact"} />
-
-            <p className="hidden lg:block text-xl font-bolder text-white">{auction.artefact.name}</p>
-            <p className="hidden lg:block text-xl font-bolder text-white">{auction.artefact.rarity}</p>
-            <div className="flex items-center gap-1">
-              <p className="text-xl font-bolder text-white">{getCurrentPrice(auction)}</p>
-              <Image src={"/images/couronnes.png"} width={40} height={40} alt="Couronnes" />
-            </div>
-
-            <AppButton
-              className="!w-30"
-              onClick={() => {
-                setIsOpen(true)
-                setSelectedAuction(auction)
-              }}
+          .filter(auction => auction.creator_email !== user.email)
+          .map((auction, index) => (
+            <div
+              key={index}
+              className="w-full flex items-center justify-between p-1 bg-gradient-to-br from-[#FAC27D] to-[#f5c249] rounded border-[2px] border-[#5B3E29]"
             >
-              Acheter
-            </AppButton>
-          </div>
-        ))}
+              <Image src={auction.artefact.image} width={60} height={60} alt={"Artefact"} />
+
+              <p className="hidden lg:block text-xl font-bolder text-white">{auction.artefact.name}</p>
+              <p className="hidden lg:block text-xl font-bolder text-white">{auction.artefact.rarity}</p>
+              <div className="flex items-center gap-1">
+                <p className="text-xl font-bolder text-white">{getCurrentPrice(auction)}</p>
+                <Image src={"/images/couronnes.png"} width={40} height={40} alt="Couronnes" />
+              </div>
+
+              <AppButton
+                className="!w-30"
+                onClick={() => {
+                  setIsOpen(true)
+                  setSelectedAuction(auction)
+                }}
+              >
+                Acheter
+              </AppButton>
+            </div>
+          ))}
       </div>
       {user && selectedAuction && (
         <HdvModal

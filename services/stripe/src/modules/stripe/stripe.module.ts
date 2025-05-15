@@ -16,7 +16,7 @@ import { StripeService } from "./stripe.service"
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.USER_SERVICE_PORT) },
+        options: { host: process.env.USER_SERVICE_HOST, port: Number(process.env.USER_SERVICE_PORT) },
       },
     ]),
   ],

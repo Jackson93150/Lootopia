@@ -11,7 +11,9 @@ type BuyTabPros = {
 }
 
 export default function BuyTab({ user, auctions }: BuyTabPros) {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [selectedUserBid, setSelectedUserBid] = useState<any | null>(null)
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [selectedAuction, setSelectedAuction] = useState<any | null>(null)
   const [modalIsOpen, setIsOpen] = useState(false)
 

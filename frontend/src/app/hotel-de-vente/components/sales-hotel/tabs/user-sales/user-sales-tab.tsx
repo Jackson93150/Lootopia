@@ -11,6 +11,7 @@ type SaleTabProps = {
 }
 
 export default function UserSalesTab({ user, auctions }: SaleTabProps) {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [selectedUserSale, setSelectedUserSale] = useState<any | null>(null)
   const [modalIsOpen, setIsOpen] = useState(false)
 

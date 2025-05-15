@@ -12,14 +12,15 @@ function useAuctionsRealtime() {
     const q = query(collection(db, "auctions"))
 
     const unsubscribe = onSnapshot(q, snapshot => {
-      const data = snapshot.docs.map(doc => {
-        const { id, ...rest } = doc.data() as AuctionType
-        return {
-          id: doc.id,
-          ...rest,
-        }
-      })
-      .filter(doc => doc.statut === "en cours")
+      const data = snapshot.docs
+        .map(doc => {
+          const { id, ...rest } = doc.data() as AuctionType
+          return {
+            id: doc.id,
+            ...rest,
+          }
+        })
+        .filter(doc => doc.statut === "en cours")
 
       setAuctions(data)
     })
@@ -32,6 +33,7 @@ function useAuctionsRealtime() {
 
 export function useMergedAuctionsWithArtefact() {
   const auctions = useAuctionsRealtime()
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [merged, setMerged] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 

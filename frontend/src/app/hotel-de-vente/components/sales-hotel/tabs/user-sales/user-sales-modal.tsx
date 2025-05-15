@@ -17,12 +17,13 @@ export default function UserSalesModal({ modalIsOpen, closeModal, selectedUserSa
     try {
       if (selectedUserSale && user) {
         await cancelAuction(user.email, selectedUserSale.id, selectedUserSale.id_user_artefact)
-        
+
         toastSuccess("Mise en vente annulée")
         closeModal()
       }
-    } catch (error) {
+    } catch (_error) {
       toastError("Une erreur est survenue")
+      console.error(_error)
     }
   }
 

@@ -21,35 +21,42 @@ import { UserService } from "./user/user.service"
       {
         name: "USER_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.USER_SERVICE_PORT) },
+        options: {
+          host: process.env.USER_SERVICE_HOST,
+          port: Number(process.env.USER_SERVICE_PORT),
+        },
       },
-    ]),
-    ClientsModule.register([
       {
         name: "AUTH_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.AUTH_SERVICE_PORT) },
+        options: {
+          host: process.env.AUTH_SERVICE_HOST,
+          port: Number(process.env.AUTH_SERVICE_PORT),
+        },
       },
-    ]),
-    ClientsModule.register([
       {
         name: "STRIPE_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.STRIPE_SERVICE_PORT) },
+        options: {
+          host: process.env.STRIPE_SERVICE_HOST,
+          port: Number(process.env.STRIPE_SERVICE_PORT),
+        },
       },
-    ]),
-    ClientsModule.register([
       {
         name: "SALES_HOTEL_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.SALES_HOTEL_SERVICE_PORT) },
+        options: {
+          host: process.env.SALES_HOTEL_SERVICE_HOST,
+          port: Number(process.env.SALES_HOTEL_SERVICE_PORT),
+        },
       },
-    ]),
-    ClientsModule.register([
       {
         name: "REWARDS_SERVICE",
         transport: Transport.TCP,
-        options: { port: Number(process.env.REWARDS_SERVICE_PORT) },
+        options: {
+          host: process.env.REWARDS_SERVICE_HOST,
+          port: Number(process.env.REWARDS_SERVICE_PORT),
+        },
       },
     ]),
   ],

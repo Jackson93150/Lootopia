@@ -1,12 +1,5 @@
+import type { CrownPackage } from "@/app/types/crown-package"
 import Card from "./card"
-
-type CrownPackage = {
-  id_firebase: string
-  crown_amount: number
-  promotion: boolean
-  price_euro: number
-  promotion_price: number
-}
 
 type ShopProps = {
   crownPackages: CrownPackage[]

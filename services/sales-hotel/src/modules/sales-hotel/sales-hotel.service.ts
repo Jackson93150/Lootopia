@@ -10,7 +10,7 @@ import { AuctionConverter } from "./types/auction"
 export class SalesHotelService {
   constructor(
     private readonly firebaseService: FirebaseService,
-    @Inject("ARTEFACT_SERVICE") private readonly clientArtefactService: ClientProxy,
+    @Inject("REWARDS_SERVICE") private readonly clientArtefactService: ClientProxy,
     @Inject("USER_SERVICE") private readonly clientUserService: ClientProxy,
   ) {}
 
@@ -37,10 +37,12 @@ export class SalesHotelService {
         statut: "en cours",
       })
 
-      await firstValueFrom(this.clientArtefactService.send(
-        { cmd: "modify-auction-state-ua-artefacts-service" },
-        { userArtefactId: userArtefactId, auction: true },
-      ))
+      await firstValueFrom(
+        this.clientArtefactService.send(
+          { cmd: "modify-auction-state-ua-artefacts-service" },
+          { userArtefactId: userArtefactId, auction: true },
+        ),
+      )
 
       return true
     } catch (error) {
