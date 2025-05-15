@@ -45,6 +45,7 @@ export class UserService {
     const existingUserDocument = await this.findByRef(userRef)
     return {
       user: existingUserDocument,
+      id,
     }
   }
 
@@ -104,6 +105,19 @@ export class UserService {
     })
 
     return { logo_url: publicUrl }
+  }
+
+  public async updateBiographie(userId: string, biographie: string): Promise<void> {
+    const userRef = this.firebaseService.usersCollectionRef.doc(userId)
+
+    const userSnapshot = await userRef.get()
+    if (!userSnapshot.exists) {
+      throw new NotFoundException(`Utilisateur avec l'id ${userId} non trouvé`)
+    }
+
+    await userRef.update({
+      biographie: biographie.trim(),
+    })
   }
 
   public async getById(id: string) {

@@ -5,23 +5,23 @@ import { ClientProxy } from "@nestjs/microservices"
 export class RewardService {
   constructor(@Inject("REWARDS_SERVICE") private readonly clientRewardService: ClientProxy) {}
 
-  async getUserArtefact(userId: string) {
-    return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: userId })
+  async getUserArtefact(id: string) {
+    return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: id })
   }
 
   async getArtefacts() {
     return await this.clientRewardService.send({ cmd: "get-artefacts-artefacts-service" }, {})
   }
 
-  async getUserTrophys(userId: string) {
-    return await this.clientRewardService.send({ cmd: "get-user-trophys-trophys-service" }, { userId: userId })
+  async getUserTrophys(id: string) {
+    return await this.clientRewardService.send({ cmd: "get-user-trophys-trophys-service" }, { userId: id })
   }
 
-  async getUserSuccess(userId: string) {
-    return await this.clientRewardService.send({ cmd: "get-user-success-success-service" }, { userId: userId })
+  async getUserSuccess(id: string) {
+    return await this.clientRewardService.send({ cmd: "get-user-success-success-service" }, { userId: id })
   }
 
-  async getUserLockedSuccess(userId: string) {
-    return await this.clientRewardService.send({ cmd: "get-locked-success-success-service" }, { userId: userId })
+  async getUserLockedSuccess(id: string) {
+    return await this.clientRewardService.send({ cmd: "get-locked-success-success-service" }, { userId: id })
   }
 }

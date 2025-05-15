@@ -13,11 +13,11 @@ export class UserController {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   async getUserById(@Body() user_id: any) {
     try {
-      const user = await this.userService.getById(user_id.uid)
+      const user = await this.userService.getById(user_id)
       return { user }
     } catch (error) {
       if (error instanceof NotFoundException) {
-        throw new NotFoundException(`Utilisateur avec l'id ${user_id.uid} non trouvé`)
+        throw new NotFoundException(`Utilisateur avec l'id ${user_id} non trouvé`)
       }
       throw error
     }
@@ -59,6 +59,19 @@ export class UserController {
       })
     } catch (error) {
       console.error("🔥 Microservice upload error:", error)
+      throw error
+    }
+  }
+
+  @MessagePattern({ cmd: "update-biography-user-service" })
+  async updateBiography(@Body() data: { id: string; biographie: string }) {
+    try {
+      await this.userService.updateBiographie(data.id, data.biographie)
+      return { message: "Biographie mise à jour avec succès." }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`Utilisateur avec l'id ${data.id} non trouvé`)
+      }
       throw error
     }
   }

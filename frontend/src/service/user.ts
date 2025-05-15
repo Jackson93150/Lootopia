@@ -26,6 +26,20 @@ export async function getUserById(id: string) {
   return await res.json()
 }
 
+export async function updateBiography(biographie: string) {
+  const res = await fetchBack({
+    endpoint: "/users/biography",
+    method: "POST",
+    body: { biographie },
+  })
+
+  if (!res.ok) {
+    throw new Error(`Erreur HTTP : ${res.status}`)
+  }
+
+  return await res.json()
+}
+
 export const uploadProfilePicture = async (file: File) => {
   const formData = new FormData()
   const encodedFilename = encodeURIComponent(file.name)

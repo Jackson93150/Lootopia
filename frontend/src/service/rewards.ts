@@ -1,9 +1,9 @@
 import { fetchBack } from "@/utils/fetch"
 import { safeJson } from "@/utils/safeJson"
 
-export async function getUserArtefact() {
+export async function getUserArtefact(id: string) {
   const res = await fetchBack({
-    endpoint: "/reward/user-artefact",
+    endpoint: `/reward/user-artefact/${id}`,
     method: "GET",
   })
 
@@ -29,9 +29,9 @@ export async function getArtefacts() {
   return res.json()
 }
 
-export async function getUserTrophy() {
+export async function getUserTrophy(id: string) {
   const res = await fetchBack({
-    endpoint: "/reward/user-trophy",
+    endpoint: `/reward/user-trophy/${id}`,
     method: "GET",
   })
 
@@ -42,9 +42,9 @@ export async function getUserTrophy() {
   return await safeJson(res)
 }
 
-export async function getUserSuccess() {
+export async function getUserSuccess(id: string) {
   const res = await fetchBack({
-    endpoint: "/reward/user-success",
+    endpoint: `/reward/user-success/${id}`,
     method: "GET",
   })
 
@@ -55,9 +55,9 @@ export async function getUserSuccess() {
   return await safeJson(res)
 }
 
-export async function getUserLockedSuccess() {
+export async function getUserLockedSuccess(id: string) {
   const res = await fetchBack({
-    endpoint: "/reward/user-locked-success",
+    endpoint: `/reward/user-locked-success/${id}`,
     method: "GET",
   })
 

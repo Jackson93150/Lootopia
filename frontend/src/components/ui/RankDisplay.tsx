@@ -51,10 +51,10 @@ const RANKS: Rank[] = [
 ]
 
 interface RankDisplayProps {
-  xp: number
+  xp: number | undefined
 }
 
-export function RankDisplay({ xp }: RankDisplayProps) {
+export function RankDisplay({ xp = 0 }: RankDisplayProps) {
   const rank = RANKS.find(r => xp >= r.xp_min && xp < r.xp_max) || RANKS[RANKS.length - 1]
   const isChampion = rank.nom === "champion"
 

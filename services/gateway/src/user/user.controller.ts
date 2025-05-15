@@ -50,4 +50,17 @@ export class UserController {
       throw error
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Post("biography")
+  async updateBiography(@AuthDecorator() user: AuthenticatedUser, @Body("biographie") biographie: string) {
+    if (!biographie || typeof biographie !== "string") {
+      throw new NotFoundException("Biographie invalide.")
+    }
+
+    return await this.clientUserService.updateBiography({
+      ...user,
+      biographie,
+    })
+  }
 }
