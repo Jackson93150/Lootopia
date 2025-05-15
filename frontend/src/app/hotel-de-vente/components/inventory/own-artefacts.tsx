@@ -87,7 +87,7 @@ export default function OwnArtefacts({ user, id }: OwnArtefactProps) {
       }
     }
     fetchOwnArtefacts()
-  }, [])
+  }, [id])
 
   return (
     <>

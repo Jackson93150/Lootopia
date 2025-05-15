@@ -82,7 +82,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     async function fetchData() {
-      if (user) {
+      if (user && id) {
         const res = await getUserArtefact(id)
         setArtefacts(res)
         const trophy = await getUserTrophy(id)
@@ -165,7 +165,9 @@ export default function ProfilePage() {
                           try {
                             await updateBiography(editedBio)
                             setBioEditMode(false)
-                            user.biographie = editedBio
+                            if (user) {
+                              user.biographie = editedBio
+                            }
                           } catch (error) {
                             console.error("Erreur lors de la mise à jour de la bio :", error)
                           }
