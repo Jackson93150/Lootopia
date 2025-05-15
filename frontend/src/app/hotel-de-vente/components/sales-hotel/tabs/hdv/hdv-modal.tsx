@@ -43,6 +43,7 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
         }
       } catch (_error) {
         toastError("Une erreur est survenue")
+        console.error(_error)
       }
     }
   }
@@ -66,6 +67,7 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
       closeModal()
     } catch (_error) {
       toastError("Une erreur est survenue")
+      console.error(_error)
     }
   }
 

@@ -29,6 +29,7 @@ export default function UserBidsModal({
       }
     } catch (_error) {
       toastError("Une erreur est survenue")
+      console.error(_error)
     }
   }
 

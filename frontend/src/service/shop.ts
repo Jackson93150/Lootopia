@@ -1,3 +1,4 @@
+import type { CrownPackage } from "@/app/types/crown-package"
 import { fetchBack } from "@/utils/fetch"
 
 export async function createSessionCheckout(crownPackageId: string) {
@@ -41,6 +42,5 @@ export async function getCrownsPackages() {
   }
 
   const data = await res.json()
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  return data.sort((a: any, b: any) => a.price_euro - b.price_euro)
+  return data.sort((a: CrownPackage, b: CrownPackage) => a.price_euro - b.price_euro)
 }

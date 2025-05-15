@@ -2,10 +2,10 @@
 
 import { fetchBack } from "@/utils/fetch"
 import { useEffect, useState } from "react"
+import type { User } from "../types/user"
 
 export function useMe() {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [error, setError] = useState<any>(null)

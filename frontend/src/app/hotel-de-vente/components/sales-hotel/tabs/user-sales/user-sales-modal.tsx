@@ -23,6 +23,7 @@ export default function UserSalesModal({ modalIsOpen, closeModal, selectedUserSa
       }
     } catch (_error) {
       toastError("Une erreur est survenue")
+      console.error(_error)
     }
   }
 

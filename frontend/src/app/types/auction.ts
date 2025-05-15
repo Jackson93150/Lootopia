@@ -24,8 +24,7 @@ export type BidType = {
 export type AuctionModalProps = {
   modalIsOpen: boolean
   closeModal: () => void
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  selectedAuction: any | null
+  selectedAuction: AuctionType
   userCrown: number
   userMail: string
 }

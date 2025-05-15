@@ -1,12 +1,16 @@
 import { useUserBidsFromMergedAuctions } from "@/app/hook/sales-hotel/useUserBids"
+import type { User } from "@/app/types/user"
 import AppInput from "@/components/ui/AppInput"
 import { useState } from "react"
 import HdvTab from "./tabs/hdv/hdv-tab"
 import BuyTab from "./tabs/user-bids/user-bids-tab"
 import UserSalesTab from "./tabs/user-sales/user-sales-tab"
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export default function SalesHotel({ user }: any) {
+type SalesHotelProps = {
+  user: User | null
+}
+
+export default function SalesHotel({ user }: SalesHotelProps) {
   const { auctionsWithUserBids } = useUserBidsFromMergedAuctions(user?.email)
   const [query, setQuery] = useState("")
   const [selectedTab, setSelectedTab] = useState<"hdv" | "ventes" | "enchères">("hdv")
