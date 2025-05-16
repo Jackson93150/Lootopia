@@ -8,7 +8,7 @@ export class TrophyController {
   constructor(private readonly trophyService: TrophyService) {}
 
   @MessagePattern({ cmd: "get-user-trophys-trophys-service" })
-  async getUserTrophys(@Body() userId: string) {
-    return await this.trophyService.getUserTrophys(userId)
+  async getUserTrophys(@Body() data: { userId: string }) {
+    return await this.trophyService.getUserTrophys(data.userId)
   }
 }

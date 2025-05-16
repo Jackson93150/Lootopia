@@ -8,12 +8,12 @@ export class SuccessController {
   constructor(private readonly successService: SuccessService) {}
 
   @MessagePattern({ cmd: "get-user-success-success-service" })
-  async getUserSuccess(@Body() userId: string) {
-    return await this.successService.getUserSuccess(userId)
+  async getUserSuccess(@Body() data: { userId: string }) {
+    return await this.successService.getUserSuccess(data.userId)
   }
 
   @MessagePattern({ cmd: "get-locked-success-success-service" })
-  async getUserLockedSuccess(@Body() userId: string) {
-    return await this.successService.getAllSuccessLocked(userId)
+  async getUserLockedSuccess(@Body() data: { userId: string }) {
+    return await this.successService.getAllSuccessLocked(data.userId)
   }
 }
