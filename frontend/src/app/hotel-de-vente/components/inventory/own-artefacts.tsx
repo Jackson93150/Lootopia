@@ -15,9 +15,10 @@ type FormValues = z.infer<typeof schemaAuction>
 
 type OwnArtefactProps = {
   user: User | null
+  id: string | null
 }
 
-export default function OwnArtefacts({ user }: OwnArtefactProps) {
+export default function OwnArtefacts({ user, id }: OwnArtefactProps) {
   const [ownArtefacts, setOwnArtefacts] = useState<UserArtefact[]>([])
   const [selectedOwnArtefact, setSelectedOwnArtefact] = useState<UserArtefact | null>(null)
   const [modalIsOpen, setIsOpen] = useState(false)
@@ -78,7 +79,7 @@ export default function OwnArtefacts({ user }: OwnArtefactProps) {
   useEffect(() => {
     async function fetchOwnArtefacts() {
       try {
-        const data = await getUserArtefact()
+        const data = await getUserArtefact(id ?? "")
 
         setOwnArtefacts(data)
       } catch (error) {
@@ -86,7 +87,7 @@ export default function OwnArtefacts({ user }: OwnArtefactProps) {
       }
     }
     fetchOwnArtefacts()
-  }, [])
+  }, [id])
 
   return (
     <>

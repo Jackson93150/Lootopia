@@ -49,14 +49,14 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
   }
 
   const handleDirectlyBuyClick = async () => {
-    if (userCrown < selectedAuction.fix_price) {
+    if (userCrown < Number.parseInt(selectedAuction.fix_price ?? "")) {
       toastError("Solde insuffisant")
       return
     }
 
     try {
       await directlyBuy(
-        selectedAuction.fix_price,
+        Number.parseInt(selectedAuction.fix_price ?? ""),
         selectedAuction.id,
         selectedAuction.id_user_artefact,
         selectedAuction.artefact.id,

@@ -31,7 +31,6 @@ export class ArtefactService {
       .get()
 
     const artefactsMap = new Map(artefactsSnapshots.docs.map(doc => [doc.id, { id_firebase: doc.id, ...doc.data() }]))
-
     return userArtefacts.map(userArtefact => ({
       ...userArtefact,
       artefact: artefactsMap.get(userArtefact.id_artefact) || null,

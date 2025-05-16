@@ -8,8 +8,8 @@ export class ArtefactController {
   constructor(private readonly artefactService: ArtefactService) {}
 
   @MessagePattern({ cmd: "get-user-artefacts-artefacts-service" })
-  async getUserArtefacts(@Body() user: { userId: string }) {
-    return await this.artefactService.getUserArtefacts(user.userId)
+  async getUserArtefacts(@Body() data: { userId: string }) {
+    return await this.artefactService.getUserArtefacts(data.userId)
   }
 
   @MessagePattern({ cmd: "get-artefacts-artefacts-service" })

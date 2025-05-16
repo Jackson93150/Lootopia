@@ -6,6 +6,7 @@ import type { User } from "../types/user"
 
 export function useMe() {
   const [user, setUser] = useState<User | null>(null)
+  const [id, setId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const [error, setError] = useState<any>(null)
@@ -24,6 +25,7 @@ export function useMe() {
 
         const data = await res.json()
         setUser(data.user)
+        setId(data.id)
       } catch (err) {
         setError(err as Error)
       } finally {
@@ -34,5 +36,5 @@ export function useMe() {
     fetchUser()
   }, [])
 
-  return { user, loading, error }
+  return { user, id, loading, error }
 }

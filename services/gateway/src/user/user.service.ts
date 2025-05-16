@@ -19,6 +19,16 @@ export class UserService {
     return await this.clientUserService.send({ cmd: "me-user-service" }, user)
   }
 
+  async updateBiography(user: AuthenticatedUser & { biographie: string }) {
+    return await this.clientUserService.send(
+      { cmd: "update-biography-user-service" },
+      {
+        id: user.id,
+        biographie: user.biographie,
+      },
+    )
+  }
+
   async uploadProfilePicture(uid: string, file: Express.Multer.File) {
     return await this.clientUserService.send(
       { cmd: "upload-profile-picture-user-service" },

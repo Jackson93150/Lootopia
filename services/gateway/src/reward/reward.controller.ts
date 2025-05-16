@@ -1,6 +1,4 @@
-import { Controller, Get, UseGuards } from "@nestjs/common"
-import { AuthDecorator } from "src/auth/decorators/auth.decorator"
-import { AuthenticatedUser } from "src/auth/dto/auth.dto"
+import { Controller, Get, Param, UseGuards } from "@nestjs/common"
 import { AuthGuard } from "src/auth/guards/auth.guard"
 import { RewardService } from "./reward.service"
 
@@ -8,10 +6,10 @@ import { RewardService } from "./reward.service"
 export class RewardController {
   constructor(private readonly clientRewardService: RewardService) {}
 
-  @Get("user-artefact")
+  @Get("user-artefact/:id")
   @UseGuards(AuthGuard)
-  async getUserArtefact(@AuthDecorator() user: AuthenticatedUser) {
-    return await this.clientRewardService.getUserArtefact(user.id)
+  async getUserArtefact(@Param("id") id: string) {
+    return await this.clientRewardService.getUserArtefact(id)
   }
 
   @Get("artefacts")
@@ -19,21 +17,21 @@ export class RewardController {
     return await this.clientRewardService.getArtefacts()
   }
 
-  @Get("user-trophy")
+  @Get("user-trophy/:id")
   @UseGuards(AuthGuard)
-  async getUserTrophy(@AuthDecorator() user: AuthenticatedUser) {
-    return await this.clientRewardService.getUserTrophys(user.id)
+  async getUserTrophy(@Param("id") id: string) {
+    return await this.clientRewardService.getUserTrophys(id)
   }
 
-  @Get("user-success")
+  @Get("user-success/:id")
   @UseGuards(AuthGuard)
-  async getUserSuccess(@AuthDecorator() user: AuthenticatedUser) {
-    return await this.clientRewardService.getUserSuccess(user.id)
+  async getUserSuccess(@Param("id") id: string) {
+    return await this.clientRewardService.getUserSuccess(id)
   }
 
-  @Get("user-locked-success")
+  @Get("user-locked-success/:id")
   @UseGuards(AuthGuard)
-  async getUserLockedSuccess(@AuthDecorator() user: AuthenticatedUser) {
-    return await this.clientRewardService.getUserLockedSuccess(user.id)
+  async getUserLockedSuccess(@Param("id") id: string) {
+    return await this.clientRewardService.getUserLockedSuccess(id)
   }
 }

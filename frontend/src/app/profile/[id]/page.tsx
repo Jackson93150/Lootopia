@@ -1,30 +1,28 @@
 "use client"
 
 import Image from "next/image"
-import "../globals.css"
-import { EditIcon } from "@/assets/icons/edit.icon"
+import "../../globals.css"
+import type { User } from "@/app/types/user"
 import { RankDisplay } from "@/components/ui/RankDisplay"
 import { getUserArtefact, getUserLockedSuccess, getUserSuccess, getUserTrophy } from "@/service/rewards"
-import { uploadProfilePicture } from "@/service/user"
-import { updateBiography } from "@/service/user"
-import { useEffect, useRef, useState } from "react"
-import { useMe } from "../hook/useMe"
-import type { UserArtefact } from "../types/artefact"
-import type { Success, UserSuccess } from "../types/success"
-import type { UserTrophy } from "../types/trophy"
+import { getUserById } from "@/service/user"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import type { UserArtefact } from "../../types/artefact"
+import type { Success, UserSuccess } from "../../types/success"
+import type { UserTrophy } from "../../types/trophy"
 
 export default function ProfilePage() {
+  const { id } = useParams<{ id: string }>()
   const [artefacts, setArtefacts] = useState<UserArtefact[] | null>(null)
   const [trophys, setTrophys] = useState<UserTrophy[] | null>(null)
   const [lockedSuccess, setLockedSuccess] = useState<Success[] | null>(null)
   const [userSuccess, setUserSuccess] = useState<UserSuccess[] | null>(null)
-  const { user, id, loading } = useMe()
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(false)
   const rarityOrder = ["Légendaire", "Épique", "Rare", "Commun"]
   const [selectedTab, setSelectedTab] = useState<"artefacts" | "trophies" | "success">("artefacts")
   const [profileImage, setProfileImage] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [bioEditMode, setBioEditMode] = useState(false)
-  const [editedBio, setEditedBio] = useState("")
 
   const groupTrophiesByYearAndMonth = (trophies: UserTrophy[]) => {
     const groups: Record<string, Record<string, UserTrophy[]>> = {}
@@ -43,21 +41,6 @@ export default function ProfilePage() {
     }
 
     return groups
-  }
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    try {
-      const res = await uploadProfilePicture(file)
-      setProfileImage(typeof res === "string" ? res : res.logo_url)
-    } catch (error) {
-      console.error("Erreur upload image:", error)
-    }
-  }
-
-  const handleImageClick = () => {
-    fileInputRef.current?.click()
   }
 
   const groupedArtefacts = artefacts
@@ -82,7 +65,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     async function fetchData() {
-      if (user && id) {
+      setLoading(true)
+      const userFromId = await getUserById(id)
+      setUser(userFromId.user)
+      if (userFromId) {
         const res = await getUserArtefact(id)
         setArtefacts(res)
         const trophy = await getUserTrophy(id)
@@ -91,12 +77,13 @@ export default function ProfilePage() {
         setUserSuccess(success)
         const locked = await getUserLockedSuccess(id)
         setLockedSuccess(locked)
-        setProfileImage(user.logo_url)
+        setProfileImage(userFromId.user.logo_url)
       }
+      setLoading(false)
     }
 
     void fetchData()
-  }, [user, id])
+  }, [id])
 
   return (
     <div className="w-screen h-screen items-center justify-center flex">
@@ -105,11 +92,7 @@ export default function ProfilePage() {
           <Image src="/profile-container.png" alt="container" fill className="absolute pt-30 px-15 pb-10" />
           <div className="w-full flex h-full p-14 gap-8 z-10">
             <div className="h-full w-[250px] bg-[#A96A3D] outline-[#5B3E29] outline-[8px] rounded-[8px] p-4 flex flex-col gap-2">
-              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-              <div
-                className="w-full h-[30%] bg-[#FAC27D] rounded-[8px] border p-2 relative group cursor-pointer"
-                onClick={handleImageClick}
-              >
+              <div className="w-full h-[30%] bg-[#FAC27D] rounded-[8px] border p-2 relative">
                 <div className="w-full h-full rounded-[8px] border overflow-hidden relative">
                   <Image
                     src={
@@ -119,70 +102,13 @@ export default function ProfilePage() {
                     alt="profile"
                     width={500}
                     height={500}
-                    className="size-full object-cover transition duration-300 group-hover:brightness-75"
+                    className="size-full object-cover transition duration-300"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white text-sm font-bold">
-                    Changer l'image
-                  </div>
                 </div>
-                <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
               </div>
 
               <div className="w-full grow bg-[#FAC27D] rounded-[8px] border p-2 flex flex-col gap-2 relative">
-                {!bioEditMode && (
-                  <button
-                    onClick={() => {
-                      setBioEditMode(true)
-                      setEditedBio(user?.biographie ?? "")
-                    }}
-                    className="absolute top-2 right-2 p-1 hover:bg-[#e0b973] rounded cursor-pointer"
-                    title="Modifier la biographie"
-                  >
-                    <EditIcon className="w-4 h-4 text-black" />
-                  </button>
-                )}
-
-                {bioEditMode ? (
-                  <>
-                    <textarea
-                      value={editedBio}
-                      onChange={e => setEditedBio(e.target.value)}
-                      className="w-full h-full p-2 rounded bg-[#FAC27D] text-black focus:outline-black resize-none"
-                      rows={4}
-                    />
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => {
-                          setBioEditMode(false)
-                          setEditedBio(user?.biographie ?? "")
-                        }}
-                        className="px-3 py-1 bg-[#5B3E29] text-white rounded cursor-pointer"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        onClick={async () => {
-                          try {
-                            await updateBiography(editedBio)
-                            setBioEditMode(false)
-                            if (user) {
-                              user.biographie = editedBio
-                            }
-                          } catch (error) {
-                            console.error("Erreur lors de la mise à jour de la bio :", error)
-                          }
-                        }}
-                        className="px-3 py-1 bg-[#A96A3D] text-white rounded cursor-pointer"
-                      >
-                        Sauvegarder
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <div className="cursor-default whitespace-pre-wrap break-words">
-                    {user?.biographie ?? "Cliquez sur le crayon pour ajouter une biographie"}
-                  </div>
-                )}
+                <div className="cursor-default whitespace-pre-wrap break-words">{user?.biographie ?? "No Bio"}</div>
               </div>
             </div>
             <div className="h-full grow flex flex-col">
