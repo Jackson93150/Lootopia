@@ -20,6 +20,7 @@ services:
       - stripe-service
       - sales-hotel-service
       - rewards-service
+      - huntings-service
 
   # Microservices (communication interne uniquement)
   user-service:
@@ -84,9 +85,6 @@ services:
     volumes:
       - ./services/sales-hotel:/app
       - /app/node_modules
-    # links: 
-    #   - 'rewards-service'
-    #   - 'user-service'
     networks:
       - lootopia-net
 
@@ -101,6 +99,21 @@ services:
       - PORT=3500
     volumes:
       - ./services/rewards:/app
+      - /app/node_modules
+    networks:
+      - lootopia-net
+
+  huntings-service:
+    platform: linux/amd64
+    build:
+      context: ./services/huntings
+    image: lootopia_huntings_service
+    env_file:
+      - .env
+    environment:
+      - PORT=3600
+    volumes:
+      - ./services/huntings:/app
       - /app/node_modules
     networks:
       - lootopia-net

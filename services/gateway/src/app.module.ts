@@ -11,6 +11,8 @@ import { StripeController } from "./stripe/stripe.controller"
 import { StripeService } from "./stripe/stripe.service"
 import { UserController } from "./user/user.controller"
 import { UserService } from "./user/user.service"
+import { HuntingsController } from "./huntings/huntings.controller"
+import { HuntingsService } from "./huntings/huntings.service"
 
 @Module({
   imports: [
@@ -58,9 +60,17 @@ import { UserService } from "./user/user.service"
           port: Number(process.env.REWARDS_SERVICE_PORT),
         },
       },
+      {
+        name: "HUNTINGS_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: process.env.HUNTINGS_SERVICE_HOST,
+          port: Number(process.env.HUNTINGS_SERVICE_PORT),
+        },
+      },
     ]),
   ],
-  controllers: [UserController, AuthController, StripeController, RewardController, SalesHotelController],
-  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService],
+  controllers: [UserController, AuthController, StripeController, RewardController, SalesHotelController, HuntingsController],
+  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService, HuntingsService],
 })
 export class GatewayModule {}
