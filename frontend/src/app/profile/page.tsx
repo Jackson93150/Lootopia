@@ -3,6 +3,7 @@
 import Image from "next/image"
 import "../globals.css"
 import { EditIcon } from "@/assets/icons/edit.icon"
+import ArtefactCard from "@/components/artefact/artefactCard"
 import { RankDisplay } from "@/components/ui/RankDisplay"
 import { getUserArtefact, getUserLockedSuccess, getUserSuccess, getUserTrophy } from "@/service/rewards"
 import { uploadProfilePicture } from "@/service/user"
@@ -226,22 +227,7 @@ export default function ProfilePage() {
 
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {artefacts.map(artefact => (
-                              <div key={artefact.id_artefact} className="p-[5px] rounded-[20px] bg-[#ff9900] shadow-md">
-                                <div className="w-full rounded-[16px] bg-gradient-to-br from-[#FAC27D] to-[#f5c249] border-[2px] border-[#333333] flex flex-col items-center justify-start p-2 h-[250px]">
-                                  <div className="w-full text-center text-md font-bold truncate font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.6)]">
-                                    {artefact.artefact.name}
-                                  </div>
-                                  <div className="flex items-center justify-center flex-grow">
-                                    <Image
-                                      src={artefact.artefact.image}
-                                      alt={artefact.artefact.name}
-                                      width={180}
-                                      height={180}
-                                      className="object-cover rounded"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
+                              <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
                             ))}
                           </div>
                         </div>
