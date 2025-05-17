@@ -2,9 +2,12 @@
 
 import type { UserArtefact } from "@/app/types/artefact"
 import { mintNft } from "@/service/nft"
+import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import { type Eip1193Provider, ethers } from "ethers"
 import Image from "next/image"
 import { useState } from "react"
+import { ToastContainer, toast } from "react-toastify"
+import AppModal from "../ui/AppModal"
 
 type Props = {
   artefact: UserArtefact
@@ -18,11 +21,27 @@ declare global {
 
 export default function ArtefactCard({ artefact }: Props) {
   const [showModal, setShowModal] = useState(false)
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("Transformer en NFT")
+  const [state, setState] = useState<"base" | "minting" | "finish">("base")
+  const [txUrl, setTxUrl] = useState("")
+
+  const onClose = () => {
+    setShowModal(false)
+    setState("base")
+  }
 
   const connectWalletAndMint = async () => {
     if (!window.ethereum) {
-      alert("Installe MetaMask !")
+      toast.error("Insallation de Metamask requis", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
       return
     }
 
@@ -30,7 +49,6 @@ export default function ArtefactCard({ artefact }: Props) {
       const [account] = await window.ethereum.request({
         method: "eth_requestAccounts",
       })
-
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
 
@@ -38,15 +56,24 @@ export default function ArtefactCard({ artefact }: Props) {
 
       const message = `Mint artefact ${artefact.id_artefact}`
       await signer.signMessage(message)
-
+      setState("minting")
       setStatus("Envoi au serveur pour mint...")
-
       const result = await mintNft(account, artefact.artefact.image, artefact.id_firebase)
-
-      setStatus(`NFT minté avec succès ! Tx : ${result.txHash}`)
+      setTxUrl(`https://sepolia.etherscan.io/tx/${result.hash}`)
+      setStatus("NFT minté ! Clickez pour voir")
+      setState("finish")
     } catch (err) {
-      console.error(err)
-      setStatus(`Erreur : ${err}`)
+      toast.error(`Erreur : ${err}`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+      setStatus("Transformer en NFT")
     }
   }
 
@@ -70,30 +97,58 @@ export default function ArtefactCard({ artefact }: Props) {
         </div>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 bg-black/10 bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 relative w-[400px] flex flex-col items-center">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-            >
-              ✖
-            </button>
-            <h3 className="text-xl font-bold mb-4">{artefact.artefact.name}</h3>
-            <Image
-              src={artefact.artefact.image}
-              alt={artefact.artefact.name}
-              width={200}
-              height={200}
-              className="object-cover rounded mb-4"
-            />
-            <button onClick={connectWalletAndMint} className="bg-[#ff9900] text-white py-2 px-4 rounded">
-              Transformer en NFT
-            </button>
-            <p className="text-sm mt-3 text-center">{status}</p>
-          </div>
+      <AppModal modalIsOpen={showModal} closeModal={onClose}>
+        <div className="p-6 w-[400px] min-h-[350px] flex flex-col items-center">
+          {state === "minting" && (
+            <div className="flex flex-col items-center gap-4 justify-center">
+              <DotLottieReact
+                src="https://lottie.host/abb63194-6d93-421e-a1e4-27e831b9c490/YiDEOd2fgk.lottie"
+                loop
+                autoplay
+              />
+              <div className="bg-[#ff9900] text-white py-2 px-4 rounded-[16px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                {status}
+              </div>
+            </div>
+          )}
+          {state === "finish" && (
+            <div className="flex flex-col items-center gap-4 justify-center">
+              <DotLottieReact
+                src="https://lottie.host/47680af7-963d-47b8-b2ec-a6f08f6aa0c4/7EMUBqU4oW.lottie"
+                autoplay
+              />
+              <a
+                href={txUrl}
+                target="_blank"
+                className="bg-[#ff9900] text-white py-2 px-4 rounded-[16px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] truncate"
+                rel="noreferrer"
+              >
+                {status}
+              </a>
+            </div>
+          )}
+          {state === "base" && (
+            <>
+              <h3 className="text-xl font-bold mb-4">{artefact.artefact.name}</h3>
+              <Image
+                src={artefact.artefact.image}
+                alt={artefact.artefact.name}
+                width={200}
+                height={200}
+                className="object-cover rounded mb-4"
+              />
+              <button
+                onClick={connectWalletAndMint}
+                className="bg-[#ff9900] text-white py-2 px-4 rounded cursor-pointer"
+              >
+                {status}
+              </button>
+            </>
+          )}
         </div>
-      )}
+      </AppModal>
+
+      <ToastContainer position="bottom-right" theme="colored" limit={5} stacked />
     </>
   )
 }
