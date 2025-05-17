@@ -5,7 +5,7 @@ import { mintNft } from "@/service/nft"
 import { DotLottieReact } from "@lottiefiles/dotlottie-react"
 import { type Eip1193Provider, ethers } from "ethers"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ToastContainer, toast } from "react-toastify"
 import AppModal from "../ui/AppModal"
 
@@ -28,6 +28,7 @@ export default function ArtefactCard({ artefact }: Props) {
   const onClose = () => {
     setShowModal(false)
     setState("base")
+    setStatus("Transformer en NFT")
   }
 
   const connectWalletAndMint = async () => {
@@ -76,6 +77,21 @@ export default function ArtefactCard({ artefact }: Props) {
       setStatus("Transformer en NFT")
     }
   }
+
+  useEffect(() => {
+    if (!showModal && state === "finish") {
+      toast.success("NFT minté avec succes!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      })
+    }
+  }, [state, showModal])
 
   return (
     <>
