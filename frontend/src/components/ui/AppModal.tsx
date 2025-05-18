@@ -15,14 +15,17 @@ const defaultStyle = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    border: "4px solid #5B3E29",
-    backgroundImage: "linear-gradient(to bottom right, #FAC27D, #f5c249)",
-    backgroundSize: "cover",
+    border: "rgba(0, 0, 0, 0)",
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    backgroundImage: "url('/images/modal.png')",
+    backgroundSize: "100% 100%",
+    backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
+    zIndex: 40,
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: 50,
+    zIndex: 40,
   },
 }
 

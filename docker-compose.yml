@@ -20,6 +20,7 @@ services:
       - stripe-service
       - sales-hotel-service
       - rewards-service
+      - nft-service
 
   # Microservices (communication interne uniquement)
   user-service:
@@ -101,6 +102,21 @@ services:
       - PORT=3500
     volumes:
       - ./services/rewards:/app
+      - /app/node_modules
+    networks:
+      - lootopia-net
+
+  nft-service:
+    platform: linux/amd64
+    build:
+      context: ./services/nft
+    image: lootopia_nft_service
+    env_file:
+      - .env
+    environment:
+      - PORT=3600
+    volumes:
+      - ./services/nft:/app
       - /app/node_modules
     networks:
       - lootopia-net
