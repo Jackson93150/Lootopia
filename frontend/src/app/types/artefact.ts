@@ -23,6 +23,7 @@ export type UserArtefact = {
     rarity: string
     image: string
     type: string
+    description: string
   }
 }
 
