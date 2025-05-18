@@ -2,14 +2,15 @@ import { Body, Controller } from "@nestjs/common"
 
 import { MessagePattern } from "@nestjs/microservices"
 import { ArtefactService } from "./artefact.service"
+import { ArtefactFilterOptions } from "./types/filters"
 
 @Controller()
 export class ArtefactController {
   constructor(private readonly artefactService: ArtefactService) {}
 
   @MessagePattern({ cmd: "get-user-artefacts-artefacts-service" })
-  async getUserArtefacts(@Body() data: { userId: string }) {
-    return await this.artefactService.getUserArtefacts(data.userId)
+  async getUserArtefacts(@Body() data: { userId: string; filters?: ArtefactFilterOptions }) {
+    return await this.artefactService.getUserArtefacts(data.userId, data.filters)
   }
 
   @MessagePattern({ cmd: "get-artefacts-artefacts-service" })

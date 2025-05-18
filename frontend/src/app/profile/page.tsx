@@ -17,6 +17,7 @@ import type { UserTrophy } from "../types/trophy"
 
 export default function ProfilePage() {
   const [artefacts, setArtefacts] = useState<UserArtefact[] | null>(null)
+  const [artefactsExported, setArtefactsExported] = useState<UserArtefact[] | null>(null)
   const [trophys, setTrophys] = useState<UserTrophy[] | null>(null)
   const [lockedSuccess, setLockedSuccess] = useState<Success[] | null>(null)
   const [userSuccess, setUserSuccess] = useState<UserSuccess[] | null>(null)
@@ -79,6 +80,10 @@ export default function ProfilePage() {
       if (user && id) {
         const res = await getUserArtefact(id)
         setArtefacts(res)
+        const exported = await getUserArtefact(id, {
+          is_exported_nft: true,
+        })
+        setArtefactsExported(exported)
         const trophy = await getUserTrophy(id)
         setTrophys(trophy)
         const success = await getUserSuccess(id)
@@ -218,11 +223,38 @@ export default function ProfilePage() {
                 >
                   <div className="z-10 grow overflow-y-auto flex flex-col gap-10 p-6 min-h-0">
                     {selectedTab === "artefacts" && (
-                      <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
-                        {artefacts?.map(artefact => (
-                          <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
-                        ))}
-                      </div>
+                      <>
+                        <div className="flex items-center gap-4">
+                          <div className="flex-grow h-[4px] bg-white/70" />
+                          <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                            Mes Artefacts
+                          </h2>
+                          <div className="flex-grow h-[4px] bg-white/70" />
+                        </div>
+
+                        <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
+                          {artefacts?.map(artefact => (
+                            <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
+                          ))}
+                        </div>
+
+                        {artefactsExported?.length !== 0 && (
+                          <>
+                            <div className="flex items-center gap-4">
+                              <div className="flex-grow h-[4px] bg-white/70" />
+                              <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                Artefacts Exporté
+                              </h2>
+                              <div className="flex-grow h-[4px] bg-white/70" />
+                            </div>
+                            <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6 brightness-50 pointer-events-none">
+                              {artefactsExported?.map(artefact => (
+                                <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </>
                     )}
 
                     {selectedTab === "trophies" && (
