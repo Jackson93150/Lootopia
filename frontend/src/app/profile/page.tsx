@@ -265,22 +265,32 @@ export default function ProfilePage() {
 
                           return years.map(year => (
                             <div key={year} className="flex flex-col gap-4">
-                              <h2 className="text-white font-lilita text-3xl">{year}</h2>
-                              <div className="w-full h-[2px] bg-white rounded-full" />
+                              <div className="flex items-center gap-4">
+                                <div className="flex-grow h-[4px] bg-white/70" />
+                                <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                  {year}
+                                </h2>
+                                <div className="flex-grow h-[4px] bg-white/70" />
+                              </div>
                               {Object.keys(grouped[year])
                                 .sort(
                                   (a, b) => new Date(`1 ${b} ${year}`).getTime() - new Date(`1 ${a} ${year}`).getTime(),
                                 )
                                 .map(month => (
                                   <div key={month} className="flex flex-col gap-4">
-                                    <h3 className="text-white font-lilita text-2xl">{month}</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                    <h2 className="text-white uppercase font-lilita w-full text-center text-[26px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                      {month}
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
                                       {grouped[year][month].map(trophy => (
-                                        <div
+                                        <PageContainer
+                                          stripes
+                                          color="white"
+                                          size="sm"
                                           key={trophy.trophy_id + trophy.date}
-                                          className="p-[5px] rounded-[20px] bg-[#ff9900] shadow-md"
                                         >
-                                          <div className="w-full rounded-[16px] bg-gradient-to-br from-[#FAC27D] to-[#f5c249] border-[2px] border-[#333333] flex flex-col items-center justify-start p-2 h-[250px]">
+                                          <div className="w-full rounded-[16px] flex flex-col items-center justify-start p-2 h-[250px] relative shine-effect shine-effect-hover">
                                             <div className="flex items-center justify-center flex-grow">
                                               <Image
                                                 src={trophy.trophy.picture_url}
@@ -291,7 +301,7 @@ export default function ProfilePage() {
                                               />
                                             </div>
                                           </div>
-                                        </div>
+                                        </PageContainer>
                                       ))}
                                     </div>
                                   </div>
@@ -305,8 +315,14 @@ export default function ProfilePage() {
                     {selectedTab === "success" && (
                       <div className="flex flex-col gap-10 w-full">
                         <div className="flex flex-col gap-4">
-                          <h2 className="text-white font-lilita text-2xl">Mes Succès</h2>
-                          <div className="w-full h-[2px] bg-white rounded-full" />
+                          <div className="flex items-center gap-4">
+                            <div className="flex-grow h-[4px] bg-white/70" />
+                            <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                              Mes Succès
+                            </h2>
+                            <div className="flex-grow h-[4px] bg-white/70" />
+                          </div>
+
                           {userSuccess && userSuccess.length > 0 ? (
                             <div className="flex flex-col gap-3">
                               {userSuccess.map(success => (
@@ -330,8 +346,14 @@ export default function ProfilePage() {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                          <h2 className="text-white font-lilita text-2xl">À Débloquer</h2>
-                          <div className="w-full h-[2px] bg-white rounded-full" />
+                          <div className="flex items-center gap-4">
+                            <div className="flex-grow h-[4px] bg-white/70" />
+                            <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                              À Débloquer
+                            </h2>
+                            <div className="flex-grow h-[4px] bg-white/70" />
+                          </div>
+
                           {lockedSuccess && lockedSuccess.length > 0 ? (
                             <div className="flex flex-col gap-3">
                               {lockedSuccess.map(success => (
