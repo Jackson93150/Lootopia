@@ -1,15 +1,13 @@
 "use client"
 
-import Image from "next/image"
-import "../globals.css"
-import { EditIcon } from "@/assets/icons/edit.icon"
-import ArtefactCard from "@/components/artefact/artefactCard"
 import PageContainer from "@/components/container/page-container"
+import ArtefactView from "@/components/profile/artefact-view"
+import ProfileView from "@/components/profile/profile-view"
+import SuccessView from "@/components/profile/succes-view"
+import TrophysView from "@/components/profile/trophies-view"
 import { RankDisplay } from "@/components/ui/RankDisplay"
 import { getUserArtefact, getUserLockedSuccess, getUserSuccess, getUserTrophy } from "@/service/rewards"
-import { uploadProfilePicture } from "@/service/user"
-import { updateBiography } from "@/service/user"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useMe } from "../hook/useMe"
 import type { UserArtefact } from "../types/artefact"
 import type { Success, UserSuccess } from "../types/success"
@@ -24,56 +22,6 @@ export default function ProfilePage() {
   const { user, id, loading } = useMe()
   const [selectedTab, setSelectedTab] = useState<"artefacts" | "trophies" | "success">("artefacts")
   const [profileImage, setProfileImage] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [bioEditMode, setBioEditMode] = useState(false)
-  const [editedBio, setEditedBio] = useState("")
-
-  const groupTrophiesByYearAndMonth = (trophies: UserTrophy[]) => {
-    const groups: Record<string, Record<string, UserTrophy[]>> = {}
-
-    for (const trophy of trophies) {
-      const date = new Date(Number(trophy.date))
-      if (Number.isNaN(date.getTime())) continue
-
-      const year = date.getFullYear().toString()
-      const month = date.toLocaleString("fr-FR", { month: "long" })
-
-      if (!groups[year]) groups[year] = {}
-      if (!groups[year][month]) groups[year][month] = []
-
-      groups[year][month].push(trophy)
-    }
-
-    return groups
-  }
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    try {
-      const res = await uploadProfilePicture(file)
-      setProfileImage(typeof res === "string" ? res : res.logo_url)
-    } catch (error) {
-      console.error("Erreur upload image:", error)
-    }
-  }
-
-  const handleImageClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const getRarityImage = (rarity: string): string => {
-    switch (rarity.toLowerCase()) {
-      case "bronze":
-        return "/images/one-star.png"
-      case "silver":
-        return "/images/two-star.png"
-      case "gold":
-        return "/images/three-star.png"
-      default:
-        return "/images/one-star.png"
-    }
-  }
 
   useEffect(() => {
     async function fetchData() {
@@ -103,95 +51,7 @@ export default function ProfilePage() {
         <div className="w-screen h-screen flex border pt-30 px-15 pb-10">
           <PageContainer stripes>
             <div className="w-full flex h-full p-4 gap-8 z-10">
-              <PageContainer color="grey" size="sm" className="h-full grow max-w-[300px]">
-                <div className="flex flex-col gap-2">
-                  {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-                  <div
-                    className="w-full h-[30%] bg-gradient-to-r from-[#B1C7E4] to-[#EFF9FD] rounded-[8px] border p-2 relative group cursor-pointer"
-                    onClick={handleImageClick}
-                  >
-                    <div className="w-full h-full rounded-[8px] border overflow-hidden relative">
-                      <Image
-                        src={
-                          profileImage ??
-                          "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-                        }
-                        alt="profile"
-                        width={500}
-                        height={500}
-                        className="size-full object-cover transition duration-300 group-hover:brightness-75"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white text-sm font-bold">
-                        Changer l'image
-                      </div>
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                    />
-                  </div>
-
-                  <div className="w-full grow bg-gradient-to-r from-[#B1C7E4] to-[#EFF9FD] rounded-[8px] border p-2 flex flex-col gap-2 relative">
-                    {!bioEditMode && (
-                      <button
-                        onClick={() => {
-                          setBioEditMode(true)
-                          setEditedBio(user?.biographie ?? "")
-                        }}
-                        className="absolute top-2 right-2 p-1 hover:bg-[#415E6F] rounded cursor-pointer"
-                        title="Modifier la biographie"
-                      >
-                        <EditIcon className="w-4 h-4 text-black" />
-                      </button>
-                    )}
-
-                    {bioEditMode ? (
-                      <>
-                        <textarea
-                          value={editedBio}
-                          onChange={e => setEditedBio(e.target.value)}
-                          className="w-full h-full p-2 rounded bg-[#FAC27D] text-black focus:outline-black resize-none"
-                          rows={4}
-                        />
-                        <div className="flex justify-end gap-2">
-                          <button
-                            onClick={() => {
-                              setBioEditMode(false)
-                              setEditedBio(user?.biographie ?? "")
-                            }}
-                            className="px-3 py-1 bg-[#5B3E29] text-white rounded cursor-pointer"
-                          >
-                            Annuler
-                          </button>
-                          <button
-                            onClick={async () => {
-                              try {
-                                await updateBiography(editedBio)
-                                setBioEditMode(false)
-                                if (user) {
-                                  user.biographie = editedBio
-                                }
-                              } catch (error) {
-                                console.error("Erreur lors de la mise à jour de la bio :", error)
-                              }
-                            }}
-                            className="px-3 py-1 bg-[#A96A3D] text-white rounded cursor-pointer"
-                          >
-                            Sauvegarder
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="cursor-default whitespace-pre-wrap break-words font-lilita pt-4 text-[#415E6F]">
-                        {user?.biographie ?? "Cliquez sur le crayon pour ajouter une biographie"}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </PageContainer>
+              <ProfileView user={user} profileImage={profileImage} setProfileImage={setProfileImage} />
               <div className="h-full grow flex flex-col">
                 <div className="relative h-[100px] ml-5 gap-1 flex flex-shrink-0 w-fit">
                   <RankDisplay user={user} />
@@ -223,159 +83,13 @@ export default function ProfilePage() {
                 >
                   <div className="z-10 grow overflow-y-auto flex flex-col gap-10 p-6 min-h-0">
                     {selectedTab === "artefacts" && (
-                      <>
-                        <div className="flex items-center gap-4">
-                          <div className="flex-grow h-[4px] bg-white/70" />
-                          <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                            Mes Artefacts
-                          </h2>
-                          <div className="flex-grow h-[4px] bg-white/70" />
-                        </div>
-
-                        <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
-                          {artefacts?.map(artefact => (
-                            <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
-                          ))}
-                        </div>
-
-                        {artefactsExported?.length !== 0 && (
-                          <>
-                            <div className="flex items-center gap-4">
-                              <div className="flex-grow h-[4px] bg-white/70" />
-                              <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                                Artefacts Exporté
-                              </h2>
-                              <div className="flex-grow h-[4px] bg-white/70" />
-                            </div>
-                            <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6 brightness-50 pointer-events-none">
-                              {artefactsExported?.map(artefact => (
-                                <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
-                              ))}
-                            </div>
-                          </>
-                        )}
-                      </>
+                      <ArtefactView artefacts={artefacts} artefactsExported={artefactsExported} />
                     )}
 
-                    {selectedTab === "trophies" && (
-                      <div className="flex flex-col gap-10 w-full">
-                        {(() => {
-                          const grouped = groupTrophiesByYearAndMonth(trophys || [])
-                          const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a))
-
-                          return years.map(year => (
-                            <div key={year} className="flex flex-col gap-4">
-                              <div className="flex items-center gap-4">
-                                <div className="flex-grow h-[4px] bg-white/70" />
-                                <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                                  {year}
-                                </h2>
-                                <div className="flex-grow h-[4px] bg-white/70" />
-                              </div>
-                              {Object.keys(grouped[year])
-                                .sort(
-                                  (a, b) => new Date(`1 ${b} ${year}`).getTime() - new Date(`1 ${a} ${year}`).getTime(),
-                                )
-                                .map(month => (
-                                  <div key={month} className="flex flex-col gap-4">
-                                    <h2 className="text-white uppercase font-lilita w-full text-center text-[26px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                                      {month}
-                                    </h2>
-
-                                    <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
-                                      {grouped[year][month].map(trophy => (
-                                        <PageContainer
-                                          stripes
-                                          color="white"
-                                          size="sm"
-                                          key={trophy.trophy_id + trophy.date}
-                                        >
-                                          <div className="w-full rounded-[16px] flex flex-col items-center justify-start p-2 h-[250px] relative shine-effect shine-effect-hover">
-                                            <div className="flex items-center justify-center flex-grow">
-                                              <Image
-                                                src={trophy.trophy.picture_url}
-                                                alt={trophy.trophy.name}
-                                                width={180}
-                                                height={180}
-                                                className="object-cover rounded"
-                                              />
-                                            </div>
-                                          </div>
-                                        </PageContainer>
-                                      ))}
-                                    </div>
-                                  </div>
-                                ))}
-                            </div>
-                          ))
-                        })()}
-                      </div>
-                    )}
+                    {selectedTab === "trophies" && <TrophysView trophys={trophys} />}
 
                     {selectedTab === "success" && (
-                      <div className="flex flex-col gap-10 w-full">
-                        <div className="flex flex-col gap-4">
-                          <div className="flex items-center gap-4">
-                            <div className="flex-grow h-[4px] bg-white/70" />
-                            <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                              Mes Succès
-                            </h2>
-                            <div className="flex-grow h-[4px] bg-white/70" />
-                          </div>
-
-                          {userSuccess && userSuccess.length > 0 ? (
-                            <div className="flex flex-col gap-3">
-                              {userSuccess.map(success => (
-                                <div
-                                  key={success.success_id}
-                                  className="bg-[#eef4fa] rounded-[16px] border-[2px] border-[#333333] px-6 py-4 text-black flex items-center justify-between"
-                                >
-                                  <span className="font-semibold text-lg">{success.success.name}</span>
-                                  <Image
-                                    src={getRarityImage(success.success.rarity)}
-                                    alt={success.success.rarity}
-                                    width={80}
-                                    height={16}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-white">Aucun succès débloqué.</p>
-                          )}
-                        </div>
-
-                        <div className="flex flex-col gap-4">
-                          <div className="flex items-center gap-4">
-                            <div className="flex-grow h-[4px] bg-white/70" />
-                            <h2 className="text-white font-lilita text-[32px] whitespace-nowrap drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                              À Débloquer
-                            </h2>
-                            <div className="flex-grow h-[4px] bg-white/70" />
-                          </div>
-
-                          {lockedSuccess && lockedSuccess.length > 0 ? (
-                            <div className="flex flex-col gap-3">
-                              {lockedSuccess.map(success => (
-                                <div
-                                  key={success.id_firebase}
-                                  className="bg-[#eef4fa] rounded-[16px] border-[2px] border-[#333333] px-6 py-4 text-black flex items-center justify-between opacity-60"
-                                >
-                                  <span className="font-semibold text-lg">{success.name}</span>
-                                  <Image
-                                    src={getRarityImage(success.rarity)}
-                                    alt={success.rarity}
-                                    width={80}
-                                    height={16}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-white">Tous les succès ont été débloqués</p>
-                          )}
-                        </div>
-                      </div>
+                      <SuccessView lockedSuccess={lockedSuccess} userSuccess={userSuccess} />
                     )}
                   </div>
                 </PageContainer>

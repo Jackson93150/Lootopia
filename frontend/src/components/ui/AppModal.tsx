@@ -17,14 +17,10 @@ const defaultStyle = {
     transform: "translate(-50%, -50%)",
     border: "rgba(0, 0, 0, 0)",
     backgroundColor: "rgba(0, 0, 0, 0)",
-    backgroundImage: "url('/images/modal.png')",
-    backgroundSize: "100% 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
     zIndex: 40,
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
     zIndex: 40,
   },
 }

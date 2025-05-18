@@ -9,6 +9,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import ArtefactContainer from "../container/artefact-container"
+import PageContainer from "../container/page-container"
 import AppModal from "../ui/AppModal"
 
 type Props = {
@@ -127,54 +128,66 @@ export default function ArtefactCard({ artefact, disabled = false }: Props) {
 
       {!disabled && (
         <AppModal modalIsOpen={showModal} closeModal={onClose}>
-          <div className="p-6 w-[400px] min-h-[350px] flex flex-col items-center">
-            {state === "minting" && (
-              <div className="flex flex-col items-center gap-4 justify-center">
-                <DotLottieReact
-                  src="https://lottie.host/abb63194-6d93-421e-a1e4-27e831b9c490/YiDEOd2fgk.lottie"
-                  loop
-                  autoplay
-                />
-                <div className="bg-[#ff9900] text-white py-2 px-4 rounded-[16px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                  {status}
+          <PageContainer color="white" size="sm">
+            <div className="mx-12 my-4 w-[300px] gap-8 h-fit flex flex-col items-center">
+              {state === "minting" && (
+                <div className="flex flex-col items-center gap-4 justify-center">
+                  <DotLottieReact
+                    src="https://lottie.host/abb63194-6d93-421e-a1e4-27e831b9c490/YiDEOd2fgk.lottie"
+                    loop
+                    autoplay
+                  />
+                  <div className="bg-gradient-to-t from-[#F38424] to-[#F7C929] py-2 px-4 rounded-[12px]">
+                    <span className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{status}</span>
+                  </div>
                 </div>
-              </div>
-            )}
-            {state === "finish" && (
-              <div className="flex flex-col items-center gap-4 justify-center">
-                <DotLottieReact
-                  src="https://lottie.host/47680af7-963d-47b8-b2ec-a6f08f6aa0c4/7EMUBqU4oW.lottie"
-                  autoplay
-                />
-                <a
-                  href={txUrl}
-                  target="_blank"
-                  className="bg-[#ff9900] text-white py-2 px-4 rounded-[16px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] truncate"
-                  rel="noreferrer"
-                >
-                  {status}
-                </a>
-              </div>
-            )}
-            {state === "base" && (
-              <>
-                <h3 className="text-xl font-bold mb-4">{artefact.artefact.name}</h3>
-                <Image
-                  src={artefact.artefact.image}
-                  alt={artefact.artefact.name}
-                  width={200}
-                  height={200}
-                  className="object-cover rounded mb-4"
-                />
-                <button
-                  onClick={connectWalletAndMint}
-                  className="bg-[#ff9900] text-white py-2 px-4 rounded cursor-pointer"
-                >
-                  {status}
-                </button>
-              </>
-            )}
-          </div>
+              )}
+              {state === "finish" && (
+                <div className="flex flex-col items-center gap-4 justify-center">
+                  <DotLottieReact
+                    src="https://lottie.host/47680af7-963d-47b8-b2ec-a6f08f6aa0c4/7EMUBqU4oW.lottie"
+                    autoplay
+                  />
+                  <a
+                    href={txUrl}
+                    target="_blank"
+                    className="bg-gradient-to-t from-[#F38424] to-[#F7C929] py-2 px-4 rounded-[12px] outline-[2px] truncate"
+                    rel="noreferrer"
+                  >
+                    <span className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{status}</span>
+                  </a>
+                </div>
+              )}
+              {state === "base" && (
+                <>
+                  <ArtefactContainer
+                    rarity={artefact.artefact.rarity}
+                    size="sm"
+                    name={artefact.artefact.name}
+                    description={artefact.artefact.description}
+                  >
+                    <div className="w-full flex flex-col items-center justify-start px-4 pt-[60px] pb-[40px]">
+                      <div className="flex items-center justify-center">
+                        <Image
+                          src={artefact.artefact.image}
+                          alt={artefact.artefact.name}
+                          width={180}
+                          height={180}
+                          className="object-cover rounded w-[200px]"
+                        />
+                      </div>
+                    </div>
+                  </ArtefactContainer>
+                  <button
+                    onClick={connectWalletAndMint}
+                    className="bg-gradient-to-t from-[#F38424] to-[#F7C929] py-2 px-4 rounded-[12px] cursor-pointer outline-[2px]"
+                  >
+                    <span className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{status}</span>
+                  </button>
+                </>
+              )}
+            </div>
+          </PageContainer>
         </AppModal>
       )}
     </>
