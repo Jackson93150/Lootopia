@@ -7,7 +7,7 @@ export default function AppSelect(props: AppSelectProps) {
     <div className="flex relative w-full pb-1">
       <select
         {...props}
-        className={`w-full h-11 px-2 z-10 rounded-xl text-xs border-5 outline-none transition-colors bg-sand placeholder:text-gray-500 border-[#D7B189] focus:border-[#D7B189] hover:border-[#D7B189]
+        className={`w-full h-11 px-2 z-10 rounded-xl text-xs border-5 outline-none transition-colors bg-[#D9E7F2] placeholder:text-gray-500 border-[#8B95B3] focus:border-[#8B95B3] hover:border-[#8B95B3]
           appearance-none pr-6 ${props.className ?? ""}`}
       >
         {props.children}

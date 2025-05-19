@@ -1,4 +1,5 @@
 import type { AuctionModalProps, AuctionType } from "@/app/types/auction"
+import PageContainer from "@/components/container/page-container"
 import AppButton from "@/components/ui/AppButton"
 import AppInput from "@/components/ui/AppInput"
 import AppModal from "@/components/ui/AppModal"
@@ -81,46 +82,62 @@ export default function HdvModal({ modalIsOpen, closeModal, selectedAuction, use
   return (
     <AppModal modalIsOpen={modalIsOpen} closeModal={closeModal} styles={customStylesModal}>
       {selectedAuction && (
-        <>
-          <div className="flex items-center w-full justify-around p-5">
-            <div className="flex flex-col items-center gap-5">
-              <p className="font-bolder text-2xl">{selectedAuction.artefact.name}</p>
-              <Image src={selectedAuction.artefact.image} width={150} height={150} alt={"Artefact"} />
-            </div>
-          </div>
-
-          <div className="w-full flex flex-col items-center gap-5">
-            <div className="flex flex-col items-center w-full">
-              <p className="w-full text-start ps-2">Enchère à </p>
-              <div className="w-full flex justify-around gap-5">
-                <AppInput
-                  ref={inputNewBidAuctionRef}
-                  type="number"
-                  placeholder={String(getCurrentPrice(selectedAuction))}
-                />
-                <AppButton className="!w-30" onClick={handleBidClick}>
-                  Enchéri
-                </AppButton>
+        <PageContainer color="grey">
+          <div className="flex flex-col">
+            <div className="flex items-center w-full justify-around p-5">
+              <div className="flex flex-col items-center gap-5">
+                <p className="font-bolder text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                  {selectedAuction.artefact.name}
+                </p>
+                <Image src={selectedAuction.artefact.image} width={150} height={150} alt={"Artefact"} />
               </div>
             </div>
 
-            {selectedAuction.fix_price && (
+            <div className="w-full flex flex-col items-center gap-5">
               <div className="flex flex-col items-center w-full">
-                <p className="w-full text-start ps-2">Achat direct à </p>
+                <p className="w-full text-start ps-2 text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                  Enchère à{" "}
+                </p>
                 <div className="w-full flex justify-around gap-5">
-                  <AppInput className="!text-center" type="number" value={selectedAuction.fix_price} disabled />
-                  <AppButton className="!w-30" onClick={handleDirectlyBuyClick}>
-                    Achète
+                  <AppInput
+                    ref={inputNewBidAuctionRef}
+                    type="number"
+                    placeholder={String(getCurrentPrice(selectedAuction))}
+                  />
+                  <AppButton
+                    className="!w-30 bg-gradient-to-r from-[#F38424] to-[#F7C929] outline-[#F2E30B]"
+                    onClick={handleBidClick}
+                  >
+                    <span className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Enchérir</span>
                   </AppButton>
                 </div>
               </div>
-            )}
-          </div>
 
-          <div className="text-center pt-4">
-            <p>Fin de l'enchère le {formattedDate}</p>
+              {selectedAuction.fix_price && (
+                <div className="flex flex-col items-center w-full">
+                  <p className="w-full text-start ps-2 text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    Achat direct à{" "}
+                  </p>
+                  <div className="w-full flex justify-around gap-5">
+                    <AppInput className="!text-center" type="number" value={selectedAuction.fix_price} disabled />
+                    <AppButton
+                      className="!w-30 bg-gradient-to-r from-[#F38424] to-[#F7C929] outline-[#F2E30B]"
+                      onClick={handleDirectlyBuyClick}
+                    >
+                      <span className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Achète</span>
+                    </AppButton>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="text-center pt-4">
+              <p className="text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                Fin de l'enchère le {formattedDate}
+              </p>
+            </div>
           </div>
-        </>
+        </PageContainer>
       )}
     </AppModal>
   )

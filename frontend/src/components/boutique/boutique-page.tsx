@@ -1,4 +1,5 @@
 import type { CrownPackage } from "@/app/types/crown-package"
+import PageContainer from "../container/page-container"
 import Card from "./card"
 
 type ShopProps = {
@@ -7,9 +8,9 @@ type ShopProps = {
 
 export default function Shop({ crownPackages }: ShopProps) {
   return (
-    <div className="h-fit py-10 lg:py-0 lg:h-screen w-full bg-[url('/images/backgrounds/backgroundAuth.png')]">
-      <div className="flex size-full justify-center items-center">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-5 rounded-lg h-[70%] w-[85%] p-4 bg-gradient-to-r from-[#F38424] to-[#F7C929] border-4 border-[#F2E30B]">
+    <div className="flex justify-center items-center w-screen h-screen pt-40 px-15 pb-10">
+      <PageContainer>
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-5 h-full w-full p-4 overflow-y-auto">
           {crownPackages.map((crownPackage: CrownPackage) => (
             <Card
               key={crownPackage.id_firebase}
@@ -19,7 +20,7 @@ export default function Shop({ crownPackages }: ShopProps) {
             />
           ))}
         </div>
-      </div>
+      </PageContainer>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 import { getCrownsPackages } from "@/service/shop"
 import { useEffect, useState } from "react"
-import Shop from "./components/boutique-page"
+import Shop from "../../components/boutique/boutique-page"
 
 export default function ShopPage() {
   const [crownPackages, setCrownPackages] = useState([])

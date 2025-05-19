@@ -15,6 +15,7 @@ import AppModal from "../ui/AppModal"
 type Props = {
   artefact: UserArtefact
   disabled?: boolean
+  size?: "sm" | "md"
 }
 
 declare global {
@@ -23,7 +24,7 @@ declare global {
   }
 }
 
-export default function ArtefactCard({ artefact, disabled = false }: Props) {
+export default function ArtefactCard({ artefact, disabled = false, size = "md" }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState("Transformer en NFT")
   const [state, setState] = useState<"base" | "minting" | "finish">("base")
@@ -102,8 +103,10 @@ export default function ArtefactCard({ artefact, disabled = false }: Props) {
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div
         onClick={() => (disabled ? null : setShowModal(true))}
-        className={clsx("p-[5px] w-[250px] hover:scale-[1.05]", {
+        className={clsx("p-[5px] hover:scale-[1.05]", {
           "cursor-pointer": !disabled,
+          "w-[250px]": size === "md",
+          "w-[125px]": size === "sm",
         })}
       >
         <ArtefactContainer

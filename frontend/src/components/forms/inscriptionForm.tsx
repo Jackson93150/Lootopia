@@ -89,7 +89,13 @@ export default function InscriptionForm() {
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-dark-brown mb-1">
           Email
-          <AppInput id="email" type="email" placeholder="Entrez votre adresse email" {...register("email")} />
+          <AppInput
+            id="email"
+            type="email"
+            placeholder="Entrez votre adresse email"
+            {...register("email")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
+          />
         </label>
         {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
       </div>
@@ -97,7 +103,13 @@ export default function InscriptionForm() {
       <div>
         <label htmlFor="username" className="block text-sm font-medium text-dark-brown mb-1">
           Pseudo
-          <AppInput id="username" type="text" placeholder="Entrez votre pseudo" {...register("username")} />
+          <AppInput
+            id="username"
+            type="text"
+            placeholder="Entrez votre pseudo"
+            {...register("username")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
+          />
         </label>
         {errors.username && <p className="text-xs text-red-600 mt-1">{errors.username.message}</p>}
       </div>
@@ -105,7 +117,13 @@ export default function InscriptionForm() {
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-dark-brown mb-1">
           Mot de passe
-          <AppInput id="password" type="password" placeholder="Entrez votre mot de passe" {...register("password")} />
+          <AppInput
+            id="password"
+            type="password"
+            placeholder="Entrez votre mot de passe"
+            {...register("password")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
+          />
         </label>
         {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>}
         <label htmlFor="confirmPassword" className="block text-sm font-medium text-dark-brown mb-1">
@@ -114,6 +132,7 @@ export default function InscriptionForm() {
             type="password"
             placeholder="Confirmez votre mot de passe"
             {...register("confirmPassword")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
           />
         </label>
         {errors.confirmPassword && <p className="text-xs text-red-600 mt-1">{errors.confirmPassword.message}</p>}

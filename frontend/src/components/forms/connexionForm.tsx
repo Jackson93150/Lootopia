@@ -75,7 +75,13 @@ export default function ConnexionForm() {
       <div>
         <label className="block text-sm font-medium text-dark-brown mb-1" htmlFor="email">
           Email
-          <AppInput id="email" placeholder="Entrez votre adresse email" type="email" {...register("email")} />
+          <AppInput
+            id="email"
+            placeholder="Entrez votre adresse email"
+            type="email"
+            {...register("email")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
+          />
         </label>
         {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
       </div>
@@ -83,7 +89,13 @@ export default function ConnexionForm() {
       <div>
         <label className="block text-sm font-medium text-dark-brown mb-1" htmlFor="password">
           Mot de passe
-          <AppInput id="password" placeholder="Entrez votre mot de passe" type="password" {...register("password")} />
+          <AppInput
+            id="password"
+            placeholder="Entrez votre mot de passe"
+            type="password"
+            {...register("password")}
+            className="bg-sand-light !text-black border-4 border-beige focus:border-beige hover:border-beige"
+          />
         </label>
         {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>}
       </div>

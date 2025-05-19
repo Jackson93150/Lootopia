@@ -33,7 +33,7 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
   }
   return (
     <PageContainer color="grey" size="sm" className="h-full grow max-w-[300px]">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
         <div
           className="w-full h-[30%] bg-gradient-to-r from-[#B1C7E4] to-[#EFF9FD] rounded-[8px] border p-2 relative group cursor-pointer"
@@ -78,7 +78,7 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
                 className="w-full h-full p-2 rounded bg-white/80 text-black outline-black font-lilita resize-none"
                 rows={4}
               />
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 w-full">
                 <button
                   onClick={() => {
                     setBioEditMode(false)
