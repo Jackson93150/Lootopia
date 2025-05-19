@@ -10,7 +10,7 @@ export default function Header() {
     const router = useRouter()
     return (
         <header
-            className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px] bg-center bg-[url('/images/backgrounds/Group.png')]"
+            className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px] bg-center bg-[url('/images/backgrounds/backgroundHeader.png')]"
             style={{backgroundSize: "100% 100%"}}
         >
             <div className="flex items-center h-[90px] justify-between px-6 ">
