@@ -75,7 +75,7 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
               <textarea
                 value={editedBio}
                 onChange={e => setEditedBio(e.target.value)}
-                className="w-full h-full p-2 rounded bg-[#FAC27D] text-black focus:outline-black resize-none"
+                className="w-full h-full p-2 rounded bg-white/80 text-black outline-black font-lilita resize-none"
                 rows={4}
               />
               <div className="flex justify-end gap-2">
@@ -84,9 +84,9 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
                     setBioEditMode(false)
                     setEditedBio(user?.biographie ?? "")
                   }}
-                  className="px-3 py-1 bg-[#5B3E29] text-white rounded cursor-pointer"
+                  className="px-3 py-1 bg-[#5F7189] cursor-pointer outline-[2px] rounded"
                 >
-                  Annuler
+                  <span className="text-white font-lilita drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Annuler</span>
                 </button>
                 <button
                   onClick={async () => {
@@ -100,9 +100,11 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
                       console.error("Erreur lors de la mise à jour de la bio :", error)
                     }
                   }}
-                  className="px-3 py-1 bg-[#A96A3D] text-white rounded cursor-pointer"
+                  className="px-3 py-1 bg-[#C0D3E2] rounded cursor-pointer outline-[2px]"
                 >
-                  Sauvegarder
+                  <span className="text-white font-lilita drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                    Sauvegarder
+                  </span>
                 </button>
               </div>
             </>
