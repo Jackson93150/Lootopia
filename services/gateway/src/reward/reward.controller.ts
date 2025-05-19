@@ -1,6 +1,7 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common"
+import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common"
 import { AuthGuard } from "src/auth/guards/auth.guard"
 import { RewardService } from "./reward.service"
+import { ArtefactFilterOptions } from "./types/filters"
 
 @Controller("/reward")
 export class RewardController {
@@ -8,8 +9,8 @@ export class RewardController {
 
   @Get("user-artefact/:id")
   @UseGuards(AuthGuard)
-  async getUserArtefact(@Param("id") id: string) {
-    return await this.clientRewardService.getUserArtefact(id)
+  async getUserArtefact(@Param("id") id: string, @Query() filters: ArtefactFilterOptions) {
+    return await this.clientRewardService.getUserArtefact(id, filters)
   }
 
   @Get("artefacts")

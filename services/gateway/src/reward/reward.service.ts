@@ -1,12 +1,13 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { ClientProxy } from "@nestjs/microservices"
+import { ArtefactFilterOptions } from "./types/filters"
 
 @Injectable()
 export class RewardService {
   constructor(@Inject("REWARDS_SERVICE") private readonly clientRewardService: ClientProxy) {}
 
-  async getUserArtefact(id: string) {
-    return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: id })
+  async getUserArtefact(id: string, filters?: ArtefactFilterOptions) {
+    return await this.clientRewardService.send({ cmd: "get-user-artefacts-artefacts-service" }, { userId: id, filters })
   }
 
   async getArtefacts() {

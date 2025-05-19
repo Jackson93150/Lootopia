@@ -1,3 +1,6 @@
+import type { User } from "@/app/types/user"
+import Image from "next/image"
+
 interface Rank {
   nom: string
   xp_min: number
@@ -51,24 +54,42 @@ const RANKS: Rank[] = [
 ]
 
 interface RankDisplayProps {
-  xp: number | undefined
+  user: User | null
 }
 
-export function RankDisplay({ xp = 0 }: RankDisplayProps) {
+export function RankDisplay({ user }: RankDisplayProps) {
+  const xp = Number.parseInt(user?.xp ?? "") ?? 0
   const rank = RANKS.find(r => xp >= r.xp_min && xp < r.xp_max) || RANKS[RANKS.length - 1]
   const isChampion = rank.nom === "champion"
 
   return (
-    <div className="flex items-center space-x-2 text-white font-lilita text-[16px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-      <img src={rank.image} alt={rank.nom} className="w-6 h-6" />
-      <span>{xp}</span>
-      {!isChampion && (
-        <>
-          <span>/</span>
-          <span>{rank.xp_max}</span>
-        </>
+    <>
+      {user && (
+        <div className="flex items-center">
+          <div className="size-[70px] border-[4px] rounded-[12px] bg-gradient-to-r from-[#8491a6] to-[#ccdef5] flex items-center justify-center">
+            <Image src={rank.image} alt={rank.nom} width={100} height={100} className="w-[45px] h-[45px]" />
+          </div>
+          <div className="flex flex-col">
+            <div className="z-20 min-w-[200px] w-fit px-2 bg-gradient-to-b from-[#6998B3] to-[#547585] rounded-r-[8px] outline-[2px]">
+              <span className="text-white font-lilita text-[20px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                {user?.username}
+              </span>
+            </div>
+            <div className="z-10 w-fit px-2 bg-gradient-to-b from-[#6998B3] to-[#547585] rounded-r-[8px] outline-[2px]">
+              <span className="text-white  space-x-1 font-lilita text-[14px] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                <span>{xp}</span>
+                {!isChampion && (
+                  <>
+                    <span>/</span>
+                    <span>{rank.xp_max}</span>
+                  </>
+                )}
+                <span>XP</span>
+              </span>
+            </div>
+          </div>
+        </div>
       )}
-      <span>XP</span>
-    </div>
+    </>
   )
 }
