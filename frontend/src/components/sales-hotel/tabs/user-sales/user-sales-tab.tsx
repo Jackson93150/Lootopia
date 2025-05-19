@@ -33,7 +33,7 @@ export default function UserSalesTab({ user, auctions }: SaleTabProps) {
 
   return (
     <>
-      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto">
+      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto gap-4">
         {auctions.filter(a => a.creator_email === user.email).length === 0 && (
           <p className="text-white text-center">Vous n'avez aucune ventes</p>
         )}

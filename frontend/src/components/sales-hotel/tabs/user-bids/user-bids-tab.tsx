@@ -32,7 +32,7 @@ export default function BuyTab({ user, auctions }: BuyTabPros) {
 
   return (
     <>
-      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto">
+      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto gap-4">
         {auctions.every(auction => !auction.userBids || auction.userBids.length === 0) && (
           <p className="text-white text-center">Vous n'avez aucune enchères en cours.</p>
         )}

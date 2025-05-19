@@ -28,7 +28,7 @@ export default function HdvTab({ user, auctions }: HdvTabProps) {
 
   return (
     <>
-      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto">
+      <div className="w-[95%] flex flex-col gap-1 p-2 mt-4 max-h-[500px] overflow-y-auto gap-4">
         {auctions.filter(auction => auction.creator_email !== user.email).length === 0 && (
           <p className="text-white text-center">Aucun résultat</p>
         )}
