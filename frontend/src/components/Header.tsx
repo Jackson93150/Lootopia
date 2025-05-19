@@ -5,8 +5,8 @@ import Image from "next/image";
 export default function Header() {
     return (
         <header
-            className="w-full h-[100px] bg-cover bg-center bg-[url('/images/backgrounds/backgroundHeader.png')]"
-            style={{backgroundSize: "100% 390%"}}
+            className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px] bg-center bg-[url('/images/backgrounds/Group.png')]"
+            style={{backgroundSize: "100% 100%"}}
         >
             <div className="flex items-center justify-between px-6 ">
                 {/* Gauche : Logo + navigation */}
@@ -22,15 +22,15 @@ export default function Header() {
                     {/* Navigation */}
                     <nav className="flex items-center gap-4">
                         <button
-                            className="text-xl text-white drop-shadow-lg font-extrabold font-fredoka hover:underline transition">
+                            className="text-2xl text-white drop-shadow-lg tracking-wider font-extrabold font-lilita hover:underline transition">
                             BOUTIQUE
                         </button>
                         <button
-                            className="text-xl text-white drop-shadow-lg font-extrabold font-fredoka hover:underline transition">
+                            className="text-2xl text-white drop-shadow-lg tracking-wider font-extrabold font-lilita hover:underline transition">
                             INVENTAIRE
                         </button>
                         <button
-                            className="text-xl text-white drop-shadow-lg font-extrabold font-fredoka hover:underline transition">
+                            className="text-2xl text-white drop-shadow-lg tracking-wider font-extrabold font-lilita hover:underline transition">
                             CHASSE
                         </button>
                     </nav>
