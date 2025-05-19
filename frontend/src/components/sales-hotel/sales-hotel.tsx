@@ -24,7 +24,7 @@ export default function SalesHotel({ user, id }: SalesHotelProps) {
   }
 
   return (
-    <div className="relative items-center flex-col h-[90%] w-full">
+    <div className="relative items-center flex-col h-full w-full">
       <PageContainer size="sm" color="brown">
         <div className="flex flex-col items-center h-full w-full">
           <span className="text-3xl font-bolder text-white py-4 font-lilita uppercase drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">

@@ -48,7 +48,7 @@ export default function ProfilePage() {
   return (
     <div className="w-screen h-screen items-center justify-center flex">
       {!loading && (
-        <div className="w-screen h-screen flex border pt-30 px-15 pb-10">
+        <div className="w-screen h-screen flex pt-40 px-15 pb-10">
           <PageContainer stripes>
             <div className="w-full flex h-full p-4 gap-8 z-10">
               <ProfileView user={user} profileImage={profileImage} setProfileImage={setProfileImage} />
