@@ -6,9 +6,9 @@ import ProfileView from "@/components/profile/profile-view"
 import SuccessView from "@/components/profile/succes-view"
 import TrophysView from "@/components/profile/trophies-view"
 import { RankDisplay } from "@/components/ui/RankDisplay"
+import { useUser } from "@/context/userContext"
 import { getUserArtefact, getUserLockedSuccess, getUserSuccess, getUserTrophy } from "@/service/rewards"
 import { useEffect, useState } from "react"
-import { useMe } from "../hook/useMe"
 import type { UserArtefact } from "../types/artefact"
 import type { Success, UserSuccess } from "../types/success"
 import type { UserTrophy } from "../types/trophy"
@@ -19,7 +19,7 @@ export default function ProfilePage() {
   const [trophys, setTrophys] = useState<UserTrophy[] | null>(null)
   const [lockedSuccess, setLockedSuccess] = useState<Success[] | null>(null)
   const [userSuccess, setUserSuccess] = useState<UserSuccess[] | null>(null)
-  const { user, id, loading } = useMe()
+  const { user, id, loading } = useUser()
   const [selectedTab, setSelectedTab] = useState<"artefacts" | "trophies" | "success">("artefacts")
   const [profileImage, setProfileImage] = useState<string | null>(null)
 
