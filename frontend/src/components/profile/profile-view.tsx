@@ -2,6 +2,7 @@ import type { User } from "@/app/types/user"
 import { EditIcon } from "@/assets/icons/edit.icon"
 import { updateBiography } from "@/service/user"
 import { uploadProfilePicture } from "@/service/user"
+import clsx from "clsx"
 import Image from "next/image"
 import { type Dispatch, type SetStateAction, useRef, useState } from "react"
 import PageContainer from "../container/page-container"
@@ -10,9 +11,10 @@ interface Props {
   user: User | null
   profileImage: string | null
   setProfileImage: Dispatch<SetStateAction<string | null>>
+  loading: boolean
 }
 
-export default function ProfileView({ user, profileImage, setProfileImage }: Props) {
+export default function ProfileView({ user, profileImage, setProfileImage, loading }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [bioEditMode, setBioEditMode] = useState(false)
   const [editedBio, setEditedBio] = useState("")
@@ -40,6 +42,7 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
           onClick={handleImageClick}
         >
           <div className="w-full h-full rounded-[8px] border overflow-hidden relative">
+            {loading && <div className="absolute inset-0 bg-gray-300 shine-effect shine-effect-loop z-10" />}
             <Image
               src={
                 profileImage ?? "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
@@ -47,9 +50,12 @@ export default function ProfileView({ user, profileImage, setProfileImage }: Pro
               alt="profile"
               width={500}
               height={500}
-              className="size-full object-cover transition duration-300 group-hover:brightness-75"
+              className={clsx(
+                "size-full object-cover transition duration-300 group-hover:brightness-75",
+                loading && "opacity-0",
+              )}
             />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white text-sm font-bold">
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white text-sm font-bold z-20">
               Changer l'image
             </div>
           </div>

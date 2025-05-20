@@ -38,7 +38,7 @@
     bottom: 0;
     left: -75%;
     width: 25%;
-    height: 150%;
+    height: 200%;
     background: white;
     opacity: 0.55;
     transform: rotate(12deg);
@@ -47,6 +47,10 @@
 
   .shine-effect-hover:hover::before {
     animation: shine-glide 1s ease;
+  }
+
+  .shine-effect-loop::before {
+    animation: shine-glide 1s ease-in-out infinite;
   }
 
   @keyframes shine-glide {

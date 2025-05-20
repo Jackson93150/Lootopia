@@ -1,12 +1,14 @@
 import type { UserArtefact } from "@/app/types/artefact"
 import ArtefactCard from "../artefact/artefactCard"
+import { ArtefactSkeletonCard } from "../skeleton/artefactSkeleton"
 
 interface Props {
   artefacts: UserArtefact[] | null
   artefactsExported: UserArtefact[] | null
+  loading: boolean
 }
 
-export default function ArtefactView({ artefacts, artefactsExported }: Props) {
+export default function ArtefactView({ artefacts, artefactsExported, loading }: Props) {
   return (
     <>
       <div className="flex items-center gap-4">
@@ -18,9 +20,18 @@ export default function ArtefactView({ artefacts, artefactsExported }: Props) {
       </div>
 
       <div className="grid grid-cols-1 0-5xl:grid-cols-2 1xl:grid-cols-3 2-5xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-6">
-        {artefacts?.map(artefact => (
-          <ArtefactCard key={artefact.id_firebase} artefact={artefact} />
-        ))}
+        {loading ? (
+          <>
+            <ArtefactSkeletonCard />
+            <ArtefactSkeletonCard />
+            <ArtefactSkeletonCard />
+            <ArtefactSkeletonCard />
+            <ArtefactSkeletonCard />
+            <ArtefactSkeletonCard />
+          </>
+        ) : (
+          artefacts?.map(artefact => <ArtefactCard key={artefact.id_firebase} artefact={artefact} />)
+        )}
       </div>
 
       {artefactsExported?.length !== 0 && (
