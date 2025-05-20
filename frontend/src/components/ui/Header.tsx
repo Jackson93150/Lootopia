@@ -1,12 +1,12 @@
 "use client"
 
-import { useMe } from "@/app/hook/useMe"
 import { RankDisplay } from "@/components/ui/RankDisplay"
+import { useUser } from "@/context/userContext"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export default function Header() {
-  const { user, loading } = useMe()
+  const { user, loading } = useUser()
   const router = useRouter()
   return (
     <header

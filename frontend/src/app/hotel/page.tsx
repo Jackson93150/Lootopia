@@ -1,11 +1,11 @@
 "use client"
 
 import PageContainer from "@/components/container/page-container"
+import { useUser } from "@/context/userContext"
 import SalesHotel from "../../components/sales-hotel/sales-hotel"
-import { useMe } from "../hook/useMe"
 
 export default function SaleHotelPage() {
-  const { user, id } = useMe()
+  const { user, id } = useUser()
 
   return (
     <div className="w-screen h-screen flex pt-40 px-15 pb-10">

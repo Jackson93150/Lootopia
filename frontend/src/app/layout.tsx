@@ -1,5 +1,8 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import { UserProvider } from "@/context/userContext"
+import AuthLayout from "@/layout/authLayout"
+import HeaderLayout from "@/layout/headerLayout"
 import type { ReactNode } from "react"
 
 export const metadata: Metadata = {
@@ -14,7 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <UserProvider>
+          <AuthLayout>
+            <HeaderLayout>{children}</HeaderLayout>
+          </AuthLayout>
+        </UserProvider>
+      </body>
     </html>
   )
 }
