@@ -23,6 +23,44 @@
   --color-orange-button: #f09514;
   --color-orange-dark: #7c2d00;
   --font-lilita: "Lilita One", sans-serif;
+  --breakpoint-0-5xl: 70rem;
+  --breakpoint-1xl: 85rem;
+  --breakpoint-2-4xl: 90rem;
+  --breakpoint-2-5xl: 100rem;
+  --breakpoint-3xl: 125rem;
+  --breakpoint-4xl: 140rem;
+}
+
+@layer utilities {
+  .shine-effect::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -75%;
+    width: 25%;
+    height: 200%;
+    background: white;
+    opacity: 0.55;
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
+
+  .shine-effect-hover:hover::before {
+    animation: shine-glide 1s ease;
+  }
+
+  .shine-effect-loop::before {
+    animation: shine-glide 1s ease-in-out infinite;
+  }
+
+  @keyframes shine-glide {
+    0% {
+      transform: translateX(400%) translateY(200%) rotate(-45deg);
+    }
+    100% {
+      transform: translateX(450%) translateY(-100%) rotate(-45deg);
+    }
+  }
 }
 
 body {

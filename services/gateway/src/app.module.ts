@@ -3,6 +3,8 @@ import { ConfigModule } from "@nestjs/config"
 import { ClientsModule, Transport } from "@nestjs/microservices"
 import { AuthController } from "./auth/auth.controller"
 import { AuthService } from "./auth/auth.service"
+import { NftController } from "./nft/nft.controller"
+import { NftService } from "./nft/nft.service"
 import { RewardController } from "./reward/reward.controller"
 import { RewardService } from "./reward/reward.service"
 import { SalesHotelController } from "./sales-hotel/sales-hotel.controller"
@@ -66,11 +68,27 @@ import { HuntingsService } from "./huntings/huntings.service"
         options: {
           host: process.env.HUNTINGS_SERVICE_HOST,
           port: Number(process.env.HUNTINGS_SERVICE_PORT),
-        },
+        }
       },
+      {
+        name: "NFT_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: process.env.NFT_SERVICE_HOST,
+          port: Number(process.env.NFT_SERVICE_PORT),
+        },
+      }
     ]),
   ],
-  controllers: [UserController, AuthController, StripeController, RewardController, SalesHotelController, HuntingsController],
-  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService, HuntingsService],
+  controllers: [
+    UserController,
+    AuthController,
+    StripeController,
+    RewardController,
+    SalesHotelController,
+    NftController,
+    HuntingsController
+  ],
+  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService, NftService, HuntingsService],
 })
 export class GatewayModule {}

@@ -19,11 +19,7 @@ export class SalesHotelService {
     const artefactId = auctionInfo.artefact_id
     const auction_price = auctionInfo.auction_price
     const timer = this.convertTimer(auctionInfo.timer)
-    let fix_price = null
-
-    if (auctionInfo.direct_sale) {
-      fix_price = auctionInfo.fix_price
-    }
+    const fix_price = auctionInfo.fix_price
 
     try {
       await this.firebaseService.auctionCollectionRef.withConverter(AuctionConverter).add({

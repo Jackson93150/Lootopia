@@ -15,14 +15,13 @@ const defaultStyle = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    border: "4px solid #5B3E29",
-    backgroundImage: "linear-gradient(to bottom right, #FAC27D, #f5c249)",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
+    border: "rgba(0, 0, 0, 0)",
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    zIndex: 40,
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: 50,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    zIndex: 40,
   },
 }
 

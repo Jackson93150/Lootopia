@@ -3,26 +3,46 @@ import { Injectable } from "@nestjs/common"
 import { FieldPath } from "firebase-admin/firestore"
 import { FirebaseService } from "../../firebase/firebase.service"
 import { ArtefactDocument } from "./types/artefact"
+import { ArtefactFilterOptions } from "./types/filters"
 import { UserArtefactConverter, UserArtefactDocument } from "./types/user-artefact"
 
 @Injectable()
 export class ArtefactService {
   constructor(private readonly firebaseService: FirebaseService) {}
 
-  async getUserArtefacts(userId: string): Promise<UserArtefactDocument[]> {
-    const snapshotUserArtefacts = await this.firebaseService.userArtefactsCollectionRef
-      .where("id_user", "==", userId)
-      .where("auction", "==", false)
-      .where("is_saled", "==", false)
-      .where("is_exported_nft", "==", false)
-      .get()
+  async getUserArtefacts(userId: string, filters: ArtefactFilterOptions = {}): Promise<UserArtefactDocument[]> {
+    const normalizeBoolean = (value?: string | boolean): boolean | undefined => {
+      if (value === undefined) return undefined
+      if (typeof value === "boolean") return value
+      return value.toLowerCase() === "true"
+    }
+
+    const normalizedFilters = {
+      auction: normalizeBoolean(filters.auction),
+      is_saled: normalizeBoolean(filters.is_saled),
+      is_exported_nft: normalizeBoolean(filters.is_exported_nft),
+    }
+
+    let query = this.firebaseService.userArtefactsCollectionRef.where("id_user", "==", userId)
+
+    if (normalizedFilters.auction !== undefined) {
+      query = query.where("auction", "==", normalizedFilters.auction)
+    }
+    if (normalizedFilters.is_saled !== undefined) {
+      query = query.where("is_saled", "==", normalizedFilters.is_saled)
+    }
+    if (normalizedFilters.is_exported_nft !== undefined) {
+      query = query.where("is_exported_nft", "==", normalizedFilters.is_exported_nft)
+    }
+
+    const snapshotUserArtefacts = await query.get()
 
     const userArtefacts = snapshotUserArtefacts.docs.map(doc => ({
       id_firebase: doc.id,
       ...doc.data(),
     }))
 
-    if (userArtefacts.length === 0) return userArtefacts
+    if (userArtefacts.length === 0) return []
 
     const artefactIds = userArtefacts.map(ua => ua.id_artefact)
 
@@ -31,6 +51,7 @@ export class ArtefactService {
       .get()
 
     const artefactsMap = new Map(artefactsSnapshots.docs.map(doc => [doc.id, { id_firebase: doc.id, ...doc.data() }]))
+
     return userArtefacts.map(userArtefact => ({
       ...userArtefact,
       artefact: artefactsMap.get(userArtefact.id_artefact) || null,

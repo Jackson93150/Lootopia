@@ -1,9 +1,23 @@
 import { fetchBack } from "@/utils/fetch"
 import { safeJson } from "@/utils/safeJson"
 
-export async function getUserArtefact(id: string) {
+type ArtefactFilters = {
+  auction?: boolean
+  is_saled?: boolean
+  is_exported_nft?: boolean
+}
+
+export async function getUserArtefact(id: string, filters: ArtefactFilters = {}) {
+  const { auction = false, is_saled = false, is_exported_nft = false } = filters
+
+  const searchParams = new URLSearchParams({
+    auction: String(auction),
+    is_saled: String(is_saled),
+    is_exported_nft: String(is_exported_nft),
+  })
+
   const res = await fetchBack({
-    endpoint: `/reward/user-artefact/${id}`,
+    endpoint: `/reward/user-artefact/${id}?${searchParams.toString()}`,
     method: "GET",
   })
 
@@ -11,9 +25,7 @@ export async function getUserArtefact(id: string) {
     throw new Error(`Erreur HTTP : ${res.status}`)
   }
 
-  const data = await res.json()
-
-  return data
+  return await res.json()
 }
 
 export async function getArtefacts() {
