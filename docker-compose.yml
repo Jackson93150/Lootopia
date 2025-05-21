@@ -20,8 +20,8 @@ services:
       - stripe-service
       - sales-hotel-service
       - rewards-service
-      - huntings-service
       - nft-service
+      - huntings-service
 
   # Microservices (communication interne uniquement)
   user-service:
