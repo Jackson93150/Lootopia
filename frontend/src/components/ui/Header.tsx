@@ -9,10 +9,7 @@ export default function Header() {
   const { user, loading } = useUser()
   const router = useRouter()
   return (
-    <header
-      className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px] bg-center bg-[url('/images/backgrounds/backgroundHeader.png')]"
-      style={{ backgroundSize: "110% 100%" }}
-    >
+    <header className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px]" style={{ backgroundSize: "110% 100%" }}>
       <div className="flex items-center h-[90px] justify-between px-12">
         <div className="flex items-center gap-6">
           <Image
@@ -20,7 +17,8 @@ export default function Header() {
             alt="Logo Lootopia"
             width={140}
             height={70}
-            className="h-auto -mb-14 w-[100px] md:w-[140px]"
+            className="h-auto -mb-14 w-[100px] md:w-[140px] cursor-pointer"
+            onClick={() => router.push("/app")}
           />
 
           <nav className="flex items-center gap-8">
