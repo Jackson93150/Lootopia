@@ -56,7 +56,12 @@ export default function AppPage() {
         animate={controls}
       />
 
-      <div className="absolute bottom-[10vh] z-10 flex gap-20 justify-center items-center pointer-events-auto">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+        className="absolute bottom-[10vh] z-10 flex gap-20 justify-center items-center pointer-events-auto"
+      >
         <motion.button
           className="duration-300 hover:scale-105 cursor-pointer"
           onClick={() => console.log("organiser")}
@@ -84,7 +89,7 @@ export default function AppPage() {
         >
           <Image src="/images/participer.png" alt="Participer à une chasse" width={435} height={100} priority />
         </motion.button>
-      </div>
+      </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={canvasControls} className="w-full h-full pointer-events-none">
         <Canvas gl={{ powerPreference: "high-performance" }} camera={{ position: [0, 0, 5], fov: 40 }}>
