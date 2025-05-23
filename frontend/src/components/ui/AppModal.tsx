@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import Modal from "react-modal"
 
 type ModalProps = {
@@ -41,7 +42,19 @@ export default function AppModal({ modalIsOpen, closeModal, styles = {}, childre
 
   return (
     <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={mergedStyles} ariaHideApp={false}>
-      <div className="font-lilita">{children}</div>
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 30,
+        }}
+        className="font-lilita"
+      >
+        {children}
+      </motion.div>
     </Modal>
   )
 }

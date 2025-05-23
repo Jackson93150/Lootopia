@@ -1,14 +1,14 @@
 import type { User } from "@/app/types/user"
 import Image from "next/image"
 
-interface Rank {
+export interface Rank {
   nom: string
   xp_min: number
   xp_max: number
   image: string
 }
 
-const RANKS: Rank[] = [
+export const RANKS: Rank[] = [
   {
     nom: "bronze",
     xp_min: 0,
