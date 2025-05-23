@@ -35,4 +35,10 @@ export class RewardController {
   async getUserLockedSuccess(@Param("id") id: string) {
     return await this.clientRewardService.getUserLockedSuccess(id)
   }
+
+  @Get("users-xp")
+  @UseGuards(AuthGuard)
+  async getUsersXp() {
+    return await this.clientRewardService.getUsersXp()
+  }
 }
