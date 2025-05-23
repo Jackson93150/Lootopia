@@ -25,4 +25,8 @@ export class RewardService {
   async getUserLockedSuccess(id: string) {
     return await this.clientRewardService.send({ cmd: "get-locked-success-success-service" }, { userId: id })
   }
+
+  async getUsersXp() {
+    return await this.clientRewardService.send({ cmd: "get-users-xp-xp-service" }, {})
+  }
 }
