@@ -79,16 +79,3 @@ export async function getUserLockedSuccess(id: string) {
 
   return await safeJson(res)
 }
-
-export async function getUsersXp() {
-  const res = await fetchBack({
-    endpoint: "/reward/users-xp",
-    method: "GET",
-  })
-
-  if (!res.ok) {
-    throw new Error(`Erreur HTTP : ${res.status}`)
-  }
-
-  return await safeJson(res)
-}

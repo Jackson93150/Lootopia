@@ -13,5 +13,3 @@ export type User = {
   username: string
   xp: string
 }
-
-export type UserWithId = User & { id_user: string }

@@ -9,7 +9,6 @@ import { SuccessConverter, SuccessDocument } from "../modules/success/types/succ
 import { UserSuccessConverter, UserSuccessDocument } from "../modules/success/types/user-success"
 import { TrophyConverter, TrophyDocument } from "../modules/trophy/types/trophy"
 import { UserTrophyConverter, UserTrophyDocument } from "../modules/trophy/types/user-trophy"
-import { UserConverter, UserDocument } from "../modules/xp/types/user.type"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -24,7 +23,6 @@ export class FirebaseService implements OnModuleInit {
   public userTrophyCollectionRef: CollectionReference<UserTrophyDocument>
   public successCollectionRef: CollectionReference<SuccessDocument>
   public userSuccessCollectionRef: CollectionReference<UserSuccessDocument>
-  public userCollectionRef: CollectionReference<UserDocument>
 
   onModuleInit() {
     const serviceAccount: string | ServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -46,6 +44,5 @@ export class FirebaseService implements OnModuleInit {
     this.userTrophyCollectionRef = this.firestore.collection("user_trophy").withConverter(UserTrophyConverter)
     this.successCollectionRef = this.firestore.collection("success").withConverter(SuccessConverter)
     this.userSuccessCollectionRef = this.firestore.collection("user_success").withConverter(UserSuccessConverter)
-    this.userCollectionRef = this.firestore.collection("users").withConverter(UserConverter)
   }
 }
