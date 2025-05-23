@@ -9,10 +9,7 @@ export default function Header() {
   const { user, loading } = useUser()
   const router = useRouter()
   return (
-    <header
-      className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px] bg-center bg-[url('/images/backgrounds/backgroundHeader.png')]"
-      style={{ backgroundSize: "110% 100%" }}
-    >
+    <header className="fixed w-full bg-cover top-0 left-0 z-50 h-[90px]" style={{ backgroundSize: "110% 100%" }}>
       <div className="flex items-center h-[90px] justify-between px-12">
         <div className="flex items-center gap-6">
           <Image
@@ -20,24 +17,25 @@ export default function Header() {
             alt="Logo Lootopia"
             width={140}
             height={70}
-            className="h-auto -mb-14 w-[100px] md:w-[140px]"
+            className="h-auto -mb-14 w-[100px] md:w-[140px] cursor-pointer"
+            onClick={() => router.push("/app")}
           />
 
           <nav className="flex items-center gap-8">
             <button
-              onClick={() => router.push("/hotel")}
+              onClick={() => router.push("/app/hotel")}
               className="uppercase text-xl md:text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] cursor-pointer tracking-wider font-extrabold font-lilita hover:scale-105 transition"
             >
               hôtel
             </button>
             <button
-              onClick={() => router.push("/chasse")}
+              onClick={() => router.push("/app/chasse")}
               className="uppercase text-xl md:text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] cursor-pointer tracking-wider font-extrabold font-lilita hover:scale-105 transition"
             >
               chasse
             </button>
             <button
-              onClick={() => router.push("/leaderboard")}
+              onClick={() => router.push("/app/leaderboard")}
               className="uppercase text-xl md:text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] cursor-pointer tracking-wider font-extrabold font-lilita hover:scale-105 transition"
             >
               leaderboard
@@ -48,12 +46,12 @@ export default function Header() {
         {!loading && (
           <div className="flex items-center gap-8">
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-            <div onClick={() => router.push("/profile")} className="scale-[0.75] origin-right cursor-pointer">
+            <div onClick={() => router.push("/app/profile")} className="scale-[0.75] origin-right cursor-pointer">
               <RankDisplay user={user} />
             </div>
             {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
             <div
-              onClick={() => router.push("/boutique")}
+              onClick={() => router.push("/app/boutique")}
               className="cursor-pointer relative p-1 pl-6 pr-2 ml-4 flex gap-2 justify-center items-center bg-gradient-to-b from-[#6998B3] to-[#547585] rounded-[8px] outline-[2px]"
             >
               <Image

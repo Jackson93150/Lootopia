@@ -24,8 +24,8 @@ export default function AuthLayout({
 
   if (loading)
     return (
-      <div className="bg-gradient-to-br from-[#F38424] to-[#F7C929] fixed h-screen w-screen flex items-center justify-center">
-        <div className="w-[30vw] rounded-full flex flex-col bg-gradient-to-t from-[#24e9f3] to-[#eaf3f0] border-[4px] items-center justify-center pt-4">
+      <div className="bg-gradient-to-t from-[#a2cbf4] via-[#69BDF2] to-[#0150fa] fixed h-screen w-screen flex items-center justify-center">
+        <div className="w-[30vw] rounded-full flex flex-col bg-gradient-to-r from-[#F38424] to-[#F7C929] border-[4px] items-center justify-center pt-4">
           <span className="font-lilita text-[42px] text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] animate-bounce">
             Loading ...
           </span>
