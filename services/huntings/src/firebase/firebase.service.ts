@@ -4,6 +4,8 @@ import { type Auth, getAuth } from "firebase-admin/auth"
 import { type Firestore, getFirestore } from "firebase-admin/firestore"
 
 import { type Storage, getStorage } from "firebase-admin/storage"
+import { HuntingConverter } from "src/modules/huntings/types/huntings"
+import { ParticipantConverter } from "src/modules/huntings/types/participants"
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -13,6 +15,7 @@ export class FirebaseService implements OnModuleInit {
   public storage: Storage
 
   public huntingsCollectionRef
+  public participantsCollectionRef
 
   onModuleInit() {
     const serviceAccount: string | ServiceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -28,5 +31,8 @@ export class FirebaseService implements OnModuleInit {
     this.firestore = getFirestore(this.app)
     this.auth = getAuth(this.app)
     this.storage = getStorage(this.app)
+
+    this.huntingsCollectionRef = this.firestore.collection("huntings").withConverter(HuntingConverter)
+    this.participantsCollectionRef = this.firestore.collection("participants").withConverter(ParticipantConverter)
   }
 }

@@ -1,6 +1,5 @@
 import {
     IsBoolean,
-    IsDateString,
     IsInt,
     IsNotEmpty,
     IsOptional,
@@ -44,13 +43,12 @@ import {
   
     @IsOptional()
     @IsString()
-    city?: string;
+    latitude?: string;
   
     @IsOptional()
     @IsString()
-    country?: string;
+    longitude?: string;
   
-    @IsOptional()
     @Type(() => Number)
     @IsInt()
     @Min(0)

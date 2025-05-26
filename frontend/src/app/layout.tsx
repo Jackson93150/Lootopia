@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import "leaflet/dist/leaflet.css"
 import { UserProvider } from "@/context/userContext"
 import AuthLayout from "@/layout/authLayout"
 import HeaderLayout from "@/layout/headerLayout"
