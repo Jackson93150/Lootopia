@@ -14,7 +14,7 @@ export default function AuthLayout({
   const pathname = usePathname()
   const { user, loading } = useUser()
 
-  const publicRoutes = ["/", "/connexion", "/inscription"]
+  const publicRoutes = ["/", "/connexion", "/inscription", '/faq']
 
   useEffect(() => {
     if (!loading && !user && !publicRoutes.includes(pathname)) {
