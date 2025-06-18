@@ -3,6 +3,10 @@ import { AuthDecorator } from "src/auth/decorators/auth.decorator"
 import { AuthenticatedUser } from "src/auth/dto/auth.dto"
 import { AuthGuard } from "src/auth/guards/auth.guard"
 import { SalesHotelService } from "./sales-hotel.service"
+import { CreateAuctionDto } from "./dto/create-auction.dto"
+import { CancelAuctionDto } from "./dto/cancel-auction.dto"
+import { DirectlyBuy } from "./dto/directly-buy.dto"
+import { Bid } from "./dto/add-bid.dto"
 
 @Controller("/sales-hotel")
 export class SalesHotelController {
@@ -11,18 +15,7 @@ export class SalesHotelController {
   @UseGuards(AuthGuard)
   @Post("/create-auction")
   async createAuction(
-    @Body() auctionInfo: {
-      user_artefact_id: string
-      artefact_id: string
-      user_email: string
-      fix_price: number | null
-      auction_price: number
-      direct_sale: boolean
-      timer: string
-      artefact_name: string
-      artefact_rarity: string
-      image: string
-    },
+    @Body() auctionInfo: CreateAuctionDto,
   ) {
     return await this.clientSalesHotelService.createAuction(auctionInfo)
   }
@@ -30,11 +23,7 @@ export class SalesHotelController {
   @UseGuards(AuthGuard)
   @Post("/cancel-auction")
   async cancelAuction(
-    @Body() auctionInfo: {
-      creator_email: string
-      auction_id: string
-      user_artefact_id: string
-    },
+    @Body() auctionInfo: CancelAuctionDto,
   ) {
     return await this.clientSalesHotelService.cancelAuction(auctionInfo)
   }
@@ -43,13 +32,7 @@ export class SalesHotelController {
   @Post("/directly-buy")
   async directlyBuy(
     @AuthDecorator() user: AuthenticatedUser,
-    @Body() buyInfo: {
-      fix_price: number
-      auction_id: string
-      id_user_artefact: string
-      id_artefact: string
-      creator_email: string
-    },
+    @Body() buyInfo: DirectlyBuy,
   ) {
     const user_id = user.id
     return await this.clientSalesHotelService.directlyBuy(user_id, buyInfo)
@@ -59,11 +42,7 @@ export class SalesHotelController {
   @Post("/add-bid")
   async addBid(
     @AuthDecorator() user: AuthenticatedUser,
-    @Body() bidInfo: {
-      bid_price: number
-      auction_id: string
-      user_email: string
-    },
+    @Body() bidInfo: Bid,
   ) {
     const user_id = user.id
     return await this.clientSalesHotelService.addBid(user_id, bidInfo)
@@ -73,11 +52,7 @@ export class SalesHotelController {
   @Post("/remove-bid")
   async removeBid(
     @AuthDecorator() user: AuthenticatedUser,
-    @Body() bidInfo: {
-      bid_price: number
-      auction_id: string
-      user_email: string
-    },
+    @Body() bidInfo: Bid,
   ) {
     const user_id = user.id
     return await this.clientSalesHotelService.removeBid(user_id, bidInfo)
