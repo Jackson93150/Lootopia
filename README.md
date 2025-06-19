@@ -18,7 +18,7 @@ Les joueurs explorent des cartes pour découvrir des trésors (loots), participe
 ### 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/votre-utilisateur/lootopia.git
+git clone https://github.com/Jackson93150/Lootopia.git
 cd lootopia
 ```
 
