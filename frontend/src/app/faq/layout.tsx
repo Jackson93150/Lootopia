@@ -1,5 +1,4 @@
 import type { ReactNode } from "react"
-import { ToastContainer } from "react-toastify"
 
 export default function FaqLayout({ children }: { children: ReactNode }) {
   return (
