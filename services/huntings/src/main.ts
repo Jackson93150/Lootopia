@@ -1,10 +1,10 @@
 import { NestFactory } from "@nestjs/core"
 
 import { MicroserviceOptions, TcpOptions, Transport } from "@nestjs/microservices"
-import { HuntingsModule } from "./modules/huntings/huntings.module"
+import { HuntModule } from "./modules/huntings/huntings.module"
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(HuntingsModule, {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(HuntModule, {
     transport: Transport.TCP,
     options: {
       host: "0.0.0.0",

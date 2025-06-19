@@ -20,6 +20,7 @@ type OneStepProps = {
   setStartedAt: Dispatch<SetStateAction<number | null>>
   endedAt: number | null
   setEndedAt: Dispatch<SetStateAction<number | null>>
+  handleSubmit: (isDraft?: boolean) => void
 }
 
 export default function OneStep({
@@ -40,6 +41,7 @@ export default function OneStep({
   setStartedAt,
   endedAt,
   setEndedAt,
+  handleSubmit
 }: OneStepProps) {
   return (
     <div className="mx-12 py-4 w-[50vw] h-[70vh] gap-3 flex flex-col justify-center overflow-y-auto ">
@@ -108,6 +110,14 @@ export default function OneStep({
           className=" h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-[#F65F26]/70 bg-gradient-to-b from-[#E9721E] to-[#F29D25]"
         >
           <span className="stroke-1 font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Continuer</span>
+        </button>
+        <button
+            onClick={() => handleSubmit(true)}
+            className="h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-gray-300 bg-gradient-to-b from-gray-200 to-gray-400"
+        >
+      <span className="stroke-1 font-lilita text-black drop-shadow-[0_1.2px_1.2px_rgba(255,255,255,0.4)]">
+        Enregistrer le brouillon
+      </span>
         </button>
       </div>
     </div>

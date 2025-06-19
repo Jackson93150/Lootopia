@@ -8,7 +8,7 @@ type ThirdStepProps = {
   setIndices: Dispatch<SetStateAction<never[]>>
   indices: string[]
   setStepCreateHunting: Dispatch<SetStateAction<number>>
-  handleSubmit: () => void
+  handleSubmit: (isDraft?: boolean) => void
 }
 
 export default function ThirdStep({
@@ -134,6 +134,14 @@ export default function ThirdStep({
           className="h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-[#F65F26]/70 bg-gradient-to-b from-[#E9721E] to-[#F29D25]"
         >
           <span className="stroke-1 font-lilita text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Créer</span>
+        </button>
+        <button
+            onClick={() => handleSubmit(true)}
+            className="h-[40px] px-4 py-1 rounded-[8px] outline-[2px] cursor-pointer border-[2px] border-gray-300 bg-gradient-to-b from-gray-200 to-gray-400"
+        >
+      <span className="stroke-1 font-lilita text-black drop-shadow-[0_1.2px_1.2px_rgba(255,255,255,0.4)]">
+        Enregistrer le brouillon
+      </span>
         </button>
       </div>
     </div>

@@ -1,8 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import {useRouter} from "next/navigation";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const redirectToSignup = () => router.push("/inscription");
+
   return (
     <div className="w-screen h-screen overflow-y-auto overflow-x-hidden">
       <div className="h-[2000px] bg-cover bg-center bg-[url('/images/backgrounds/backgroundLp.png')]">
@@ -21,12 +25,12 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col md:flex-row items-center gap-4 mt-10">
               <div className="inline-block rounded-xl border-[1px] border-orange-dark bg-yellow-landing p-[2px] shadow-md shadow-black/30">
-                <button className="h-full cursor-pointer bg-orange-button text-white px-7 py-4 rounded-lg font-fredoka font-bold text-sm hover:brightness-110 transition-all">
+                <button onClick={redirectToSignup} className="h-full cursor-pointer bg-orange-button text-white px-7 py-4 rounded-lg font-fredoka font-bold text-sm hover:brightness-110 transition-all">
                   <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)]">COMMENCER</span>
                 </button>
               </div>
               <div className="inline-block rounded-xl border-[1px] border-orange-dark bg-yellow-landing p-[2px] shadow-md shadow-black/30">
-                <button className="bg-orange-button cursor-pointer text-white px-7 py-4 rounded-lg font-fredoka font-bold text-sm hover:brightness-110 transition-all">
+                <button  onClick={redirectToSignup} className="bg-orange-button cursor-pointer text-white px-7 py-4 rounded-lg font-fredoka font-bold text-sm hover:brightness-110 transition-all">
                   <span className="drop-shadow-[0_1px_1px_rgba(0,0,0,0.45)]">TÉLÉCHARGER SUR APPSTORE</span>
                 </button>
               </div>
