@@ -22,7 +22,14 @@ git clone https://github.com/Jackson93150/Lootopia.git
 cd lootopia
 ```
 
-### 2. Lancer les microservices backend
+
+### 2. Configurer les variables d'environnement
+
+Chaque microservice doit posseder un fichier `.env`.  
+Avant de démarrer, vous devez **copier le fichier `.env` de la racine et le renommer en `.env` dans chaque microservice**, puis le configurer selon votre environnement local.
+Pareille pour le dossier Frontend
+
+### 3. Lancer les microservices backend
 
 Depuis la racine du projet :
 ```bash
@@ -31,7 +38,7 @@ docker compose up --build
 
 > Cette commande va construire et démarrer tous les microservices nécessaires (API, base de données, enchères, gestion des NFTs, classement, etc.).
 
-### 3. Lancer le frontend
+### 4. Lancer le frontend
 
 Dans un second terminal :
 ```bash
