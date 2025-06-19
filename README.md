@@ -26,7 +26,7 @@ cd lootopia
 ### 2. Configurer les variables d'environnement
 
 Chaque microservice doit posseder un fichier `.env`.  
-Avant de démarrer, vous devez **copier le fichier `.env` de la racine et le renommer en `.env` dans chaque microservice**, puis le configurer selon votre environnement local.
+Avant de démarrer, vous devez **copier le fichier `.env.exemple` de la racine et le renommer en `.env` dans chaque microservice**, puis le configurer selon votre environnement local.
 Pareille pour le dossier Frontend
 
 ### 3. Lancer les microservices backend
