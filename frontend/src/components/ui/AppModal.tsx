@@ -18,11 +18,11 @@ const defaultStyle = {
     transform: "translate(-50%, -50%)",
     border: "rgba(0, 0, 0, 0)",
     backgroundColor: "rgba(0, 0, 0, 0)",
-    zIndex: 40,
+    zIndex: 60,
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.8)",
-    zIndex: 40,
+    zIndex: 60,
   },
 }
 

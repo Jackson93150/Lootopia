@@ -13,6 +13,8 @@ import { StripeController } from "./stripe/stripe.controller"
 import { StripeService } from "./stripe/stripe.service"
 import { UserController } from "./user/user.controller"
 import { UserService } from "./user/user.service"
+import { HuntingsController } from "./huntings/huntings.controller"
+import { HuntingsService } from "./huntings/huntings.service"
 
 @Module({
   imports: [
@@ -61,13 +63,21 @@ import { UserService } from "./user/user.service"
         },
       },
       {
+        name: "HUNTINGS_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: process.env.HUNTINGS_SERVICE_HOST,
+          port: Number(process.env.HUNTINGS_SERVICE_PORT),
+        }
+      },
+      {
         name: "NFT_SERVICE",
         transport: Transport.TCP,
         options: {
           host: process.env.NFT_SERVICE_HOST,
           port: Number(process.env.NFT_SERVICE_PORT),
         },
-      },
+      }
     ]),
   ],
   controllers: [
@@ -77,7 +87,8 @@ import { UserService } from "./user/user.service"
     RewardController,
     SalesHotelController,
     NftController,
+    HuntingsController
   ],
-  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService, NftService],
+  providers: [UserService, AuthService, StripeService, RewardService, SalesHotelService, NftService, HuntingsService],
 })
 export class GatewayModule {}

@@ -29,7 +29,7 @@ export default function Header() {
               hôtel
             </button>
             <button
-              onClick={() => router.push("/app/chasse")}
+              onClick={() => router.push("/app/chasses")}
               className="uppercase text-xl md:text-2xl text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] cursor-pointer tracking-wider font-extrabold font-lilita hover:scale-105 transition"
             >
               chasse
